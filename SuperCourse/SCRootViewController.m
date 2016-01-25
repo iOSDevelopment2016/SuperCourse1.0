@@ -55,7 +55,9 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 
 @implementation SCRootViewController{
     CGRect mainFrame;
-    NSArray *allCourseArr;/////
+    NSArray *allCourseArr;
+    NSString *testStr;
+    //这里是我的git测试
 }
 
 - (void)viewDidLoad {
