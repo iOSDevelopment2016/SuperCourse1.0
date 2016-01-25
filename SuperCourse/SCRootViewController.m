@@ -51,6 +51,9 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 
 @property (nonatomic ,strong) UIView             *mainView;
 
+@property CGFloat Variety;
+
+
 @end
 
 @implementation SCRootViewController{
@@ -125,7 +128,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 
 #pragma mark - SCLoginViewDelegate
 //-(void)regBtnDidClick:(UIButton *)sender{
-//    
+//
 //    SCRegViewController *regVC = [[SCRegViewController alloc]init];
 //    [self presentViewController:regVC animated:YES completion:nil];
 //}
@@ -139,11 +142,174 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     [self.navigationController pushViewController:playVC animated:YES];
     
 }
+#pragma mark - 私有方法
+-(void)move{
+    //CGFloat ScaleHeight=[self getScaleHeight];
+    [UIView animateWithDuration:0.5 animations:^{
+        self.scroll.transform=CGAffineTransformMakeTranslation(0,self.Variety);
+    }];
+}
+
 
 #pragma mark - 响应事件
+
+
+
+-(void)allCourseBtnClick:(UIButton *)sender{
+    self.allCourseBtn.selected=YES;
+    self.allCourseBtnImage.selected=YES;
+    self.videoHistoryBtn.selected=NO;
+    self.videoHistoryBtnImage.selected=NO;
+    self.myNotesBtn.selected=NO;
+    self.myNotesBtnImage.selected=NO;
+    self.favouriteSettingBtn.selected=NO;
+    self.favouriteSettingBtnImage.selected=NO;
+    
+    [self.scroll setHidden:NO];
+    if (!_scroll) {
+        [self scroll:self.allCourseBtn.frame.origin.y];
+        [self.leftView addSubview:self.scroll];
+    }
+    else{
+        CGFloat a=self.allCourseBtn.frame.origin.y+self.Variety;
+        CGFloat b=self.scroll.frame.origin.y;
+        
+        self.Variety=a-b;
+        [self move];
+    }
+    
+    [self changeViewFrom:self.selectedBtn.tag to:sender.tag];
+    self.selectedBtn.selected=NO;
+    sender.selected=YES;
+    
+    
+    
+    NSInteger tempTag = sender.tag;
+    sender.tag = self.selectedBtn.tag;
+    
+    
+    self.selectedBtn.tag = tempTag;
+    
+    self.selectedBtn = sender;
+}
+
+
+-(void)historyBtnClick:(UIButton *)sender{
+    self.allCourseBtn.selected=NO;
+    self.allCourseBtnImage.selected=NO;
+    self.videoHistoryBtn.selected=YES;
+    self.videoHistoryBtnImage.selected=YES;
+    self.myNotesBtn.selected=NO;
+    self.myNotesBtnImage.selected=NO;
+    self.favouriteSettingBtn.selected=NO;
+    self.favouriteSettingBtnImage.selected=NO;
+    
+    [self.scroll setHidden:NO];
+    if (!_scroll) {
+        [self scroll:self.videoHistoryBtn.frame.origin.y];
+        [self.leftView addSubview:self.scroll];
+    }
+    else{
+        CGFloat a=self.videoHistoryBtn.frame.origin.y+self.Variety;
+        CGFloat b=self.scroll.frame.origin.y;
+        
+        self.Variety=a-b;
+        [self move];
+    }
+    
+    
+    [self changeViewFrom:self.selectedBtn.tag to:sender.tag];
+    self.selectedBtn.selected=NO;
+    sender.selected=YES;
+    
+    
+    
+    NSInteger tempTag = sender.tag;
+    sender.tag = self.selectedBtn.tag;
+    
+    
+    self.selectedBtn.tag = tempTag;
+    
+    self.selectedBtn = sender;
+    
+}
+-(void)noteBtnClick:(UIButton *)sender{
+    self.allCourseBtn.selected=NO;
+    self.allCourseBtnImage.selected=NO;
+    self.videoHistoryBtn.selected=NO;
+    self.videoHistoryBtnImage.selected=NO;
+    self.myNotesBtn.selected=YES;
+    self.myNotesBtnImage.selected=YES;
+    self.favouriteSettingBtn.selected=NO;
+    self.favouriteSettingBtnImage.selected=NO;
+    
+    [self.scroll setHidden:NO];
+    if (!_scroll) {
+        [self scroll:self.myNotesBtn.frame.origin.y];
+        [self.leftView addSubview:self.scroll];
+    }
+    else{
+        CGFloat a=self.myNotesBtn.frame.origin.y+self.Variety;
+        CGFloat b=self.scroll.frame.origin.y;
+        
+        self.Variety=a-b;
+        [self move];
+    }
+    
+    
+    [self changeViewFrom:self.selectedBtn.tag to:sender.tag];
+    self.selectedBtn.selected=NO;
+    sender.selected=YES;
+    
+    
+    
+    NSInteger tempTag = sender.tag;
+    sender.tag = self.selectedBtn.tag;
+    
+    
+    self.selectedBtn.tag = tempTag;
+    
+    self.selectedBtn = sender;
+    
+    
+}
+
+
+//-(void)favouriteBtnClick{
+//    self.allCourseBtn.selected=NO;
+//    self.allCourseBtnImage.selected=NO;
+//    self.videoHistoryBtn.selected=NO;
+//    self.videoHistoryBtnImage.selected=NO;
+//    self.myNotesBtn.selected=NO;
+//    self.myNotesBtnImage.selected=NO;
+//    self.favouriteSettingBtn.selected=YES;
+//    self.favouriteSettingBtnImage.selected=YES;
+//    [self.scroll setHidden:NO];
+//    if (!_scroll) {
+//        [self scroll:self.favouriteSettingBtn.frame.origin.y];
+//        [self.leftView addSubview:self.scroll];
+//    }
+//    else{
+//        CGFloat a=self.favouriteSettingBtn.frame.origin.y+self.Variety;
+//        CGFloat b=self.scroll.frame.origin.y;
+//
+//        self.Variety=a-b;
+//        [self move];
+//    }
+//
+//}
 -(void)loginBtnClick{
     [self.view addSubview:self.hubView];
     [self.view addSubview:self.loginView];
+    //    self.allCourseBtn.selected=NO;
+    //    self.allCourseBtnImage.selected=NO;
+    //    self.videoHistoryBtn.selected=NO;
+    //    self.videoHistoryBtnImage.selected=NO;
+    //    self.myNotesBtn.selected=NO;
+    //    self.myNotesBtnImage.selected=NO;
+    //    self.favouriteSettingBtn.selected=NO;
+    //    self.favouriteSettingBtnImage.selected=NO;
+    //    [self.scroll setHidden:YES];
 }
 
 -(void)hideLoginView{
@@ -156,9 +322,6 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 -(void)leftBtnClick:(UIButton *)sender{
     
     [self changeViewFrom:self.selectedBtn.tag to:sender.tag];
-//    if(!self.scroll){
-//        self.scroll.frame=
-//    }
     self.selectedBtn.selected=NO;
     sender.selected=YES;
     
@@ -179,12 +342,23 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 }
 
 -(void)settingBtnClick{
+    //    self.favouriteSettingBtn.selected=YES;
+    //    self.favouriteSettingBtnImage.selected=YES;
     
     SCSettingViewController *setVC = [[SCSettingViewController alloc]init];
     [self.navigationController pushViewController:setVC animated:YES];
 }
 
 #pragma mark - getters
+
+
+-(UIView *)scroll:(CGFloat)y{
+    _scroll=[[UIView alloc]initWithFrame:CGRectMake(0, y, 9*HeightScale, 150*HeightScale)];
+    [_scroll setBackgroundColor:UIColorFromRGB(0x6fccdb)];
+    return _scroll;
+}
+
+
 
 -(UIButton *)loginBtn{
     if (!_loginBtn){
@@ -201,21 +375,21 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 
 
 
- -(UIButton *)loginBtnImage
- {
- if(!_loginBtnImage)
- {
-     _loginBtnImage=[UIButton buttonWithType:UIButtonTypeCustom];
-     _loginBtnImage.backgroundColor=UIColorFromRGB(0x6fccdb);
-     UIImage *UserImage=[UIImage imageNamed:@"SC_user"];
-     [_loginBtnImage setImage:UserImage forState:UIControlStateNormal];
-     [_loginBtnImage addTarget:self action:@selector(loginBtnClick) forControlEvents:UIControlEventTouchUpInside];
- 
- }
- return _loginBtnImage;
- }
- 
- 
+-(UIButton *)loginBtnImage
+{
+    if(!_loginBtnImage)
+    {
+        _loginBtnImage=[UIButton buttonWithType:UIButtonTypeCustom];
+        _loginBtnImage.backgroundColor=UIColorFromRGB(0x6fccdb);
+        UIImage *UserImage=[UIImage imageNamed:@"SC_user"];
+        [_loginBtnImage setImage:UserImage forState:UIControlStateNormal];
+        [_loginBtnImage addTarget:self action:@selector(loginBtnClick) forControlEvents:UIControlEventTouchUpInside];
+        
+    }
+    return _loginBtnImage;
+}
+
+
 
 
 -(UIView *)leftView{
@@ -255,7 +429,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         
     }
     return _searchTextField;
-
+    
 }
 
 -(UIButton *)allCourseBtn{
@@ -267,7 +441,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         [_allCourseBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_allCourseBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateHighlighted];
         [_allCourseBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateSelected];
-        [_allCourseBtn addTarget:self action:@selector(leftBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [_allCourseBtn addTarget:self action:@selector(allCourseBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _allCourseBtn;
 }
@@ -279,10 +453,10 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         _allCourseBtnImage.tag = SCShowViewType_AllCourse;
         [_allCourseBtnImage setImage:[UIImage imageNamed:@"SC_video"] forState:UIControlStateNormal];
         [_allCourseBtnImage setImage:[UIImage imageNamed:@"SC_video2"] forState:UIControlStateSelected];
-        [_allCourseBtnImage addTarget:self action:@selector(leftBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [_allCourseBtnImage addTarget:self action:@selector(allCourseBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _allCourseBtnImage;
-
+    
 }
 
 -(UIButton *)videoHistoryBtn{
@@ -294,7 +468,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         [_videoHistoryBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateHighlighted];
         [_videoHistoryBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateSelected];
         _videoHistoryBtn.titleLabel.font = [UIFont systemFontOfSize:45*WidthScale];
-        [_videoHistoryBtn addTarget:self action:@selector(leftBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [_videoHistoryBtn addTarget:self action:@selector(historyBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _videoHistoryBtn;
 }
@@ -305,7 +479,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         _videoHistoryBtnImage=[UIButton buttonWithType:UIButtonTypeCustom];
         [_videoHistoryBtnImage setImage:[UIImage imageNamed:@"SC_clock"] forState:UIControlStateNormal];
         [_videoHistoryBtnImage setImage:[UIImage imageNamed:@"SC_clock2"] forState:UIControlStateSelected];
-        [_videoHistoryBtnImage addTarget:self action:@selector(leftBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [_videoHistoryBtnImage addTarget:self action:@selector(historyBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _videoHistoryBtnImage;
 }
@@ -319,7 +493,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         [_myNotesBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateHighlighted];
         [_myNotesBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateSelected];
         _myNotesBtn.titleLabel.font=[UIFont systemFontOfSize:45*WidthScale];
-        [_myNotesBtn addTarget:self action:@selector(leftBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [_myNotesBtn addTarget:self action:@selector(noteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _myNotesBtn;
 }
@@ -330,7 +504,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         _myNotesBtnImage.tag = SCShowViewType_MyNotes;
         [_myNotesBtnImage setImage:[UIImage imageNamed:@"SC_note"] forState:UIControlStateNormal];
         [_myNotesBtnImage setImage:[UIImage imageNamed:@"SC_note2"] forState:UIControlStateSelected];
-        [_myNotesBtnImage addTarget:self action:@selector(leftBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [_myNotesBtnImage addTarget:self action:@selector(noteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _myNotesBtnImage;
 }
@@ -353,18 +527,11 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         
         _favouriteSettingBtnImage=[UIButton buttonWithType:UIButtonTypeCustom];
         [_favouriteSettingBtnImage setImage:[UIImage imageNamed:@"SC_settings"] forState:UIControlStateNormal];
-        [_favouriteSettingBtnImage setImage:[UIImage imageNamed:@"SC_settings2"] forState:UIControlStateSelected];
+        [_favouriteSettingBtnImage setImage:[UIImage imageNamed:@"SC_settings2"] forState:UIControlStateHighlighted];
         [_favouriteSettingBtnImage addTarget:self action:@selector(settingBtnClick) forControlEvents:UIControlEventTouchUpInside];
     }
     return _favouriteSettingBtnImage;
 }
-
--(UIView *)scroll:(CGFloat)y{
-    _scroll=[[UIView alloc]initWithFrame:CGRectMake(0, y, 9*WidthScale, 150*HeightScale)];
-    [_scroll setBackgroundColor:UIColorFromRGB(0x6fccdb)];
-    return _scroll;
-}
-
 
 
 -(UIView *)hubView{
