@@ -30,6 +30,8 @@
     
     self.window.rootViewController = nav;
     
+    NSString *str = @"这是个测试";
+    
     
     return YES;
 }
