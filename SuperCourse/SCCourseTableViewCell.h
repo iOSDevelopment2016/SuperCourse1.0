@@ -12,6 +12,7 @@
 
 - (IBAction)contendFieldDidClickWithSectionIndex:(NSInteger)secIndex AndRowIndex:(NSInteger)rowIndex;
 - (IBAction)imageBtnDidClick;
+- (IBAction)downloadClick:(id)sender;
 
 @end
 @interface SCCourseTableViewCell : UITableViewCell

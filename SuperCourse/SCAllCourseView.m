@@ -12,6 +12,9 @@
 #import "SCCourseGroup.h"
 #import "SCCourseCategory.h"
 #import "SCCourseTableViewCell.h"
+#import "AFNetworking.h"
+#import "NSData+SZYKit.h"
+#import "AFDownloadRequestOperation.h"
 
 @interface SCAllCourseView ()<UITableViewDataSource, UITableViewDelegate,SCCourseTableViewDelegate>
 
@@ -33,6 +36,9 @@
 @property (nonatomic, strong) SCCourseCategory *currentSource;
 
 
+@property (nonatomic ,strong) AFDownloadRequestOperation *fileDownloader;
+
+
 @end
 
 @implementation SCAllCourseView
@@ -49,7 +55,7 @@
         [self.topImageView addSubview:self.headImageView];
         [self addSubview:self.leftBtn];
         [self addSubview:self.rightBtn];
-        [self addSubview:self.scrollView];
+        //[self addSubview:self.scrollView];
         //[self addSubview:self.secondTableView];
         [self addSubview:self.firstTableView];
         
@@ -77,16 +83,45 @@
 //         return cell.frame.size.height;
 //}
 
+-(IBAction)downloadClick:(id)sender{
+    NSString *srlStr = @"http://www.shengcaibao.com/download/SCB/1.mp3";
+    //如果请求正文包含中文，需要处理
+    //    srlStr = [srlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:srlStr]];
+    NSString *filePath = [NSHomeDirectory() stringByAppendingPathComponent:@"/Library/Caches/music.mp3"];
+    self.fileDownloader = [[AFDownloadRequestOperation alloc]initWithRequest:request fileIdentifier:@"music.mp3" targetPath:filePath shouldResume:YES];
+    self.fileDownloader.shouldOverwrite = YES;
+    
+    [self.fileDownloader start];
+    
+    //下载进度
+    [self.fileDownloader setProgressiveDownloadProgressBlock:^(AFDownloadRequestOperation *operation, NSInteger bytesRead, long long totalBytesRead, long long totalBytesExpected, long long totalBytesReadForFile, long long totalBytesExpectedToReadForFile) {
+        
+        CGFloat percent = (float)totalBytesReadForFile / (float)totalBytesExpectedToReadForFile;
+        NSLog(@"百分比:%.3f%% %ld  %lld  %lld  %lld", percent * 100, (long)bytesRead, totalBytesRead, totalBytesReadForFile, totalBytesExpectedToReadForFile);
+    }];
+    
+    //结束
+    [self.fileDownloader setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSLog(@"下载成功 %@", responseObject);
+        
+        
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        NSLog(@"下载失败 %@", error);
+        
+    }];
+
+}
+
 # pragma mark - 私有方法
 -(void)move:(CGFloat)x{
-    [self.delegate viewmove:x andUIView:self.scrollView];
-    //CGFloat ScaleHeight=[self getScaleHeight];
-//    [UIView animateWithDuration:0.5 animations:^{
-//        self.scrollView.transform=CGAffineTransformMakeTranslation(self.variety,0);
-//    }];
-//    [UIView animateWithDuration:0.5 animations:^{
-//        self.scrollView.transform=CGAffineTransformMakeTranslation(x , 0);
-//    }];
+    [UIView animateWithDuration:0.5 animations:^{
+        self.scrollView.transform=CGAffineTransformMakeTranslation(0,x);
+    }];
 }
 
 
@@ -108,8 +143,8 @@
     self.rightBtn.selected=NO;
     self.currentSource=self.firstCategory;
     [self.firstTableView reloadData];
-    CGFloat variety=self.leftBtn.frame.origin.x-self.scrollView.frame.origin.x;
-    [self move:variety];
+//    CGFloat variety=self.leftBtn.frame.origin.x-self.scrollView.frame.origin.x;
+//    [self move:variety];
     
 }
 -(void)rightBtnClick{
@@ -117,8 +152,8 @@
     self.rightBtn.selected=YES;
     self.currentSource=self.secondCategory;
     [self.firstTableView reloadData];
-    CGFloat variety=self.rightBtn.frame.origin.x-self.scrollView.frame.origin.x;
-    [self move:variety];
+//    CGFloat variety=self.rightBtn.frame.origin.x-self.scrollView.frame.origin.x;
+//    [self move:variety];
 }
 
 #pragma mark - getters
@@ -391,8 +426,10 @@
 }
 
 -(UIView *)scrollView{
+    if(!_scrollView){
     _scrollView=[[UIView alloc]initWithFrame:CGRectMake(520*WidthScale, 780*HeightScale, 200*HeightScale, 9*HeightScale)];
     [_scrollView setBackgroundColor:UIColorFromRGB(0x6fccdb)];
+    }
     return _scrollView;
 }
 
