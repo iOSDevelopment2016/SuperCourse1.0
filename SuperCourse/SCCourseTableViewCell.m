@@ -56,7 +56,7 @@
 }
 
 - (IBAction)downloadBtnClick:(id)sender {
-    
+    [self.delegate downloadClick:sender];
     
 }
 @end
