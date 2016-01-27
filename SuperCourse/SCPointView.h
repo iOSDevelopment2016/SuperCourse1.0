@@ -17,7 +17,8 @@
 
 @interface SCPointView : UIView
 
-
+@property (nonatomic, strong) UIImageView *currentImageView;
+@property (nonatomic, strong) UILabel *currentLabel;
 
 - (instancetype)initWithFrame:(CGRect)frame AndObject:(NSMutableArray *)tempModel;
 

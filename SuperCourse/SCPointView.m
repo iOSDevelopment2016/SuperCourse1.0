@@ -9,6 +9,15 @@
 #import "SCPointView.h"
 #import "SCtempModel.h"
 #import "SCRightView.h"
+
+//@interface SCPointView(){
+//    
+//}
+
+
+
+//@end
+
 @implementation SCPointView
 
 - (instancetype)initWithFrame:(CGRect)frame AndObject:(NSMutableArray *)subTitleArr{
@@ -85,27 +94,30 @@
     
 }
 
+-(void)clearAllSelected{
+    
+    for (UIView *subTitleView in self.subviews) {
+        if( subTitleView.frame.origin.x == 0){
+            subTitleView.transform = CGAffineTransformMakeTranslation(0*WidthScale, 0*HeightScale);
+            self.currentImageView.image = [UIImage imageNamed:@"B"];
+            self.currentLabel.textColor = [UIColor blackColor];
+            subTitleView.layer.borderColor = [UIColor clearColor].CGColor;
+        }
+    }
+}
 
-
-- (void)turnToPoint:(UIButton *)sender{
-
-    UIView *subTitleView = sender.superview;
- 
-    UIImageView *imageView;
-    UILabel *label;
+-(void)getCurrentImageViewAndLabel:(UIView *)subTitleView{
     for (UIView *subView in subTitleView.subviews) {
         NSInteger tag = subView.tag;
         switch (tag) {
-                
             case 4:
             {
-                imageView = (UIImageView *)subView;
+                self.currentImageView = (UIImageView *)subView;
                 break;
-                
             }
             case 6:
             {
-                label = (UILabel *)subView;
+                self.currentLabel = (UILabel *)subView;
                 break;
             }
             default:
@@ -113,55 +125,29 @@
         }
         
     }
+}
+
+- (void)turnToPoint:(UIButton *)sender{
+    UIView *subTitleView = sender.superview;
+    [self getCurrentImageViewAndLabel:subTitleView];
+    [self clearAllSelected];
+    
     [UIView animateWithDuration:0.4 animations:^{
         
         CGFloat x = subTitleView.x;
         
         if (x!=0) {
             subTitleView.transform = CGAffineTransformMakeTranslation(-12*WidthScale, 10*HeightScale);
-            imageView.image = [UIImage imageNamed:@"A"];
-            label.textColor = UIThemeColor;
+            self.currentImageView.image = [UIImage imageNamed:@"A"];
+            self.currentLabel.textColor = UIThemeColor;
             subTitleView.layer.borderColor = UIThemeColor.CGColor;
             subTitleView.layer.borderWidth = 2;
-        }else{
-            
-            subTitleView.transform = CGAffineTransformMakeTranslation(12*WidthScale, -10*HeightScale);
-            imageView.image = [UIImage imageNamed:@"B"];
-            label.textColor = [UIColor blackColor];
-            subTitleView.layer.borderColor = [UIColor clearColor].CGColor;
-            
         }
     }];
-    
-    
+   
 }
 
-//- (UIView *)createLetterViewWithLetter:(NSString *)letter{
-//
-////    UIView *letterView = [[UIView alloc]initWithFrame:CGRectMake(32*WidthScale , 32*HeightScale, 36*WidthScale, 36*HeightScale)];
-////    UIImageView *imageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"B"]];
-////    imageView.frame = CGRectMake(0, 0, letterView.width, letterView.height);
-////    UILabel *letterLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, letterView.width, letterView.height)];
-////    letterLabel.text = letter;
-////    letterLabel.textAlignment = NSTextAlignmentCenter;
-////    letterLabel.font = [UIFont systemFontOfSize:20*WidthScale];
-////    [letterLabel setTextColor:[UIColor blackColor]];
-////    [letterLabel setBackgroundColor:[UIColor clearColor]];
-////    [letterView addSubview:imageView];
-////    [letterView addSubview:letterLabel];
-//    return letterView;
-//}
 
-//- (UILabel *)createNoteLabelWithData:(NSString *)text{
-//    
-////    UILabel *noteLabel = [[UILabel alloc]initWithFrame:CGRectMake(90*WidthScale, 0, 467*WidthScale, 100*HeightScale)];
-////    noteLabel.font = [UIFont systemFontOfSize:35*WidthScale];
-////    noteLabel.text = text;
-////    [noteLabel setTextColor:[UIColor blackColor]];
-////    [noteLabel setBackgroundColor:[UIColor clearColor]];
-//
-//    return noteLabel;
-//}
 
 
 

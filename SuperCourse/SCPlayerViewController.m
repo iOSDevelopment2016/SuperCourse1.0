@@ -72,22 +72,15 @@
     
     
     
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *docDir = [paths objectAtIndex:0];
-    NSString *url=[docDir stringByAppendingPathComponent:@"load1.mp4"];
-    NSURL *murl=[NSURL fileURLWithPath:url];
+//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//    NSString *docDir = [paths objectAtIndex:0];
+//    NSString *url=[docDir stringByAppendingPathComponent:@"load1.mp4"];
+//    NSURL *murl=[NSURL fileURLWithPath:url];
 
     
-    [[SZYVideoManager defaultManager] setUpRemoteVideoPlayerWithContentURL:murl view:self.container];
-    [[SZYVideoManager defaultManager] startWithHandler:^(NSTimeInterval elapsedTime, NSTimeInterval timeRemaining, NSTimeInterval playableDuration, BOOL finished) {
-        [self showCurrentTime:elapsedTime AndplayableDuration:playableDuration];
-        
-        if ([self.timeDelegate pointTime] == &elapsedTime) {
-            [self.delegate changeViewLooking];
-        }
-        [self.delegate changeViewLooking];
-        
-    }];
+    [[SZYVideoManager defaultManager] setUpRemoteVideoPlayerWithContentURL:[NSURL URLWithString:@"http://101.200.73.189/video/001.mp4"] view:self.container];
+//    [[SZYVideoManager defaultManager] setUpRemoteVideoPlayerWithContentURL:[NSURL URLWithString:@"http://baobab.cdn.wandoujia.com/14468618701471.mp4"] view:self.container];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoLoadDone:) name:VideoLoadDoneNotification object:nil];
     [self.container addSubview:self.startBtnView];
      [self.view addSubview:self.writeNoteView];
@@ -117,11 +110,29 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+-(void)dealloc{
+    //注销通知
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:VideoLoadDoneNotification object:nil];
+
+}
 -(void)videoLoadDone:(NSNotification *)noti{
     
 //    [self.view addSubview:self.startBtn];
 //    [self.view addSubview:self.pauseBtn];
 //    [self.view addSubview:self.resumeBtn];
+    
+//    //注销通知
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:VideoLoadDoneNotification object:nil];
+
+    [[SZYVideoManager defaultManager] startWithHandler:^(NSTimeInterval elapsedTime, NSTimeInterval timeRemaining, NSTimeInterval playableDuration, BOOL finished) {
+        [self showCurrentTime:elapsedTime AndplayableDuration:playableDuration];
+        
+        if ([self.timeDelegate pointTime] == &elapsedTime) {
+            [self.delegate changeViewLooking];
+        }
+        [self.delegate changeViewLooking];
+        
+    }];
     
     _slider = [[UISlider alloc]initWithFrame:CGRectMake(0 , self.startBtnView.height-60, self.startBtnView.width, 50)];
     [_slider addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
