@@ -7,8 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C90DE8561C53EDDE00B7137F /* SCPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C90DE8551C53EDDE00B7137F /* SCPlayerViewController.m */; };
-		C90DE8591C53F21C00B7137F /* SCRightView.m in Sources */ = {isa = PBXBuildFile; fileRef = C90DE8581C53F21C00B7137F /* SCRightView.m */; };
+		7DB53A081C58F0A1001DEC33 /* ZQTagList.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB539FD1C58F0A1001DEC33 /* ZQTagList.m */; };
+		7DB53A091C58F0A1001DEC33 /* SCPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB539FF1C58F0A1001DEC33 /* SCPlayerViewController.m */; };
+		7DB53A0A1C58F0A1001DEC33 /* SCPointView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB53A011C58F0A1001DEC33 /* SCPointView.m */; };
+		7DB53A0B1C58F0A1001DEC33 /* SCRightView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB53A031C58F0A1001DEC33 /* SCRightView.m */; };
+		7DB53A0C1C58F0A1001DEC33 /* SCtempModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB53A051C58F0A1001DEC33 /* SCtempModel.m */; };
+		7DB53A0D1C58F0A1001DEC33 /* SZYVideoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB53A071C58F0A1001DEC33 /* SZYVideoManager.m */; };
 		C90DE85C1C53FABA00B7137F /* SCCustomButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C90DE85B1C53FABA00B7137F /* SCCustomButton.m */; };
 		C90DE8601C54AA9A00B7137F /* SCVIdeoInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = C90DE85F1C54AA9A00B7137F /* SCVIdeoInfo.m */; };
 		C9E4E6441C53BAF30052030E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E4E6431C53BAF30052030E /* main.m */; };
@@ -56,10 +60,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		C90DE8541C53EDDE00B7137F /* SCPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPlayerViewController.h; sourceTree = "<group>"; };
-		C90DE8551C53EDDE00B7137F /* SCPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPlayerViewController.m; sourceTree = "<group>"; };
-		C90DE8571C53F21C00B7137F /* SCRightView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCRightView.h; sourceTree = "<group>"; };
-		C90DE8581C53F21C00B7137F /* SCRightView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCRightView.m; sourceTree = "<group>"; };
+		7DB539FC1C58F0A1001DEC33 /* ZQTagList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZQTagList.h; sourceTree = "<group>"; };
+		7DB539FD1C58F0A1001DEC33 /* ZQTagList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZQTagList.m; sourceTree = "<group>"; };
+		7DB539FE1C58F0A1001DEC33 /* SCPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPlayerViewController.h; sourceTree = "<group>"; };
+		7DB539FF1C58F0A1001DEC33 /* SCPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPlayerViewController.m; sourceTree = "<group>"; };
+		7DB53A001C58F0A1001DEC33 /* SCPointView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPointView.h; sourceTree = "<group>"; };
+		7DB53A011C58F0A1001DEC33 /* SCPointView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPointView.m; sourceTree = "<group>"; };
+		7DB53A021C58F0A1001DEC33 /* SCRightView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCRightView.h; sourceTree = "<group>"; };
+		7DB53A031C58F0A1001DEC33 /* SCRightView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCRightView.m; sourceTree = "<group>"; };
+		7DB53A041C58F0A1001DEC33 /* SCtempModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCtempModel.h; sourceTree = "<group>"; };
+		7DB53A051C58F0A1001DEC33 /* SCtempModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCtempModel.m; sourceTree = "<group>"; };
+		7DB53A061C58F0A1001DEC33 /* SZYVideoManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SZYVideoManager.h; sourceTree = "<group>"; };
+		7DB53A071C58F0A1001DEC33 /* SZYVideoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SZYVideoManager.m; sourceTree = "<group>"; };
 		C90DE85A1C53FABA00B7137F /* SCCustomButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCustomButton.h; sourceTree = "<group>"; };
 		C90DE85B1C53FABA00B7137F /* SCCustomButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCustomButton.m; sourceTree = "<group>"; };
 		C90DE85E1C54AA9A00B7137F /* SCVIdeoInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCVIdeoInfo.h; sourceTree = "<group>"; };
@@ -140,6 +152,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7DB539FB1C58F0A1001DEC33 /* 自适应标签 */ = {
+			isa = PBXGroup;
+			children = (
+				7DB539FC1C58F0A1001DEC33 /* ZQTagList.h */,
+				7DB539FD1C58F0A1001DEC33 /* ZQTagList.m */,
+			);
+			path = "自适应标签";
+			sourceTree = "<group>";
+		};
 		C90DE8511C53EDB000B7137F /* Player */ = {
 			isa = PBXGroup;
 			children = (
@@ -152,8 +173,8 @@
 		C90DE8521C53EDBE00B7137F /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				C90DE8541C53EDDE00B7137F /* SCPlayerViewController.h */,
-				C90DE8551C53EDDE00B7137F /* SCPlayerViewController.m */,
+				7DB539FE1C58F0A1001DEC33 /* SCPlayerViewController.h */,
+				7DB539FF1C58F0A1001DEC33 /* SCPlayerViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -161,8 +182,12 @@
 		C90DE8531C53EDC400B7137F /* View */ = {
 			isa = PBXGroup;
 			children = (
-				C90DE8571C53F21C00B7137F /* SCRightView.h */,
-				C90DE8581C53F21C00B7137F /* SCRightView.m */,
+				7DB53A001C58F0A1001DEC33 /* SCPointView.h */,
+				7DB53A011C58F0A1001DEC33 /* SCPointView.m */,
+				7DB53A021C58F0A1001DEC33 /* SCRightView.h */,
+				7DB53A031C58F0A1001DEC33 /* SCRightView.m */,
+				7DB53A041C58F0A1001DEC33 /* SCtempModel.h */,
+				7DB53A051C58F0A1001DEC33 /* SCtempModel.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -347,6 +372,7 @@
 			name = SCKit;
 			sourceTree = "<group>";
 		};
+
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -481,27 +507,31 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9E4E6871C53C25D0052030E /* SCVideoHistoryView.m in Sources */,
+				7DB53A091C58F0A1001DEC33 /* SCPlayerViewController.m in Sources */,
 				FE60E6751C5783360005F9F3 /* SCItemView.m in Sources */,
 				C9E4E6471C53BAF30052030E /* AppDelegate.m in Sources */,
 				C9E4E68A1C53C2680052030E /* SCMyNotesView.m in Sources */,
 				C9E4E6841C53C2460052030E /* SCAllCourseView.m in Sources */,
+				7DB53A0C1C58F0A1001DEC33 /* SCtempModel.m in Sources */,
 				C9E4E6971C53C3460052030E /* SCRegViewController.m in Sources */,
 				C9E4E69C1C53C4F40052030E /* UIView+SZY.m in Sources */,
 				C9E4E6921C53C2D50052030E /* SCSearchView.m in Sources */,
 				C9E4E67D1C53BCB80052030E /* SCCustomNavigationController.m in Sources */,
 				C90DE85C1C53FABA00B7137F /* SCCustomButton.m in Sources */,
-				C90DE8591C53F21C00B7137F /* SCRightView.m in Sources */,
 				C90DE8601C54AA9A00B7137F /* SCVIdeoInfo.m in Sources */,
 				C9E4E6771C53BC4B0052030E /* SCBaseViewController.m in Sources */,
 				FE005B961C55FEB100920EFB /* SCCourseGroup.m in Sources */,
+				7DB53A081C58F0A1001DEC33 /* ZQTagList.m in Sources */,
 				C9E4E67A1C53BC590052030E /* SCRootViewController.m in Sources */,
 				C9E4E6441C53BAF30052030E /* main.m in Sources */,
+				7DB53A0A1C58F0A1001DEC33 /* SCPointView.m in Sources */,
 				C9E4E69F1C53CA6C0052030E /* SCLoginView.m in Sources */,
 				C9E4E68F1C53C2AC0052030E /* SCSettingViewController.m in Sources */,
 				FE005B931C55FD2500920EFB /* SCCourse.m in Sources */,
+				7DB53A0D1C58F0A1001DEC33 /* SZYVideoManager.m in Sources */,
 				FE005B9D1C56190400920EFB /* SCCourseTableViewCell.m in Sources */,
 				FE005B991C55FFD200920EFB /* SCCourseCategory.m in Sources */,
-				C90DE8561C53EDDE00B7137F /* SCPlayerViewController.m in Sources */,
+				7DB53A0B1C58F0A1001DEC33 /* SCRightView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
