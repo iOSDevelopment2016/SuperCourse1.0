@@ -15,7 +15,8 @@
 //#import "SCRegViewController.h" 不实现注册功能
 #import "SCSettingViewController.h"
 #import "SCPlayerViewController.h"
-
+#import "SCCourseTableViewCell.h"
+#import "SCItemView.h"
 typedef NS_ENUM(NSInteger,SCShowViewType) {
     SCShowViewType_MyNotes = 0,
     SCShowViewType_VideoHistory,
@@ -23,7 +24,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 };
 
 
-@interface SCRootViewController ()<SCLoginViewDelegate,SCAllCourseViewDelegate,UITextFieldDelegate>
+@interface SCRootViewController ()<SCLoginViewDelegate,SCAllCourseViewDelegate,UITextFieldDelegate,SCCourseTableViewDelegate>
 
 @property (nonatomic ,strong) UIButton           *loginBtn;
 @property (nonatomic ,strong) UIButton           *loginBtnImage;
@@ -44,12 +45,15 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 
 @property (nonatomic ,strong) UIView             *hubView;
 @property (nonatomic ,strong) SCLoginView        *loginView;
+@property (nonatomic ,strong) SCItemView         *itemView;
 @property (nonatomic ,strong) SCAllCourseView    *allCourseView;
 @property (nonatomic ,strong) SCVideoHistoryView *videoHistoryView;
 @property (nonatomic ,strong) SCMyNotesView      *myNotesView;
 @property (nonatomic ,strong) UIButton           *selectedBtn;
 
 @property (nonatomic ,strong) UIView             *mainView;
+
+@property (nonatomic ,strong) UIWebView          *webView;
 
 @property CGFloat Variety;
 
@@ -63,7 +67,8 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.allCourseBtn.selected=YES;
+    self.allCourseBtnImage.selected=YES;
     //隐藏导航栏
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     
@@ -106,7 +111,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     self.favouriteSettingBtn.frame = CGRectMake(0, self.leftView.height-150*HeightScale,400*WidthScale, 150*HeightScale);
     self.favouriteSettingBtnImage.frame = CGRectMake(51*WidthScale, self.leftView.height-150*HeightScale+35*HeightScale,64*WidthScale, 64*HeightScale);
     //self.searchView.frame = CGRectMake(1224*WidthScale, 56*HeightScale, 718*WidthScale, 100*HeightScale);
-    self.searchTextField.frame= CGRectMake(1224*WidthScale, 56*HeightScale, 718*WidthScale, 100*HeightScale);
+    self.searchTextField.frame= CGRectMake(1234*WidthScale, 56*HeightScale, 708*WidthScale, 100*HeightScale);
     
     //中央视图尺寸
     mainFrame = CGRectMake(self.leftView.right, self.leftView.top, self.view.width-self.leftView.width, self.leftView.height);
@@ -134,7 +139,33 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 //}
 
 #pragma mark - SCAllCourseViewDelegate
+-(IBAction)contendClick:(NSInteger)secIndex AndRowIndex:(NSInteger)rouIndex{
+    [self.view addSubview:self.hubView];
+    self.webView = [[UIWebView alloc]initWithFrame:CGRectMake(100, 100, 1000, 800)];
+    
+    
+    
+    [self.view addSubview:self.webView];
+    
+    
+    
+    
+    
+    NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.baidu.com"]];
+    
+    
+    
+    //运行一下，百度页面就出来了
+    
+    
+    
+    [self.webView loadRequest:request];
 
+}
+-(IBAction)imageClick{
+    [self.view addSubview:self.hubView];
+    [self.view addSubview:self.itemView];
+}
 -(void)startBtnDidClick{
     
     SCPlayerViewController *playVC = [[SCPlayerViewController alloc]init];
@@ -142,6 +173,19 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     [self.navigationController pushViewController:playVC animated:YES];
     
 }
+
+//-(IBAction)contendFieldDidClick{
+//    SCPlayerViewController *playVC = [[SCPlayerViewController alloc]init];
+//    playVC.currentVideoInfo = allCourseArr[5];
+//    [self.navigationController pushViewController:playVC animated:YES];
+//
+//}
+//-(IBAction)imageBtnDidClick{
+//    SCPlayerViewController *playVC = [[SCPlayerViewController alloc]init];
+//    playVC.currentVideoInfo = allCourseArr[5];
+//    [self.navigationController pushViewController:playVC animated:YES];
+//
+//}
 #pragma mark - 私有方法
 -(void)move{
     //CGFloat ScaleHeight=[self getScaleHeight];
@@ -149,7 +193,11 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         self.scroll.transform=CGAffineTransformMakeTranslation(0,self.Variety);
     }];
 }
-
+-(void)viewmove:(CGFloat)variety andUIView:(UIView *)scrollView{
+    [UIView animateWithDuration:0.5 animations:^{
+        scrollView.transform=CGAffineTransformMakeTranslation(variety,0);
+    }];
+}
 
 #pragma mark - 响应事件
 
@@ -317,24 +365,29 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     self.loginView = nil;
     [self.hubView removeFromSuperview];
     self.hubView = nil;
+    [self.itemView removeFromSuperview];
+    self.itemView = nil;
+    [self.webView removeFromSuperview];
+    self.webView=nil;
+
 }
 
--(void)leftBtnClick:(UIButton *)sender{
-    
-    [self changeViewFrom:self.selectedBtn.tag to:sender.tag];
-    self.selectedBtn.selected=NO;
-    sender.selected=YES;
-    
-    
-    
-    NSInteger tempTag = sender.tag;
-    sender.tag = self.selectedBtn.tag;
-    
-    
-    self.selectedBtn.tag = tempTag;
-    
-    self.selectedBtn = sender;
-}
+//-(void)leftBtnClick:(UIButton *)sender{
+//    
+//    [self changeViewFrom:self.selectedBtn.tag to:sender.tag];
+//    self.selectedBtn.selected=NO;
+//    sender.selected=YES;
+//    
+//    
+//    
+//    NSInteger tempTag = sender.tag;
+//    sender.tag = self.selectedBtn.tag;
+//    
+//    
+//    self.selectedBtn.tag = tempTag;
+//    
+//    self.selectedBtn = sender;
+//}
 
 -(void)changeViewFrom:(SCShowViewType)fromTndex to:(SCShowViewType)toIndex{
     
@@ -396,6 +449,21 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     if (!_leftView){
         _leftView = [[UIView alloc]init];
         _leftView.backgroundColor = [UIColor whiteColor];
+        
+        
+        //[_leftView.layer setMasksToBounds:YES];//设置按钮的圆角半径不会被遮挡
+        
+        //[_leftView.layer setCornerRadius:10];
+        
+        [_leftView.layer setBorderWidth:1];//设置边界的宽度
+        
+        
+        
+        //设置按钮的边界颜色
+        
+        [_leftView.layer setBorderColor:UIColorFromRGB(0xeeeeee).CGColor];
+
+        
     }
     return _leftView;
 }
@@ -418,13 +486,17 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         _searchTextField=[[UITextField alloc]init];
         //_SearchTextField=[[UITextField alloc]init];
         [_searchTextField setBackgroundColor:[UIColor whiteColor]];
+        _searchTextField.placeholder = @"请输入搜索内容";
+        _searchTextField.font = [UIFont systemFontOfSize:45*WidthScale];
         _searchTextField.layer.masksToBounds = YES;
         _searchTextField.layer.cornerRadius = 35;
-        _searchTextField.leftView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
-        _searchTextField.leftViewMode=UITextFieldViewModeAlways;
-        UIImageView *imageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"SC_magnifier"]];
-        imageView.frame=CGRectMake(65*WidthScale, 2*HeightScale, 64*WidthScale, 64*HeightScale);
-        [_searchTextField.leftView addSubview:imageView];
+        _searchTextField.textAlignment = UITextAlignmentCenter ;
+        _searchTextField.rightView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 125, 100)];
+        _searchTextField.rightView.backgroundColor=UIColorFromRGB(0x6fccdb);
+        _searchTextField.rightViewMode=UITextFieldViewModeAlways;
+        UIImageView *imageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"搜索白色"]];
+        imageView.frame=CGRectMake(68*WidthScale, 45*HeightScale, 64*WidthScale, 64*HeightScale);
+        [_searchTextField.rightView addSubview:imageView];
         _searchTextField.delegate=self;
         
     }
@@ -441,6 +513,8 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         [_allCourseBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_allCourseBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateHighlighted];
         [_allCourseBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateSelected];
+        [self scroll:self.allCourseBtn.frame.origin.y+45*HeightScale];
+        [self.leftView addSubview:self.scroll];
         [_allCourseBtn addTarget:self action:@selector(allCourseBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _allCourseBtn;
@@ -488,7 +562,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     if (!_myNotesBtn){
         _myNotesBtn = [[UIButton alloc]init];
         _myNotesBtn.tag = SCShowViewType_MyNotes;
-        [_myNotesBtn setTitle:@"      我的笔记" forState:UIControlStateNormal];
+        [_myNotesBtn setTitle:@"      我的备注" forState:UIControlStateNormal];
         [_myNotesBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_myNotesBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateHighlighted];
         [_myNotesBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateSelected];
@@ -511,7 +585,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 -(UIButton *)favouriteSettingBtn{
     if (!_favouriteSettingBtn){
         _favouriteSettingBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-        [_favouriteSettingBtn setTitle:@"      偏好设置" forState:UIControlStateNormal];
+        [_favouriteSettingBtn setTitle:@"      " forState:UIControlStateNormal];
         [_favouriteSettingBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_favouriteSettingBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateHighlighted];
         [_favouriteSettingBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateSelected];
@@ -544,7 +618,16 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     }
     return _hubView;
 }
-
+-(SCItemView *)itemView{
+    if (!_itemView){
+        _itemView = [[SCItemView alloc]init];
+        _itemView.backgroundColor=[UIColor whiteColor];
+        _itemView.frame = CGRectMake(0, 0, 320, 240);
+        _itemView.center = self.view.center;
+        //_loginView.delegate = self;
+    }
+    return _itemView;
+}
 -(SCLoginView *)loginView{
     if (!_loginView){
         _loginView = [[NSBundle mainBundle]loadNibNamed:NSStringFromClass([SCLoginView class]) owner:nil options:nil].lastObject;

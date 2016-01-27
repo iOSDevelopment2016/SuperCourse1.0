@@ -9,5 +9,4 @@
 #import "SCBaseViewController.h"
 
 @interface SCRootViewController : SCBaseViewController
-
 @end

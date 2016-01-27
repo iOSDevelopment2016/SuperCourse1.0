@@ -33,6 +33,6 @@
 
 - (IBAction)regBtnClick:(id)sender {
     
-    [self.delegate regBtnDidClick:sender];
+    //[self.delegate regBtnDidClick:sender];
 }
 @end
