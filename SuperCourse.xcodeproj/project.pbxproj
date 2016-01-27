@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7DB53A081C58F0A1001DEC33 /* ZQTagList.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB539FD1C58F0A1001DEC33 /* ZQTagList.m */; };
+		7D59C9861C5905BA00C4E9E2 /* SZYVideoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D59C9851C5905BA00C4E9E2 /* SZYVideoManager.m */; };
 		7DB53A091C58F0A1001DEC33 /* SCPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB539FF1C58F0A1001DEC33 /* SCPlayerViewController.m */; };
 		7DB53A0A1C58F0A1001DEC33 /* SCPointView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB53A011C58F0A1001DEC33 /* SCPointView.m */; };
 		7DB53A0B1C58F0A1001DEC33 /* SCRightView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB53A031C58F0A1001DEC33 /* SCRightView.m */; };
 		7DB53A0C1C58F0A1001DEC33 /* SCtempModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB53A051C58F0A1001DEC33 /* SCtempModel.m */; };
-		7DB53A0D1C58F0A1001DEC33 /* SZYVideoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB53A071C58F0A1001DEC33 /* SZYVideoManager.m */; };
+		7DB77ED61C5904B300B612FC /* ZQTagList.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5835781C58FCD2004DFA97 /* ZQTagList.m */; };
 		C90DE85C1C53FABA00B7137F /* SCCustomButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C90DE85B1C53FABA00B7137F /* SCCustomButton.m */; };
 		C90DE8601C54AA9A00B7137F /* SCVIdeoInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = C90DE85F1C54AA9A00B7137F /* SCVIdeoInfo.m */; };
 		C9E4E6441C53BAF30052030E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E4E6431C53BAF30052030E /* main.m */; };
@@ -57,7 +57,6 @@
 		FE5835701C58FC01004DFA97 /* UIProgressView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = FE58355B1C58FC01004DFA97 /* UIProgressView+AFNetworking.m */; };
 		FE5835711C58FC01004DFA97 /* UIRefreshControl+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = FE58355D1C58FC01004DFA97 /* UIRefreshControl+AFNetworking.m */; };
 		FE5835721C58FC01004DFA97 /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = FE58355F1C58FC01004DFA97 /* UIWebView+AFNetworking.m */; };
-		FE5835791C58FCD2004DFA97 /* ZQTagList.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5835781C58FCD2004DFA97 /* ZQTagList.m */; };
 		FE60E6751C5783360005F9F3 /* SCItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE60E6741C5783360005F9F3 /* SCItemView.m */; };
 		FE60E6771C5783870005F9F3 /* SCItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE60E6761C5783870005F9F3 /* SCItemView.xib */; };
 /* End PBXBuildFile section */
@@ -80,7 +79,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		7DB539FD1C58F0A1001DEC33 /* ZQTagList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZQTagList.m; sourceTree = "<group>"; };
+		7D59C9841C5905BA00C4E9E2 /* SZYVideoManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SZYVideoManager.h; sourceTree = "<group>"; };
+		7D59C9851C5905BA00C4E9E2 /* SZYVideoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SZYVideoManager.m; sourceTree = "<group>"; };
 		7DB539FE1C58F0A1001DEC33 /* SCPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPlayerViewController.h; sourceTree = "<group>"; };
 		7DB539FF1C58F0A1001DEC33 /* SCPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPlayerViewController.m; sourceTree = "<group>"; };
 		7DB53A001C58F0A1001DEC33 /* SCPointView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPointView.h; sourceTree = "<group>"; };
@@ -427,6 +427,8 @@
 		FE5835351C58FC01004DFA97 /* ThirdTools */ = {
 			isa = PBXGroup;
 			children = (
+				7D59C9841C5905BA00C4E9E2 /* SZYVideoManager.h */,
+				7D59C9851C5905BA00C4E9E2 /* SZYVideoManager.m */,
 				FE5835771C58FCD2004DFA97 /* ZQTagList.h */,
 				FE5835781C58FCD2004DFA97 /* ZQTagList.m */,
 				FE5835361C58FC01004DFA97 /* AFDownloadRequestOperation.h */,
@@ -622,8 +624,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7DB77ED61C5904B300B612FC /* ZQTagList.m in Sources */,
 				C9E4E6871C53C25D0052030E /* SCVideoHistoryView.m in Sources */,
-				FE5835791C58FCD2004DFA97 /* ZQTagList.m in Sources */,
 				FE5835641C58FC01004DFA97 /* AFNetworkReachabilityManager.m in Sources */,
 				FE5835721C58FC01004DFA97 /* UIWebView+AFNetworking.m in Sources */,
 				7DB53A091C58F0A1001DEC33 /* SCPlayerViewController.m in Sources */,
@@ -645,7 +647,6 @@
 				FE5835711C58FC01004DFA97 /* UIRefreshControl+AFNetworking.m in Sources */,
 				FE005B961C55FEB100920EFB /* SCCourseGroup.m in Sources */,
 				FE58356F1C58FC01004DFA97 /* UIImageView+AFNetworking.m in Sources */,
-				7DB53A081C58F0A1001DEC33 /* ZQTagList.m in Sources */,
 				C9E4E67A1C53BC590052030E /* SCRootViewController.m in Sources */,
 				C9E4E6441C53BAF30052030E /* main.m in Sources */,
 				FE5835701C58FC01004DFA97 /* UIProgressView+AFNetworking.m in Sources */,
@@ -663,6 +664,7 @@
 				7DB53A0D1C58F0A1001DEC33 /* SZYVideoManager.m in Sources */,
 				FE005B9D1C56190400920EFB /* SCCourseTableViewCell.m in Sources */,
 				FE5835671C58FC01004DFA97 /* AFURLRequestSerialization.m in Sources */,
+				7D59C9861C5905BA00C4E9E2 /* SZYVideoManager.m in Sources */,
 				FE5835651C58FC01004DFA97 /* AFSecurityPolicy.m in Sources */,
 				FE58356E1C58FC01004DFA97 /* UIButton+AFNetworking.m in Sources */,
 				FE5835631C58FC01004DFA97 /* AFHTTPSessionManager.m in Sources */,
