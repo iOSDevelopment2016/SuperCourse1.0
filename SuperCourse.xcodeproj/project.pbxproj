@@ -33,8 +33,8 @@
 		C9E4E69C1C53C4F40052030E /* UIView+SZY.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E4E69B1C53C4F40052030E /* UIView+SZY.m */; };
 		DA9CF7731C599D3100F6CEA6 /* APIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9CF7701C599D3100F6CEA6 /* APIClient.m */; };
 		DA9CF7741C599D3100F6CEA6 /* HttpTool.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9CF7721C599D3100F6CEA6 /* HttpTool.m */; };
-		DA9CF7781C599D6B00F6CEA6 /* SCLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9CF7761C599D6B00F6CEA6 /* SCLoginView.m */; };
-		DA9CF7791C599D6B00F6CEA6 /* SCLoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA9CF7771C599D6B00F6CEA6 /* SCLoginView.xib */; };
+		DAE2880D1C59EA3A00426DDD /* SCLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE2880B1C59EA3A00426DDD /* SCLoginView.m */; };
+		DAE2880E1C59EA3A00426DDD /* SCLoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAE2880C1C59EA3A00426DDD /* SCLoginView.xib */; };
 		FE005B931C55FD2500920EFB /* SCCourse.m in Sources */ = {isa = PBXBuildFile; fileRef = FE005B921C55FD2500920EFB /* SCCourse.m */; };
 		FE005B961C55FEB100920EFB /* SCCourseGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FE005B951C55FEB100920EFB /* SCCourseGroup.m */; };
 		FE005B991C55FFD200920EFB /* SCCourseCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = FE005B981C55FFD200920EFB /* SCCourseCategory.m */; };
@@ -133,9 +133,9 @@
 		DA9CF7701C599D3100F6CEA6 /* APIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIClient.m; sourceTree = "<group>"; };
 		DA9CF7711C599D3100F6CEA6 /* HttpTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpTool.h; sourceTree = "<group>"; };
 		DA9CF7721C599D3100F6CEA6 /* HttpTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpTool.m; sourceTree = "<group>"; };
-		DA9CF7751C599D6B00F6CEA6 /* SCLoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCLoginView.h; sourceTree = "<group>"; };
-		DA9CF7761C599D6B00F6CEA6 /* SCLoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCLoginView.m; sourceTree = "<group>"; };
-		DA9CF7771C599D6B00F6CEA6 /* SCLoginView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCLoginView.xib; sourceTree = "<group>"; };
+		DAE2880A1C59EA3A00426DDD /* SCLoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCLoginView.h; sourceTree = "<group>"; };
+		DAE2880B1C59EA3A00426DDD /* SCLoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCLoginView.m; sourceTree = "<group>"; };
+		DAE2880C1C59EA3A00426DDD /* SCLoginView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCLoginView.xib; sourceTree = "<group>"; };
 		FE005B911C55FD2500920EFB /* SCCourse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCourse.h; sourceTree = "<group>"; };
 		FE005B921C55FD2500920EFB /* SCCourse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCourse.m; sourceTree = "<group>"; };
 		FE005B941C55FEB100920EFB /* SCCourseGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCourseGroup.h; sourceTree = "<group>"; };
@@ -367,9 +367,9 @@
 				FE60E6731C5783360005F9F3 /* SCItemView.h */,
 				FE60E6741C5783360005F9F3 /* SCItemView.m */,
 				FE60E6761C5783870005F9F3 /* SCItemView.xib */,
-				DA9CF7751C599D6B00F6CEA6 /* SCLoginView.h */,
-				DA9CF7761C599D6B00F6CEA6 /* SCLoginView.m */,
-				DA9CF7771C599D6B00F6CEA6 /* SCLoginView.xib */,
+				DAE2880A1C59EA3A00426DDD /* SCLoginView.h */,
+				DAE2880B1C59EA3A00426DDD /* SCLoginView.m */,
+				DAE2880C1C59EA3A00426DDD /* SCLoginView.xib */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -613,7 +613,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE005B9E1C56190400920EFB /* SCCourseTableViewCell.xib in Resources */,
-				DA9CF7791C599D6B00F6CEA6 /* SCLoginView.xib in Resources */,
+				DAE2880E1C59EA3A00426DDD /* SCLoginView.xib in Resources */,
 				FE60E6771C5783870005F9F3 /* SCItemView.xib in Resources */,
 				C9E4E6521C53BAF30052030E /* LaunchScreen.storyboard in Resources */,
 				C9E4E64F1C53BAF30052030E /* Assets.xcassets in Resources */,
@@ -659,7 +659,7 @@
 				FE58356C1C58FC01004DFA97 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				C9E4E6921C53C2D50052030E /* SCSearchView.m in Sources */,
 				C9E4E67D1C53BCB80052030E /* SCCustomNavigationController.m in Sources */,
-				DA9CF7781C599D6B00F6CEA6 /* SCLoginView.m in Sources */,
+				DAE2880D1C59EA3A00426DDD /* SCLoginView.m in Sources */,
 				C90DE85C1C53FABA00B7137F /* SCCustomButton.m in Sources */,
 				C90DE8601C54AA9A00B7137F /* SCVIdeoInfo.m in Sources */,
 				C9E4E6771C53BC4B0052030E /* SCBaseViewController.m in Sources */,

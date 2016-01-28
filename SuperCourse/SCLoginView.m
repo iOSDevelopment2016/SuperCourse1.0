@@ -22,6 +22,7 @@
 -(void)awakeFromNib{
     self.phone.delegate = self;
     [self.phone addTarget:self action:@selector(textValueDidChange:) forControlEvents:UIControlEventAllEvents];
+    [self regNotifacation];
 }
 
 -(void)textValueDidChange:(UITextField *)textField{
