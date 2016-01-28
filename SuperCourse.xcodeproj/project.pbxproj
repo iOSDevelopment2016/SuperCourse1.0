@@ -31,8 +31,10 @@
 		C9E4E6921C53C2D50052030E /* SCSearchView.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E4E6911C53C2D50052030E /* SCSearchView.m */; };
 		C9E4E6971C53C3460052030E /* SCRegViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E4E6961C53C3460052030E /* SCRegViewController.m */; };
 		C9E4E69C1C53C4F40052030E /* UIView+SZY.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E4E69B1C53C4F40052030E /* UIView+SZY.m */; };
-		C9E4E69F1C53CA6C0052030E /* SCLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E4E69E1C53CA6C0052030E /* SCLoginView.m */; };
-		C9E4E6A11C53CB070052030E /* SCLoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9E4E6A01C53CB070052030E /* SCLoginView.xib */; };
+		DA9CF7731C599D3100F6CEA6 /* APIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9CF7701C599D3100F6CEA6 /* APIClient.m */; };
+		DA9CF7741C599D3100F6CEA6 /* HttpTool.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9CF7721C599D3100F6CEA6 /* HttpTool.m */; };
+		DA9CF7781C599D6B00F6CEA6 /* SCLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9CF7761C599D6B00F6CEA6 /* SCLoginView.m */; };
+		DA9CF7791C599D6B00F6CEA6 /* SCLoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA9CF7771C599D6B00F6CEA6 /* SCLoginView.xib */; };
 		FE005B931C55FD2500920EFB /* SCCourse.m in Sources */ = {isa = PBXBuildFile; fileRef = FE005B921C55FD2500920EFB /* SCCourse.m */; };
 		FE005B961C55FEB100920EFB /* SCCourseGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FE005B951C55FEB100920EFB /* SCCourseGroup.m */; };
 		FE005B991C55FFD200920EFB /* SCCourseCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = FE005B981C55FFD200920EFB /* SCCourseCategory.m */; };
@@ -89,7 +91,6 @@
 		7DB53A031C58F0A1001DEC33 /* SCRightView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCRightView.m; sourceTree = "<group>"; };
 		7DB53A041C58F0A1001DEC33 /* SCtempModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCtempModel.h; sourceTree = "<group>"; };
 		7DB53A051C58F0A1001DEC33 /* SCtempModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCtempModel.m; sourceTree = "<group>"; };
-		7DB53A071C58F0A1001DEC33 /* SZYVideoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SZYVideoManager.m; sourceTree = "<group>"; };
 		C90DE85A1C53FABA00B7137F /* SCCustomButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCustomButton.h; sourceTree = "<group>"; };
 		C90DE85B1C53FABA00B7137F /* SCCustomButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCustomButton.m; sourceTree = "<group>"; };
 		C90DE85E1C54AA9A00B7137F /* SCVIdeoInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCVIdeoInfo.h; sourceTree = "<group>"; };
@@ -128,9 +129,13 @@
 		C9E4E6981C53C3D80052030E /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		C9E4E69A1C53C4F40052030E /* UIView+SZY.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SZY.h"; sourceTree = "<group>"; };
 		C9E4E69B1C53C4F40052030E /* UIView+SZY.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SZY.m"; sourceTree = "<group>"; };
-		C9E4E69D1C53CA6C0052030E /* SCLoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCLoginView.h; sourceTree = "<group>"; };
-		C9E4E69E1C53CA6C0052030E /* SCLoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCLoginView.m; sourceTree = "<group>"; };
-		C9E4E6A01C53CB070052030E /* SCLoginView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCLoginView.xib; sourceTree = "<group>"; };
+		DA9CF76F1C599D3100F6CEA6 /* APIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIClient.h; sourceTree = "<group>"; };
+		DA9CF7701C599D3100F6CEA6 /* APIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIClient.m; sourceTree = "<group>"; };
+		DA9CF7711C599D3100F6CEA6 /* HttpTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpTool.h; sourceTree = "<group>"; };
+		DA9CF7721C599D3100F6CEA6 /* HttpTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpTool.m; sourceTree = "<group>"; };
+		DA9CF7751C599D6B00F6CEA6 /* SCLoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCLoginView.h; sourceTree = "<group>"; };
+		DA9CF7761C599D6B00F6CEA6 /* SCLoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCLoginView.m; sourceTree = "<group>"; };
+		DA9CF7771C599D6B00F6CEA6 /* SCLoginView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCLoginView.xib; sourceTree = "<group>"; };
 		FE005B911C55FD2500920EFB /* SCCourse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCourse.h; sourceTree = "<group>"; };
 		FE005B921C55FD2500920EFB /* SCCourse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCourse.m; sourceTree = "<group>"; };
 		FE005B941C55FEB100920EFB /* SCCourseGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCourseGroup.h; sourceTree = "<group>"; };
@@ -281,6 +286,7 @@
 		C9E4E6411C53BAF30052030E /* SuperCourse */ = {
 			isa = PBXGroup;
 			children = (
+				DAF87A751C59073E00079F69 /* WebService */,
 				FE5835351C58FC01004DFA97 /* ThirdTools */,
 				C90DE85D1C54AA7A00B7137F /* DataModel */,
 				C9E4E6811C53C2050052030E /* Custom */,
@@ -355,15 +361,15 @@
 				C9E4E6891C53C2680052030E /* SCMyNotesView.m */,
 				C9E4E6901C53C2D50052030E /* SCSearchView.h */,
 				C9E4E6911C53C2D50052030E /* SCSearchView.m */,
-				C9E4E69D1C53CA6C0052030E /* SCLoginView.h */,
-				C9E4E69E1C53CA6C0052030E /* SCLoginView.m */,
-				C9E4E6A01C53CB070052030E /* SCLoginView.xib */,
 				FE005B9A1C56190300920EFB /* SCCourseTableViewCell.h */,
 				FE005B9B1C56190300920EFB /* SCCourseTableViewCell.m */,
 				FE005B9C1C56190300920EFB /* SCCourseTableViewCell.xib */,
 				FE60E6731C5783360005F9F3 /* SCItemView.h */,
 				FE60E6741C5783360005F9F3 /* SCItemView.m */,
 				FE60E6761C5783870005F9F3 /* SCItemView.xib */,
+				DA9CF7751C599D6B00F6CEA6 /* SCLoginView.h */,
+				DA9CF7761C599D6B00F6CEA6 /* SCLoginView.m */,
+				DA9CF7771C599D6B00F6CEA6 /* SCLoginView.xib */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -422,6 +428,17 @@
 				C9E4E69B1C53C4F40052030E /* UIView+SZY.m */,
 			);
 			name = SCKit;
+			sourceTree = "<group>";
+		};
+		DAF87A751C59073E00079F69 /* WebService */ = {
+			isa = PBXGroup;
+			children = (
+				DA9CF76F1C599D3100F6CEA6 /* APIClient.h */,
+				DA9CF7701C599D3100F6CEA6 /* APIClient.m */,
+				DA9CF7711C599D3100F6CEA6 /* HttpTool.h */,
+				DA9CF7721C599D3100F6CEA6 /* HttpTool.m */,
+			);
+			name = WebService;
 			sourceTree = "<group>";
 		};
 		FE5835351C58FC01004DFA97 /* ThirdTools */ = {
@@ -596,10 +613,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE005B9E1C56190400920EFB /* SCCourseTableViewCell.xib in Resources */,
+				DA9CF7791C599D6B00F6CEA6 /* SCLoginView.xib in Resources */,
 				FE60E6771C5783870005F9F3 /* SCItemView.xib in Resources */,
 				C9E4E6521C53BAF30052030E /* LaunchScreen.storyboard in Resources */,
 				C9E4E64F1C53BAF30052030E /* Assets.xcassets in Resources */,
-				C9E4E6A11C53CB070052030E /* SCLoginView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -637,10 +654,12 @@
 				7DB53A0C1C58F0A1001DEC33 /* SCtempModel.m in Sources */,
 				C9E4E6971C53C3460052030E /* SCRegViewController.m in Sources */,
 				FE5835691C58FC01004DFA97 /* AFURLSessionManager.m in Sources */,
+				DA9CF7731C599D3100F6CEA6 /* APIClient.m in Sources */,
 				C9E4E69C1C53C4F40052030E /* UIView+SZY.m in Sources */,
 				FE58356C1C58FC01004DFA97 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				C9E4E6921C53C2D50052030E /* SCSearchView.m in Sources */,
 				C9E4E67D1C53BCB80052030E /* SCCustomNavigationController.m in Sources */,
+				DA9CF7781C599D6B00F6CEA6 /* SCLoginView.m in Sources */,
 				C90DE85C1C53FABA00B7137F /* SCCustomButton.m in Sources */,
 				C90DE8601C54AA9A00B7137F /* SCVIdeoInfo.m in Sources */,
 				C9E4E6771C53BC4B0052030E /* SCBaseViewController.m in Sources */,
@@ -658,10 +677,9 @@
 				FE5835661C58FC01004DFA97 /* AFURLConnectionOperation.m in Sources */,
 				FE58356A1C58FC01004DFA97 /* NSData+SZYKit.m in Sources */,
 				FE5835621C58FC01004DFA97 /* AFHTTPRequestOperationManager.m in Sources */,
-				C9E4E69F1C53CA6C0052030E /* SCLoginView.m in Sources */,
 				C9E4E68F1C53C2AC0052030E /* SCSettingViewController.m in Sources */,
 				FE005B931C55FD2500920EFB /* SCCourse.m in Sources */,
-				7DB53A0D1C58F0A1001DEC33 /* SZYVideoManager.m in Sources */,
+				DA9CF7741C599D3100F6CEA6 /* HttpTool.m in Sources */,
 				FE005B9D1C56190400920EFB /* SCCourseTableViewCell.m in Sources */,
 				FE5835671C58FC01004DFA97 /* AFURLRequestSerialization.m in Sources */,
 				7D59C9861C5905BA00C4E9E2 /* SZYVideoManager.m in Sources */,

@@ -633,7 +633,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 -(SCLoginView *)loginView{
     if (!_loginView){
         _loginView = [[NSBundle mainBundle]loadNibNamed:NSStringFromClass([SCLoginView class]) owner:nil options:nil].lastObject;
-        _loginView.frame = CGRectMake(0, 0, 320, 240);
+        _loginView.frame = CGRectMake(0, 0, 889*WidthScale, 647*HeightScale);
         _loginView.center = self.view.center;
         _loginView.delegate = self;
     }
