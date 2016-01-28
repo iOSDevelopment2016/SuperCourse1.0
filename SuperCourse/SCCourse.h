@@ -25,4 +25,7 @@
 @property (nonatomic, strong) NSString *operations;
 
 
+//[{"les_id":"0002","lessections_id":"0001","order_num":"2","les_name":"\u9879\u76ee\u5185\u5bb9","les_url":"","les_alltime":"","les_size":"200M","operations":"\u89c6\u9891"}]}]
+
+
 @end

@@ -30,6 +30,8 @@
 @property (nonatomic ,strong) UIButton     *rightBtn;
 
 @property (nonatomic ,strong) UIView       *scrollView;
+@property (nonatomic ,strong) UIView       *leftView;
+@property (nonatomic ,strong) UIView       *rightView;
 
 @property (nonatomic, strong) SCCourseCategory *firstCategory;
 @property (nonatomic, strong) SCCourseCategory *secondCategory;
@@ -47,7 +49,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self initData];
+        //        [self initData];
         self.backgroundColor = [UIColor whiteColor];
         [self addSubview:self.topImageView];
         [self.topImageView addSubview:self.startBtn];
@@ -55,13 +57,21 @@
         [self.topImageView addSubview:self.headImageView];
         [self addSubview:self.leftBtn];
         [self addSubview:self.rightBtn];
-        //[self addSubview:self.scrollView];
+        [self addSubview:self.scrollView];
         //[self addSubview:self.secondTableView];
-        [self addSubview:self.firstTableView];
+        // 添加一个转菊花的效果，未完成
+        //        [self addSubview:self.firstTableView];
         
+        [self loadCourseListFromNetwork];
     }
     return self;
 }
+
+//从网络请求课程列表
+-(void)loadCourseListFromNetwork{
+    
+}
+
 
 -(void)layoutSubviews{
     [super layoutSubviews];
@@ -84,6 +94,8 @@
 //}
 
 -(IBAction)downloadClick:(id)sender{
+    //    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    //    NSString *docDir = [paths objectAtIndex:0];
     NSString *srlStr = @"http://www.shengcaibao.com/download/SCB/1.mp3";
     //如果请求正文包含中文，需要处理
     //    srlStr = [srlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -114,14 +126,22 @@
         NSLog(@"下载失败 %@", error);
         
     }];
-
+    
 }
 
 # pragma mark - 私有方法
 -(void)move:(CGFloat)x{
-    [UIView animateWithDuration:0.5 animations:^{
-        self.scrollView.transform=CGAffineTransformMakeTranslation(0,x);
-    }];
+    if(x>0){
+        [UIView animateWithDuration:0.5 animations:^{
+            self.scrollView.transform=CGAffineTransformMakeTranslation(x,0);
+        }];
+    }
+    else{
+        [UIView animateWithDuration:0.5 animations:^{
+            self.scrollView.transform=CGAffineTransformIdentity;
+        }];
+        //self.scrollView.transform=CGAffineTransformIdentity;
+    }
 }
 
 
@@ -143,8 +163,8 @@
     self.rightBtn.selected=NO;
     self.currentSource=self.firstCategory;
     [self.firstTableView reloadData];
-//    CGFloat variety=self.leftBtn.frame.origin.x-self.scrollView.frame.origin.x;
-//    [self move:variety];
+    [self.leftBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateSelected];
+    [self move:-1];
     
 }
 -(void)rightBtnClick{
@@ -152,8 +172,9 @@
     self.rightBtn.selected=YES;
     self.currentSource=self.secondCategory;
     [self.firstTableView reloadData];
-//    CGFloat variety=self.rightBtn.frame.origin.x-self.scrollView.frame.origin.x;
-//    [self move:variety];
+    CGFloat variety=self.rightBtn.frame.origin.x-self.scrollView.frame.origin.x;
+    [self.leftBtn setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
+    [self move:variety];
 }
 
 #pragma mark - getters
@@ -221,7 +242,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
-   // NSString *key = [keys objectAtIndex:section];
+    // NSString *key = [keys objectAtIndex:section];
     
     
     // create the parent view that will hold header Label
@@ -280,13 +301,13 @@
 }
 
 //- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-//    
+//
 //    SCCourseGroup *temp = self.firstCategory.courseGroupArr[section];
-//    
+//
 //    return temp.courseGroupTitle;
-//    
-//    
-//    
+//
+//
+//
 //}
 
 
@@ -427,12 +448,28 @@
 
 -(UIView *)scrollView{
     if(!_scrollView){
-    _scrollView=[[UIView alloc]initWithFrame:CGRectMake(520*WidthScale, 780*HeightScale, 200*HeightScale, 9*HeightScale)];
-    [_scrollView setBackgroundColor:UIColorFromRGB(0x6fccdb)];
+        _scrollView=[[UIView alloc]initWithFrame:CGRectMake(520*WidthScale, 780*HeightScale, 200*HeightScale, 9*HeightScale)];
+        [_scrollView setBackgroundColor:UIColorFromRGB(0x6fccdb)];
     }
     return _scrollView;
 }
 
+
+-(UIView *)leftView{
+    if(_leftView){
+        _leftView=[[UIView alloc]initWithFrame:CGRectMake(0.312*self.width, 670*HeightScale, 0.127*self.width, 9*HeightScale)];
+        [_leftView setBackgroundColor:UIColorFromRGB(0x6fccdb)];
+    }
+    return _leftView;
+}
+-(UIView *)rightView{
+    if(_rightView){
+        _rightView=[[UIView alloc]initWithFrame:CGRectMake(0.312*self.width, 670*HeightScale, 0.127*self.width, 9*HeightScale)];
+        [_rightView setBackgroundColor:UIColorFromRGB(0x6fccdb)];
+    }
+    return _rightView;
+    
+}
 
 @end
 
