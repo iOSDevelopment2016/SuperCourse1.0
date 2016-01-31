@@ -17,6 +17,9 @@
 #import "SCPlayerViewController.h"
 #import "SCCourseTableViewCell.h"
 #import "SCItemView.h"
+#import "SCVideoInfoModel.h"
+
+
 typedef NS_ENUM(NSInteger,SCShowViewType) {
     SCShowViewType_MyNotes = 0,
     SCShowViewType_VideoHistory,
@@ -167,9 +170,14 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     
 }
 
--(void)videoPlayClickwithUrl:(NSString *)url{
+//-(void)videoPlayClickwithUrl:(NSString *)url{
+//    SCPlayerViewController *playVC = [[SCPlayerViewController alloc]init];
+//    playVC.currentVideoInfo = allCourseArr[5];
+//    [self.navigationController pushViewController:playVC animated:YES];
+//}
+-(void)videoPlayClickWithCourse:(SCCourse *)SCcourse{
     SCPlayerViewController *playVC = [[SCPlayerViewController alloc]init];
-    playVC.currentVideoInfo = allCourseArr[5];
+    NSString *courseId = SCcourse.les_id;
     [self.navigationController pushViewController:playVC animated:YES];
 
 }

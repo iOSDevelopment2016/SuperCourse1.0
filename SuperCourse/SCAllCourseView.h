@@ -7,14 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "SCCourse.h"
+#import "SCCourseGroup.h"
+#import "SCCourseCategory.h"
 @protocol SCAllCourseViewDelegate <NSObject>
 //contendFieldDidClickWithSectionIndex:(NSInteger)secIndex AndRowIndex:(NSInteger)rowIndex
 -(void)startBtnDidClick;
 -(IBAction)contendClick:(NSInteger)secIndex AndRowIndex:(NSInteger)rouIndex AndUrl:(NSString *)url;
 -(IBAction)imageClickWithUrl:(NSString *)url;
 -(void)viewmove:(CGFloat) variety andUIView:(UIView *)scrollView;
--(void)videoPlayClickWithUrl:(NSString *)url;
+-(void)videoPlayClickWithCourse:(SCCourse *)SCcourse;
 @end
 
 @interface SCAllCourseView : UIView
