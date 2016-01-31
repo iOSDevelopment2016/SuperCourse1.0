@@ -20,5 +20,7 @@
 
 @property (nonatomic ,weak) id<SCSearchViewDelegate> delegate;
 
+- (instancetype)initWithFrame:(CGRect)frame searchKeyWord:(NSString *)keyWord;
+
 
 @end

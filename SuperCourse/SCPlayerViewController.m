@@ -125,8 +125,8 @@
     [self.bottomView addSubview:self.rightViewBtn];
     [self.bottomView addSubview:self.lockBtn];
     [self.bottomView addSubview:self.timeLable];
-    
     [self.container addSubview:self.startBtnView];
+
     [self.view addSubview:self.writeNoteView];
 }
 

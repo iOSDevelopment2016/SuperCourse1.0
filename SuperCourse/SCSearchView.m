@@ -28,6 +28,7 @@
 @property (nonatomic,strong)UIView *scrollSearchView;
 @property (nonatomic, strong)UIView *stateView;
 @property (nonatomic,strong)UILabel *state;
+@property (nonatomic,strong)NSString *keyWord;
 @end
 @implementation SCSearchView
 
@@ -40,12 +41,12 @@
 */
 
 
-- (instancetype)init
+- (instancetype)initWithFrame:(CGRect)frame searchKeyWord:(NSString *)keyWord
 {
-    self = [super init];
+    self = [super initWithFrame:frame];
     if (self) {
-        
         self.backgroundColor = [UIColor whiteColor];
+        self.keyWord = keyWord;
         [self initData];
         [self addSubview:self.firstSearchTableView];
         [self addSubview:self.scrollSearchView];
@@ -53,9 +54,11 @@
         [self addSubview:self.rightBtn];
         [self addSubview:self.stateView];
         [self addSubview:self.state];
+
     }
     return self;
 }
+
 -(void)layoutSubviews{
     [super layoutSubviews];
     self.firstSearchTableView.frame = CGRectMake(0, 200*HeightScale+7, self.width,810*HeightScale );
@@ -235,6 +238,9 @@
 
 //数据桩（调试程序用的假数据）
 -(void)initData{
+    
+    //网络调用
+    
     self.firstSearchCategory = [self getCourseCatagory:@"大纲"];
     self.secondSearchCategory = [self getCourseCatagory:@"拓展"];
 
