@@ -10,7 +10,8 @@
 #import "SCPointView.h"
 #import "ZQTagList.h"
 #import "SCVideoSubTitleMode.h"
-
+#import "SCVideoLinkMode.h"
+#import "SCVideoInfoModel.h"
 
 @implementation SCRightView
 
@@ -24,10 +25,6 @@
         [self.topView addSubview:self.pointBtn];
         [self.topView addSubview:self.blueBottom];
         self.extendBtn.selected = YES;
-        
-//        [self getSubTitleData];
-
-        self.extendArr = @[@"软件编程",@"互联网和局域网",@"类的定义",@"xcode的使用",@"系统",@"视频"];
         [self addSubview:self.tagList];
     }
     return self;
@@ -177,8 +174,7 @@
 
     if (!_tagList) {
         _tagList = [[ZQTagList alloc]initWithFrame:CGRectMake(22*WidthScale, 110*HeightScale, 637*WidthScale, 1272*HeightScale)];
-        [_tagList setLabelBackgroundColor:[UIColor whiteColor]];
-        [_tagList setTags:self.extendArr];
+//        [_tagList setTags:self.linkArr];
         _tagList.delegate = self;
 
     }

@@ -12,6 +12,7 @@
 #import "SZYVideoManager.h"
 #import "SCPointView.h"
 #import "SCVideoInfoModel.h"
+#import "SCVideoLinkMode.h"
 #import "SCVideoSubTitleMode.h"
 
 @interface SCPlayerViewController ()<SCPointViewDelegate>{
@@ -70,6 +71,8 @@
     NSURL *murl=[NSURL fileURLWithPath:self.videoInfo.videoUrl];
     [[SZYVideoManager defaultManager] setUpRemoteVideoPlayerWithContentURL:murl view:self.container];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoLoadDone:) name:VideoLoadDoneNotification object:nil];
+    [self.container addSubview:self.startBtnView];
+    [self.view addSubview:self.writeNoteView];
 }
 
 //加载数据桩
@@ -79,8 +82,8 @@
         NSString *docDir = [paths objectAtIndex:0];
         NSString *url=[docDir stringByAppendingPathComponent:@"load2.mp4"];
         NSMutableArray *subTitleArr = [self getSubTitleData];
-//        NSMutableArray *linkArr = [self getSubTitleData];
-        self.videoInfo = [[SCVideoInfoModel alloc]initWithVideoUrl:url AndTitle:@"这是一个测试数据的视频标题" AndFileSize:@"123M" AndSubTitles:subTitleArr AndLinks:subTitleArr];
+        NSMutableArray *linkArr = [self getLinkData];
+        self.videoInfo = [[SCVideoInfoModel alloc]initWithVideoUrl:url AndTitle:@"这是一个测试数据的视频标题" AndFileSize:@"123M" AndSubTitles:subTitleArr AndLinks:linkArr];
     }
 }
 
@@ -109,6 +112,29 @@
     
 }
 
+-(NSMutableArray *)getLinkData{
+
+    float a = 35.0 , b = 42.0 , c = 47.0 , d = 58.0 ,e = 77.0, f = 88.0;
+    NSNumber *arr = @(a);
+    NSNumber *brr = @(b);
+    NSNumber *crr = @(c);
+    NSNumber *drr = @(d);
+    NSNumber *err = @(e);
+    NSNumber *frr = @(f);
+    NSArray *timeArr = @[arr,brr,crr,drr,err,frr];
+    NSArray *dataArr = @[@"软件编程",@"互联网和局域网",@"类的定义",@"xcode的使用",@"系统",@"视频"];
+    NSArray *typeArr = @[@"视频",@"网页",@"网页",@"视频",@"视频",@"网页"];
+    NSArray *videoIdArr = @[@"10",@"",@"",@"20",@"30",@""];
+    NSArray *webUrlArr = @[@"",@"url1",@"url2",@"",@"",@"url3"];
+    NSMutableArray *linkArr = [[NSMutableArray alloc]init];
+    for (int i = 0 ; i<dataArr.count; i++) {
+        SCVideoLinkMode *m = [[SCVideoLinkMode alloc]initWithTitle:dataArr[i] AndBeginTime:[timeArr[i] floatValue] AndTargetType:typeArr[i] AndLessonId:videoIdArr[i] AndWebUrl:webUrlArr[i]];
+        [linkArr insertObject:m atIndex:i];
+    }
+    
+    
+    return linkArr;
+}
 
 
 -(void)addAllControl{
@@ -125,9 +151,10 @@
     [self.bottomView addSubview:self.rightViewBtn];
     [self.bottomView addSubview:self.lockBtn];
     [self.bottomView addSubview:self.timeLable];
-    [self.container addSubview:self.startBtnView];
+    
 
-    [self.view addSubview:self.writeNoteView];
+
+
 }
 
 -(void)playerPlayFinished{
@@ -183,6 +210,7 @@
         if (self.rightView.pointView) {
             [self.rightView.pointView changeSubTitleViewWithTime:elapsedTime];
         }
+        [self.rightView.tagList changeBtnLookingWithTime:elapsedTime];
         
     }];
     
@@ -455,6 +483,8 @@
         _rightView = [[SCRightView alloc]initWithFrame:CGRectMake(UIScreenWidth, 0, 659*WidthScale, 1382*HeightScale)];
         _rightView.pointViewDelegate = self;
         _rightView.subTitleArr = self.videoInfo.videoSubTitles;
+//        _rightView.linkArr = self.videoInfo.videoLinks;
+        [_rightView.tagList setTags:self.videoInfo.videoLinks];
     }
     return _rightView;
 }

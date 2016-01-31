@@ -7,6 +7,7 @@
 //
 
 #import "ZQTagList.h"
+#import "SCVideoLinkMode.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define CORNER_RADIUS 0.0f
@@ -31,23 +32,19 @@
     return self;
 }
 
-- (void)setTags:(NSArray *)array
+- (void)setTags:(NSMutableArray *)linkArr
 {
-    self.textArray = [[NSMutableArray alloc] initWithCapacity:0];
-    for (int i = 0; i < array.count; i ++) {
-        [self.textArray addObject: [array objectAtIndex:i]];
-    }
     sizeFit = CGSizeZero;
-    [self display];
+    [self displayWithLinkArr:linkArr];
 }
 
-- (void)setLabelBackgroundColor:(UIColor *)color
+- (void)setLabelBackgroundColor:(UIColor *)color AndLinkArr:(NSMutableArray *)linkArr
 {
     lblBackgroundColor = color;
-    [self display];
+    [self displayWithLinkArr:linkArr];
 }
 
-- (void)display
+- (void)displayWithLinkArr:(NSMutableArray *)linkArr
 {
     for (UILabel *subview in [self subviews]) {
         
@@ -59,8 +56,10 @@
     BOOL gotPreviousFrame = NO;
     CGSize boundSize = CGSizeMake(self.frame.size.width, CGFLOAT_MAX);
 
-    for (NSString *text in self.textArray) {
-
+    for (int i=0; i<linkArr.count; i++) {
+        
+        SCVideoLinkMode *m = linkArr[i];
+        NSString *text = m.title;
         CGSize textSize =  [text boundingRectWithSize:boundSize options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:45],NSFontAttributeName, nil] context:nil].size;
         
         textSize.width += HORIZONTAL_PADDING * 2;
@@ -97,6 +96,7 @@
         gotPreviousFrame = YES;
 
         button.titleLabel.font = [UIFont systemFontOfSize:35*WidthScale];
+        button.titleLabel.backgroundColor = [UIColor whiteColor];
         
         if (!lblBackgroundColor) {
 
@@ -110,6 +110,7 @@
         
         [button setTitle:text forState:UIControlStateNormal];
         [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        button.tag = m.beginTime;
         [button.layer setMasksToBounds:YES];
         
         [button.layer setCornerRadius:CORNER_RADIUS];
@@ -122,6 +123,26 @@
     }
     sizeFit = CGSizeMake(self.frame.size.width, totalHeight + 1.0f);
 
+}
+- (void)changeBtnLookingWithTime:(NSTimeInterval)beginTime{
+    
+    for (UIButton *btn in self.subviews) {
+        if (btn.tag == (int)beginTime) {
+            if (btn.titleLabel.textColor == [UIColor blackColor]) {
+                [self clearBtnLooking];
+                btn.titleLabel.textColor = UIThemeColor;
+                [btn.layer setBorderColor:UIThemeColor.CGColor];
+            }
+        }
+    }
+}
+
+- (void)clearBtnLooking{
+    
+    for (UIButton *btn in self.subviews) {
+        btn.titleLabel.textColor = [UIColor blackColor];
+        [btn.layer setBorderColor:[UIColor clearColor].CGColor];
+    }
 }
 
 
