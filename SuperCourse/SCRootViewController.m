@@ -175,6 +175,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 //    playVC.currentVideoInfo = allCourseArr[5];
 //    [self.navigationController pushViewController:playVC animated:YES];
 //}
+
 -(void)videoPlayClickWithCourse:(SCCourse *)SCcourse{
     SCPlayerViewController *playVC = [[SCPlayerViewController alloc]init];
     NSString *courseId = SCcourse.les_id;
@@ -438,6 +439,14 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     [self.navigationController pushViewController:setVC animated:YES];
 }
 
+-(void)searchBtnClick:(UIButton *)sender{
+    
+    
+    [self.mainView addSubview:self.searchView];
+    self.searchView.keyWord = self.searchTextField.text;
+}
+
+
 #pragma mark - getters
 
 
@@ -540,6 +549,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     }
     return YES;
 }
+
 -(UITextField *)searchTextField{
     if(!_searchTextField){
         _searchTextField=[[UITextField alloc]init];
@@ -553,13 +563,15 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         _searchTextField.font = [UIFont systemFontOfSize:45*WidthScale];
         _searchTextField.layer.masksToBounds = YES;
         _searchTextField.layer.cornerRadius = 35;
-        _searchTextField.textAlignment = UITextAlignmentCenter ;
+        _searchTextField.textAlignment = UITextAlignmentCenter;
         _searchTextField.rightView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 125, 100)];
         _searchTextField.rightView.backgroundColor=UIColorFromRGB(0x6fccdb);
         _searchTextField.rightViewMode=UITextFieldViewModeAlways;
-        UIImageView *imageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"搜索白色"]];
-        imageView.frame=CGRectMake(68*WidthScale, 45*HeightScale, 64*WidthScale, 64*HeightScale);
-        [_searchTextField.rightView addSubview:imageView];
+        UIButton *searchBtn=[[UIButton alloc]init];
+        [searchBtn setImage:[UIImage imageNamed:@"搜索白色"] forState:UIControlStateNormal];
+        searchBtn.frame=CGRectMake(68*WidthScale, 45*HeightScale, 64*WidthScale, 64*HeightScale);
+        [searchBtn addTarget:self action:@selector(searchBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [_searchTextField.rightView addSubview:searchBtn];
         _searchTextField.delegate=self;
         
     }

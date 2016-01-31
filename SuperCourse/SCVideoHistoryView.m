@@ -201,8 +201,8 @@
 
 -(SCCourseGroup *)getCourseGroup:(NSString *)title{
     SCCourseGroup *temp = [[SCCourseGroup alloc]init];
-    temp.lessections_name = title;
-    temp.lessections_id = @"UUID";
+//    temp.lessections_name = title;
+//    temp.lessections_id = @"UUID";
     SCCourse *c1 = [self getCourse:@"这是视频"];
     SCCourse *c2 = [self getCourse:@"这是网页"];
     SCCourse *c3 = [self getCourse:@"第3节课"];

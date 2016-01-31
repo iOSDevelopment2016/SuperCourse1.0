@@ -19,8 +19,7 @@
 @interface SCSearchView : UIView
 
 @property (nonatomic ,weak) id<SCSearchViewDelegate> delegate;
-
-- (instancetype)initWithFrame:(CGRect)frame searchKeyWord:(NSString *)keyWord;
+@property (nonatomic,strong)NSString *keyWord;
 
 
 @end
