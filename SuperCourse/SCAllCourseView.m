@@ -16,7 +16,6 @@
 #import "NSData+SZYKit.h"
 #import "AFDownloadRequestOperation.h"
 
-
 #import "MJExtension.h"
 
 
@@ -64,7 +63,9 @@
 
 @end
 
-@implementation SCAllCourseView
+@implementation SCAllCourseView{
+    NSMutableArray *courseCategoryArr;
+}
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -101,8 +102,12 @@
 
 //从网络请求课程列表
 -(void)loadCourseListFromNetwork{
+    
+    
+    NSString *userSession = ApplicationDelegate.userSession;
+    
     NSDictionary *para = @{@"method":@"VideoList",
-                           @"param":@{@"Data":@""}};
+                           @"param":@{@"Data":@{@"stu_id":ApplicationDelegate.userSession}}};
 //    NSDictionary *para = @{@"method":@"Login",
 //                           @"param":@{@"Data":@{@"phone":@"111",@"password":@"111"}}};
     [HttpTool postWithparams:para success:^(id responseObject) {
@@ -110,20 +115,40 @@
         NSData *data = [[NSData alloc] initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         
-        SCCourseGroup *courseGroup = [SCCourseGroup modelWithDict:dic[@"data"]];
         
-        NSLog(@"%@",dic[@"data"]);
-        
-        [SCCourseGroup setupObjectClassInArray:^NSDictionary *{
-            return @{@"lesarr":@"SCCourse"};
-        }];
-        [SCCourseCategory setupObjectClassInArray:^NSDictionary *{
-            return @{@"sec_arr":@"SCCourseGroup"};
-        }];
-        SCCourseCategory *firstColumn = [SCCourseCategory objectWithKeyValues:dic[@"data"]];
+        courseCategoryArr = [NSMutableArray array];
+        for (NSDictionary *catDict in dic[@"data"][@"categoryArr"]) {
+            SCCourseCategory *cat = [SCCourseCategory objectWithKeyValues:catDict];
+            NSMutableArray *secArr = [[NSMutableArray alloc]init];
+            for (NSDictionary *secDict in catDict[@"sec_arr"]) {
+                [SCCourseGroup setupObjectClassInArray:^NSDictionary *{
+                    return @{@"lesarr":@"SCCourse"};
+                }];
+                SCCourseGroup *sec = [SCCourseGroup objectWithKeyValues:secDict];
+                [secArr addObject:sec ];
+            }
+            cat.sec_arr = secArr;
+            [courseCategoryArr addObject:cat];
+        }
 
-        self.firstCategory=firstColumn;
-        self.secondCategory=firstColumn;
+        
+
+        
+//        [SCCourseGroup setupObjectClassInArray:^NSDictionary *{
+//            return @{@"lesarr":@"SCCourse"};
+//        }];
+//        [SCCourseCategory setupObjectClassInArray:^NSDictionary *{
+//            return @{@"sec_arr":@"SCCourseGroup"};
+//        }];
+//        [SCCourseCategory setupObjectClassInArray:^NSDictionary *{
+//            return @{@"categoryArr":@"SCCourseCategory"};
+//        }];
+//        SCCourseCategoryList *categoryList = [SCCourseCategoryList objectWithKeyValues:dic[@"data"]];
+
+        self.firstCategory=(SCCourseCategory *)(courseCategoryArr[0]);
+        self.secondCategory=(SCCourseCategory *)(courseCategoryArr[1]);
+//        self.firstCategory=(SCCourseCategory *)(categoryList.categoryArr[0]);
+//        self.secondCategory=(SCCourseCategory *)(categoryList.categoryArr[1]);
         self.currentSource=self.firstCategory;
 
         [self addSubview:self.firstTableView];

@@ -78,8 +78,12 @@
         //NSLog(@"%@",nowState);
         NSString *State=@"OK";
         if ([nowState isEqualToString:State]) {
+            
+            
+            NSString *stu_id = dic[@"data"][@"stu_id"];
+            
             //更新用户标示
-            [ApplicationDelegate solidateUserSession:dic[@"stu_id"]];
+            [ApplicationDelegate solidateUserSession:stu_id];
             ApplicationDelegate.userPsw = self.password.text;
             [self removeFromSuperview];
         }else{

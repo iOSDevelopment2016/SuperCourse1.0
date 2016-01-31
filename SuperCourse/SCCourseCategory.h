@@ -10,9 +10,9 @@
 
 @interface SCCourseCategory : NSObject
 
-@property (nonatomic, strong) NSString *course_category_id;       //分类内码
-@property (nonatomic, strong) NSString *course_catagory_title;            //分类标题
-@property (nonatomic, strong) NSArray *sec_arr;          //分组列表
+@property (nonatomic, strong) NSString *lesgrouping_id;       //分类内码
+@property (nonatomic, strong) NSString *lesgrouping_name;            //分类标题
+@property (nonatomic, strong) NSArray  *sec_arr;          //分组列表
 
 
 

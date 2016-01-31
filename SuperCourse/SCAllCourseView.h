@@ -10,6 +10,8 @@
 #import "SCCourse.h"
 #import "SCCourseGroup.h"
 #import "SCCourseCategory.h"
+#import "SCCourseCategoryList.h"
+
 @protocol SCAllCourseViewDelegate <NSObject>
 //contendFieldDidClickWithSectionIndex:(NSInteger)secIndex AndRowIndex:(NSInteger)rowIndex
 -(void)startBtnDidClick;
