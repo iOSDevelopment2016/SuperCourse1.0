@@ -9,6 +9,7 @@
 #import "SCLoginView.h"
 #import "HttpTool.h"
 #import "SCRootViewController.h"
+#import <CommonCrypto/CommonDigest.h>
 
 @interface SCLoginView ()<UITextFieldDelegate>
 
@@ -27,8 +28,7 @@
 
 -(void)textValueDidChange:(UITextField *)textField{
     if (textField.text.length == 11) {
-        NSLog(@"");
-      //  [self.sendPsw titleColorForState:<#(UIControlState)#>];
+       self.sendPsw.highlighted=YES;
     }
 }
 
@@ -36,6 +36,25 @@
 - (IBAction)sendPswClick:(id)sender {
     if (self.phone.text.length==11) {
         NSLog(@"电话号码位数正确");
+        NSDictionary *para = @{@"method":@"Reg",
+                               @"param":@{@"Data":@{@"phone":self.phone.text}}};
+        [HttpTool postWithparams:para success:^(id responseObject) {
+            
+            NSData *data = [[NSData alloc] initWithData:responseObject];
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            NSLog(@"%@",dic);
+            NSString *nowState=[dic objectForKey:@"msg"];
+            //NSLog(@"%@",nowState);
+            NSString *State=@"";
+            if ([nowState isEqualToString:State]) {
+                NSLog(@"注册成功");
+                self.sendPsw.selected=YES;
+            }else{
+                [self shakeAnimationForView:self];
+            }
+        } failure:^(NSError *error) {
+            NSLog(@"%@",error);
+        }];
     }else{
         [self shakeAnimationForView:self];
     }
@@ -44,8 +63,12 @@
 - (IBAction)loginClick:(id)sender {
     NSString * phone = self.phone.text;
     NSString * password = self.password.text;
+    NSString * fnum=@"IOSSC";
+    NSString * passwordex=[password stringByAppendingString:fnum];
+    NSString * md5password=[self md5:passwordex];
+    NSLog(@"%@",md5password);
     NSDictionary *para = @{@"method":@"Login",
-                           @"param":@{@"Data":@{@"phone":phone,@"password":password}}};
+                           @"param":@{@"Data":@{@"phone":phone,@"password":md5password}}};
     [HttpTool postWithparams:para success:^(id responseObject) {
         
         NSData *data = [[NSData alloc] initWithData:responseObject];
@@ -131,5 +154,19 @@
     [animation setRepeatCount:3];
     // 添加上动画
     [viewLayer addAnimation:animation forKey:nil];
+}
+//MD5加密
+- (NSString *)md5:(NSString *)str
+{
+    const char *cStr = [str UTF8String];
+    unsigned char result[16];
+    CC_MD5(cStr, strlen(cStr), result); // This is the md5 call
+    return [NSString stringWithFormat:
+            @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+            result[0], result[1], result[2], result[3],
+            result[4], result[5], result[6], result[7],
+            result[8], result[9], result[10], result[11],
+            result[12], result[13], result[14], result[15]
+            ];
 }
 @end
