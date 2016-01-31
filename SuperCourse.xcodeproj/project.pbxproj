@@ -25,10 +25,7 @@
 		C9E4E67A1C53BC590052030E /* SCRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E4E6791C53BC590052030E /* SCRootViewController.m */; };
 		C9E4E67D1C53BCB80052030E /* SCCustomNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E4E67C1C53BCB80052030E /* SCCustomNavigationController.m */; };
 		C9E4E6841C53C2460052030E /* SCAllCourseView.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E4E6831C53C2460052030E /* SCAllCourseView.m */; };
-		C9E4E6871C53C25D0052030E /* SCVideoHistoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E4E6861C53C25D0052030E /* SCVideoHistoryView.m */; };
-		C9E4E68A1C53C2680052030E /* SCMyNotesView.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E4E6891C53C2680052030E /* SCMyNotesView.m */; };
 		C9E4E68F1C53C2AC0052030E /* SCSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E4E68E1C53C2AC0052030E /* SCSettingViewController.m */; };
-		C9E4E6921C53C2D50052030E /* SCSearchView.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E4E6911C53C2D50052030E /* SCSearchView.m */; };
 		C9E4E6971C53C3460052030E /* SCRegViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E4E6961C53C3460052030E /* SCRegViewController.m */; };
 		C9E4E69C1C53C4F40052030E /* UIView+SZY.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E4E69B1C53C4F40052030E /* UIView+SZY.m */; };
 		DA9CF7731C599D3100F6CEA6 /* APIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9CF7701C599D3100F6CEA6 /* APIClient.m */; };
@@ -62,6 +59,13 @@
 		FE5835721C58FC01004DFA97 /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = FE58355F1C58FC01004DFA97 /* UIWebView+AFNetworking.m */; };
 		FE60E6751C5783360005F9F3 /* SCItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE60E6741C5783360005F9F3 /* SCItemView.m */; };
 		FE60E6771C5783870005F9F3 /* SCItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE60E6761C5783870005F9F3 /* SCItemView.xib */; };
+		FE7F650F1C5DA9AF009C7F21 /* SCHistoryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7F65041C5DA9AF009C7F21 /* SCHistoryTableViewCell.m */; };
+		FE7F65101C5DA9AF009C7F21 /* SCHistoryTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE7F65051C5DA9AF009C7F21 /* SCHistoryTableViewCell.xib */; };
+		FE7F65111C5DA9AF009C7F21 /* SCMyNotesView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7F65071C5DA9AF009C7F21 /* SCMyNotesView.m */; };
+		FE7F65121C5DA9AF009C7F21 /* SCSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7F65091C5DA9AF009C7F21 /* SCSearchTableViewCell.m */; };
+		FE7F65131C5DA9AF009C7F21 /* SCSearchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE7F650A1C5DA9AF009C7F21 /* SCSearchTableViewCell.xib */; };
+		FE7F65141C5DA9AF009C7F21 /* SCSearchView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7F650C1C5DA9AF009C7F21 /* SCSearchView.m */; };
+		FE7F65151C5DA9AF009C7F21 /* SCVideoHistoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7F650E1C5DA9AF009C7F21 /* SCVideoHistoryView.m */; };
 		FE89CAB61C5B2D9D0091D23B /* MJConst.m in Sources */ = {isa = PBXBuildFile; fileRef = FE89CAA61C5B2D9D0091D23B /* MJConst.m */; };
 		FE89CAB71C5B2D9D0091D23B /* MJFoundation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE89CAA91C5B2D9D0091D23B /* MJFoundation.m */; };
 		FE89CAB81C5B2D9D0091D23B /* MJProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = FE89CAAB1C5B2D9D0091D23B /* MJProperty.m */; };
@@ -126,14 +130,8 @@
 		C9E4E67C1C53BCB80052030E /* SCCustomNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCustomNavigationController.m; sourceTree = "<group>"; };
 		C9E4E6821C53C2460052030E /* SCAllCourseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCAllCourseView.h; sourceTree = "<group>"; };
 		C9E4E6831C53C2460052030E /* SCAllCourseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCAllCourseView.m; sourceTree = "<group>"; };
-		C9E4E6851C53C25D0052030E /* SCVideoHistoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCVideoHistoryView.h; sourceTree = "<group>"; };
-		C9E4E6861C53C25D0052030E /* SCVideoHistoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCVideoHistoryView.m; sourceTree = "<group>"; };
-		C9E4E6881C53C2680052030E /* SCMyNotesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCMyNotesView.h; sourceTree = "<group>"; };
-		C9E4E6891C53C2680052030E /* SCMyNotesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCMyNotesView.m; sourceTree = "<group>"; };
 		C9E4E68D1C53C2AC0052030E /* SCSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSettingViewController.h; sourceTree = "<group>"; };
 		C9E4E68E1C53C2AC0052030E /* SCSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCSettingViewController.m; sourceTree = "<group>"; };
-		C9E4E6901C53C2D50052030E /* SCSearchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSearchView.h; sourceTree = "<group>"; };
-		C9E4E6911C53C2D50052030E /* SCSearchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCSearchView.m; sourceTree = "<group>"; };
 		C9E4E6951C53C3460052030E /* SCRegViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCRegViewController.h; sourceTree = "<group>"; };
 		C9E4E6961C53C3460052030E /* SCRegViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCRegViewController.m; sourceTree = "<group>"; };
 		C9E4E6981C53C3D80052030E /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
@@ -201,6 +199,19 @@
 		FE60E6731C5783360005F9F3 /* SCItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCItemView.h; sourceTree = "<group>"; };
 		FE60E6741C5783360005F9F3 /* SCItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCItemView.m; sourceTree = "<group>"; };
 		FE60E6761C5783870005F9F3 /* SCItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCItemView.xib; sourceTree = "<group>"; };
+		FE7F65031C5DA9AF009C7F21 /* SCHistoryTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHistoryTableViewCell.h; sourceTree = "<group>"; };
+		FE7F65041C5DA9AF009C7F21 /* SCHistoryTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHistoryTableViewCell.m; sourceTree = "<group>"; };
+		FE7F65051C5DA9AF009C7F21 /* SCHistoryTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHistoryTableViewCell.xib; sourceTree = "<group>"; };
+		FE7F65061C5DA9AF009C7F21 /* SCMyNotesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCMyNotesView.h; sourceTree = "<group>"; };
+		FE7F65071C5DA9AF009C7F21 /* SCMyNotesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCMyNotesView.m; sourceTree = "<group>"; };
+		FE7F65081C5DA9AF009C7F21 /* SCSearchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSearchTableViewCell.h; sourceTree = "<group>"; };
+		FE7F65091C5DA9AF009C7F21 /* SCSearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCSearchTableViewCell.m; sourceTree = "<group>"; };
+		FE7F650A1C5DA9AF009C7F21 /* SCSearchTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCSearchTableViewCell.xib; sourceTree = "<group>"; };
+		FE7F650B1C5DA9AF009C7F21 /* SCSearchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSearchView.h; sourceTree = "<group>"; };
+		FE7F650C1C5DA9AF009C7F21 /* SCSearchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCSearchView.m; sourceTree = "<group>"; };
+		FE7F650D1C5DA9AF009C7F21 /* SCVideoHistoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCVideoHistoryView.h; sourceTree = "<group>"; };
+		FE7F650E1C5DA9AF009C7F21 /* SCVideoHistoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCVideoHistoryView.m; sourceTree = "<group>"; };
+		FE7F65161C5DA9EF009C7F21 /* SCCourseCategoryList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCCourseCategoryList.h; sourceTree = "<group>"; };
 		FE89CAA51C5B2D9D0091D23B /* MJConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJConst.h; sourceTree = "<group>"; };
 		FE89CAA61C5B2D9D0091D23B /* MJConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJConst.m; sourceTree = "<group>"; };
 		FE89CAA71C5B2D9D0091D23B /* MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJExtension.h; sourceTree = "<group>"; };
@@ -218,7 +229,6 @@
 		FE89CAB31C5B2D9D0091D23B /* NSObject+MJProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJProperty.m"; sourceTree = "<group>"; };
 		FE89CAB41C5B2D9D0091D23B /* NSString+MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MJExtension.h"; sourceTree = "<group>"; };
 		FE89CAB51C5B2D9D0091D23B /* NSString+MJExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MJExtension.m"; sourceTree = "<group>"; };
-		FE89CABE1C5B440C0091D23B /* SCCourseCategoryList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCourseCategoryList.h; sourceTree = "<group>"; };
 		FE89CABF1C5B440C0091D23B /* SCCourseCategoryList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCourseCategoryList.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -289,7 +299,7 @@
 				FE005B951C55FEB100920EFB /* SCCourseGroup.m */,
 				FE005B971C55FFD200920EFB /* SCCourseCategory.h */,
 				FE005B981C55FFD200920EFB /* SCCourseCategory.m */,
-				FE89CABE1C5B440C0091D23B /* SCCourseCategoryList.h */,
+				FE7F65161C5DA9EF009C7F21 /* SCCourseCategoryList.h */,
 				FE89CABF1C5B440C0091D23B /* SCCourseCategoryList.m */,
 			);
 			name = DataModel;
@@ -387,12 +397,18 @@
 			children = (
 				C9E4E6821C53C2460052030E /* SCAllCourseView.h */,
 				C9E4E6831C53C2460052030E /* SCAllCourseView.m */,
-				C9E4E6851C53C25D0052030E /* SCVideoHistoryView.h */,
-				C9E4E6861C53C25D0052030E /* SCVideoHistoryView.m */,
-				C9E4E6881C53C2680052030E /* SCMyNotesView.h */,
-				C9E4E6891C53C2680052030E /* SCMyNotesView.m */,
-				C9E4E6901C53C2D50052030E /* SCSearchView.h */,
-				C9E4E6911C53C2D50052030E /* SCSearchView.m */,
+				FE7F65031C5DA9AF009C7F21 /* SCHistoryTableViewCell.h */,
+				FE7F65041C5DA9AF009C7F21 /* SCHistoryTableViewCell.m */,
+				FE7F65051C5DA9AF009C7F21 /* SCHistoryTableViewCell.xib */,
+				FE7F65061C5DA9AF009C7F21 /* SCMyNotesView.h */,
+				FE7F65071C5DA9AF009C7F21 /* SCMyNotesView.m */,
+				FE7F65081C5DA9AF009C7F21 /* SCSearchTableViewCell.h */,
+				FE7F65091C5DA9AF009C7F21 /* SCSearchTableViewCell.m */,
+				FE7F650A1C5DA9AF009C7F21 /* SCSearchTableViewCell.xib */,
+				FE7F650B1C5DA9AF009C7F21 /* SCSearchView.h */,
+				FE7F650C1C5DA9AF009C7F21 /* SCSearchView.m */,
+				FE7F650D1C5DA9AF009C7F21 /* SCVideoHistoryView.h */,
+				FE7F650E1C5DA9AF009C7F21 /* SCVideoHistoryView.m */,
 				FE005B9A1C56190300920EFB /* SCCourseTableViewCell.h */,
 				FE005B9B1C56190300920EFB /* SCCourseTableViewCell.m */,
 				FE005B9C1C56190300920EFB /* SCCourseTableViewCell.xib */,
@@ -671,8 +687,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE005B9E1C56190400920EFB /* SCCourseTableViewCell.xib in Resources */,
+				FE7F65131C5DA9AF009C7F21 /* SCSearchTableViewCell.xib in Resources */,
 				DAE2880E1C59EA3A00426DDD /* SCLoginView.xib in Resources */,
 				FE60E6771C5783870005F9F3 /* SCItemView.xib in Resources */,
+				FE7F65101C5DA9AF009C7F21 /* SCHistoryTableViewCell.xib in Resources */,
 				FE10F0011C5BAC61001FC52E /* SCSettingView.xib in Resources */,
 				C9E4E6521C53BAF30052030E /* LaunchScreen.storyboard in Resources */,
 				C9E4E64F1C53BAF30052030E /* Assets.xcassets in Resources */,
@@ -701,15 +719,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				7DB77ED61C5904B300B612FC /* ZQTagList.m in Sources */,
-				C9E4E6871C53C25D0052030E /* SCVideoHistoryView.m in Sources */,
 				FE89CABB1C5B2D9D0091D23B /* NSObject+MJKeyValue.m in Sources */,
 				FE5835641C58FC01004DFA97 /* AFNetworkReachabilityManager.m in Sources */,
+				FE7F65141C5DA9AF009C7F21 /* SCSearchView.m in Sources */,
 				FE5835721C58FC01004DFA97 /* UIWebView+AFNetworking.m in Sources */,
 				7DB53A091C58F0A1001DEC33 /* SCPlayerViewController.m in Sources */,
 				FE60E6751C5783360005F9F3 /* SCItemView.m in Sources */,
 				FE58356B1C58FC01004DFA97 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				C9E4E6471C53BAF30052030E /* AppDelegate.m in Sources */,
-				C9E4E68A1C53C2680052030E /* SCMyNotesView.m in Sources */,
 				C9E4E6841C53C2460052030E /* SCAllCourseView.m in Sources */,
 				7DB53A0C1C58F0A1001DEC33 /* SCtempModel.m in Sources */,
 				C9E4E6971C53C3460052030E /* SCRegViewController.m in Sources */,
@@ -717,7 +734,6 @@
 				DA9CF7731C599D3100F6CEA6 /* APIClient.m in Sources */,
 				C9E4E69C1C53C4F40052030E /* UIView+SZY.m in Sources */,
 				FE58356C1C58FC01004DFA97 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
-				C9E4E6921C53C2D50052030E /* SCSearchView.m in Sources */,
 				C9E4E67D1C53BCB80052030E /* SCCustomNavigationController.m in Sources */,
 				FE89CABC1C5B2D9D0091D23B /* NSObject+MJProperty.m in Sources */,
 				DAE2880D1C59EA3A00426DDD /* SCLoginView.m in Sources */,
@@ -745,12 +761,16 @@
 				FE5835621C58FC01004DFA97 /* AFHTTPRequestOperationManager.m in Sources */,
 				C9E4E68F1C53C2AC0052030E /* SCSettingViewController.m in Sources */,
 				FE005B931C55FD2500920EFB /* SCCourse.m in Sources */,
+				FE7F65151C5DA9AF009C7F21 /* SCVideoHistoryView.m in Sources */,
 				DA9CF7741C599D3100F6CEA6 /* HttpTool.m in Sources */,
 				FE005B9D1C56190400920EFB /* SCCourseTableViewCell.m in Sources */,
 				FE5835671C58FC01004DFA97 /* AFURLRequestSerialization.m in Sources */,
+				FE7F65111C5DA9AF009C7F21 /* SCMyNotesView.m in Sources */,
 				7D59C9861C5905BA00C4E9E2 /* SZYVideoManager.m in Sources */,
 				FE89CAB71C5B2D9D0091D23B /* MJFoundation.m in Sources */,
 				FE5835651C58FC01004DFA97 /* AFSecurityPolicy.m in Sources */,
+				FE7F65121C5DA9AF009C7F21 /* SCSearchTableViewCell.m in Sources */,
+				FE7F650F1C5DA9AF009C7F21 /* SCHistoryTableViewCell.m in Sources */,
 				FE89CAB91C5B2D9D0091D23B /* MJType.m in Sources */,
 				FE58356E1C58FC01004DFA97 /* UIButton+AFNetworking.m in Sources */,
 				FE5835631C58FC01004DFA97 /* AFHTTPSessionManager.m in Sources */,
