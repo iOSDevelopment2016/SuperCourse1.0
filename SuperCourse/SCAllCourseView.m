@@ -8,9 +8,9 @@
 
 #import "SCAllCourseView.h"
 #import "SCCustomButton.h"
-#import "SCCourse.h"
-#import "SCCourseGroup.h"
-#import "SCCourseCategory.h"
+//#import "SCCourse.h"
+//#import "SCCourseGroup.h"
+//#import "SCCourseCategory.h"
 #import "SCCourseTableViewCell.h"
 #import "AFNetworking.h"
 #import "NSData+SZYKit.h"
@@ -107,6 +107,8 @@
 //                           @"param":@{@"Data":@{@"phone":@"111",@"password":@"111"}}};
     [HttpTool postWithparams:para success:^(id responseObject) {
         
+        
+        
         NSData *data = [[NSData alloc] initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         
@@ -192,6 +194,9 @@
         
         CGFloat percent = (float)totalBytesReadForFile / (float)totalBytesExpectedToReadForFile;
         NSLog(@"百分比:%.3f%% %ld  %lld  %lld  %lld", percent * 100, (long)bytesRead, totalBytesRead, totalBytesReadForFile, totalBytesExpectedToReadForFile);
+        
+        
+        
     }];
     
     //结束
@@ -214,8 +219,8 @@
     SCCourseGroup *courseGroup=self.firstCategory.sec_arr[secIndex];
     SCCourse *selectedCourse = courseGroup.lesarr[rowIndex];
     if ([selectedCourse.operations isEqualToString:@"视频"]) {
-        NSString *urlvideo = selectedCourse.les_url;
-        [self.delegate videoPlayClickWithUrl:urlvideo];
+        //NSString *urlvideo = selectedCourse.les_url;
+        [self.delegate videoPlayClickWithCourse:selectedCourse];
     }else if ([selectedCourse.operations isEqualToString:@"网页"]) {
         NSString *urlWeb=selectedCourse.les_url;
         [self.delegate contendClick:secIndex AndRowIndex:rowIndex AndUrl:urlWeb];

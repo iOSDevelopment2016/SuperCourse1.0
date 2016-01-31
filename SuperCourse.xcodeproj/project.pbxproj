@@ -395,6 +395,7 @@
 		C9E4E67E1C53C1C70052030E /* Root */ = {
 			isa = PBXGroup;
 			children = (
+				FE7F65171C5DE2EF009C7F21 /* Model */,
 				C9E4E6801C53C1E60052030E /* View */,
 				C9E4E67F1C53C1DB0052030E /* Controller */,
 			);
@@ -574,6 +575,13 @@
 				FE58355F1C58FC01004DFA97 /* UIWebView+AFNetworking.m */,
 			);
 			path = "UIKit+AFNetworking";
+			sourceTree = "<group>";
+		};
+		FE7F65171C5DE2EF009C7F21 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		FE89CAA41C5B2D9D0091D23B /* MJExtension */ = {

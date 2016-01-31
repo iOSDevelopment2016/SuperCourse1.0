@@ -30,11 +30,31 @@
     
     self.window.rootViewController = nav;
     
-    NSString *str = @"这是个测试";
-    
+    //初始化用户标示
+    [self initUserSession];
     
     return YES;
 }
+
+-(void)initUserSession{
+    NSString *userSession = [[NSUserDefaults standardUserDefaults] objectForKey:UserSessionKey];
+    if (userSession) {
+        self.userSession = userSession;
+    }else{
+        self.userSession = UnLoginUserSession;
+    }
+}
+
+
+-(void)solidateUserSession:(NSString *)userSession{
+    
+    self.userSession = userSession;
+    NSUserDefaults *defaultes = [NSUserDefaults standardUserDefaults];
+    [defaultes setObject:self.userSession forKey:UserSessionKey];
+    [defaultes synchronize];
+}
+
+
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
