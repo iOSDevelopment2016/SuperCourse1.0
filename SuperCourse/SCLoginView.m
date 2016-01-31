@@ -71,6 +71,9 @@
                            @"param":@{@"Data":@{@"phone":phone,@"password":md5password}}};
     [HttpTool postWithparams:para success:^(id responseObject) {
         
+        //更新用户标示
+//        [ApplicationDelegate solidateUserSession:@"ccccc"];
+        
         NSData *data = [[NSData alloc] initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         NSLog(@"%@",dic);

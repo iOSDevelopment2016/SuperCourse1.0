@@ -9,7 +9,11 @@
 #import "SCRightView.h"
 #import "SCPointView.h"
 #import "ZQTagList.h"
-#import "SCtempModel.h"
+#import "SCVideoSubTitleMode.h"
+
+#import "SCVideoInfoModel.h"
+
+
 
 
 @implementation SCRightView
@@ -24,52 +28,12 @@
         [self.topView addSubview:self.pointBtn];
         [self.topView addSubview:self.blueBottom];
         self.extendBtn.selected = YES;
-        
-        [self getSubTitleData];
-        self.extendArr = @[@"软件编程",@"互联网和局域网",@"类的定义",@"xcode的使用",@"系统",@"视频"];
         [self addSubview:self.tagList];
     }
     return self;
     
 }
 
--(NSMutableArray *)getSubTitleData{
-    NSArray *letterArr = @[@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L"];
-    NSArray *dataArr = @[@"iOS的历史来源和发展历程",@"iOS的系统特性",@"局域网和互联网",@"编程环境的搭建"];
-    NSArray *timeArr = @[@"10.0",@"17.0",@"24.0",@"27.0"];
-    
-//    for (int i=0 ; i<=dataArr.count; i++) {
-//        
-//        SCtempModel *m = [[SCtempModel alloc] init];
-//        m.title = dataArr[i];
-//        m.letter = letterArr[i];
-//        m.beginTime = timeArr[i];
-//        [self.subTitleArr insertObject:m atIndex:i];
-//    }
-    SCtempModel *m = [[SCtempModel alloc] init];
-    m.title = dataArr[0];
-    m.letter = letterArr[0];
-    m.beginTime = timeArr[0];
-    [self.subTitleArr insertObject:m atIndex:0];
-    SCtempModel *m1 = [[SCtempModel alloc] init];
-    m1.title = dataArr[1];
-    m1.letter = letterArr[1];
-    m1.beginTime = timeArr[1];
-    [self.subTitleArr insertObject:m1 atIndex:1];
-    SCtempModel *m2 = [[SCtempModel alloc] init];
-    m2.title = dataArr[2];
-    m2.letter = letterArr[2];
-    m2.beginTime = timeArr[2];
-    [self.subTitleArr insertObject:m2 atIndex:2];
-    SCtempModel *m3 = [[SCtempModel alloc] init];
-    m3.title = dataArr[3];
-    m3.letter = letterArr[3];
-    m3.beginTime = timeArr[3];
-    [self.subTitleArr insertObject:m3 atIndex:3];
-    
-    return self.subTitleArr;
-    
-}
 
 #pragma mark - 响应事件
 
@@ -101,6 +65,34 @@
     
 }
 
+-(void)searchThis:(SCVideoLinkMode *)link{
+    
+//    
+//    [self clearBtnLooking];
+//    sender.selected = YES;
+//    [self changeBtnLooking:sender];
+
+    [self.delegate openLink:link];
+}
+
+//-(void)changeBtnLooking:(UIButton *)sender{
+//
+//    [sender setTitleColor:UIThemeColor forState:UIControlStateSelected];
+//    sender.layer.borderColor = UIThemeColor.CGColor;
+//}
+
+//-(void)clearBtnLooking{
+//    
+//    for (UIButton *btn in self.tagList.subviews) {
+//        
+//       btn.titleLabel.textColor = [UIColor blackColor];
+//       btn.layer.borderColor = [UIColor clearColor].CGColor;
+//       btn.selected = NO;
+//        
+//    }
+//}
+
+
 
 #pragma mark - getters
 
@@ -119,10 +111,10 @@
     if (!_extendBtn) {
         _extendBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_extendBtn setTitle:@"拓展" forState:UIControlStateNormal];
-        _extendBtn.titleLabel.font = [UIFont systemFontOfSize:45*WidthScale];
+        _extendBtn.titleLabel.font = [UIFont systemFontOfSize:40*WidthScale];
         [_extendBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_extendBtn setTitleColor:UIThemeColor forState:UIControlStateSelected];
-        _extendBtn.frame = CGRectMake(108*WidthScale, 0, 200*WidthScale, 100*HeightScale);
+        _extendBtn.frame = CGRectMake(108*WidthScale, 10, 200*WidthScale, 90*HeightScale);
         [_extendBtn addTarget:self action:@selector(extendBtnClick) forControlEvents:UIControlEventTouchUpInside];
 //        [self.extendView addSubview:self.tagList];
     }
@@ -134,10 +126,10 @@
     if (!_pointBtn) {
         _pointBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_pointBtn setTitle:@"节点" forState:UIControlStateNormal];
-        _pointBtn.titleLabel.font = [UIFont systemFontOfSize:45*WidthScale];
+        _pointBtn.titleLabel.font = [UIFont systemFontOfSize:40*WidthScale];
         [_pointBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_pointBtn setTitleColor:UIThemeColor forState:UIControlStateSelected];
-        _pointBtn.frame = CGRectMake(338*WidthScale, 0, 200*WidthScale, 100*HeightScale);
+        _pointBtn.frame = CGRectMake(338*WidthScale, 10, 200*WidthScale, 90*HeightScale);
         [_pointBtn addTarget:self action:@selector(pointBtnClick) forControlEvents:UIControlEventTouchUpInside];
     }
     return _pointBtn;
@@ -178,6 +170,7 @@
 
     if (!_pointView) {
         _pointView = [[SCPointView alloc]initWithFrame:CGRectMake(0, 100*HeightScale, 659*WidthScale, 1282*HeightScale) AndObject:self.subTitleArr];
+        _pointView.delegate = self.pointViewDelegate;
     }
     return _pointView;
 }
@@ -186,21 +179,13 @@
 
     if (!_tagList) {
         _tagList = [[ZQTagList alloc]initWithFrame:CGRectMake(22*WidthScale, 110*HeightScale, 637*WidthScale, 1272*HeightScale)];
-//        _tagList.view = self.extendView;
-        [_tagList setLabelBackgroundColor:[UIColor whiteColor]];
-        [_tagList setTags:self.extendArr];
-//        [_tagList display];
-//        [_tagList fittedSize];
+//        [_tagList setTags:self.linkArr];
+        _tagList.delegate = self;
+
     }
     return _tagList;
 }
 
--(NSMutableArray *)subTitleArr{
 
-    if (!_subTitleArr) {
-        _subTitleArr = [[NSMutableArray alloc]initWithCapacity:10];
-    }
-    return _subTitleArr;
-}
 
 @end

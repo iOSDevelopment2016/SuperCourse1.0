@@ -10,6 +10,13 @@
 
 @interface SCSettingViewController ()
 
+
+@property (nonatomic, strong)UIImage    *backImage;
+@property (nonatomic, strong)UILabel    *settingLabel;
+
+
+
+
 @end
 
 @implementation SCSettingViewController

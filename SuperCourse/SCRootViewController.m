@@ -17,6 +17,9 @@
 #import "SCPlayerViewController.h"
 #import "SCCourseTableViewCell.h"
 #import "SCItemView.h"
+#import "SCVideoInfoModel.h"
+
+
 typedef NS_ENUM(NSInteger,SCShowViewType) {
     SCShowViewType_MyNotes = 0,
     SCShowViewType_VideoHistory,
@@ -49,6 +52,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 @property (nonatomic ,strong) SCAllCourseView    *allCourseView;
 @property (nonatomic ,strong) SCVideoHistoryView *videoHistoryView;
 @property (nonatomic ,strong) SCMyNotesView      *myNotesView;
+@property (nonatomic ,strong) SCSearchView       *searchView;
 @property (nonatomic ,strong) UIButton           *selectedBtn;
 
 @property (nonatomic ,strong) UIView             *mainView;
@@ -122,6 +126,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     self.allCourseView.frame = CGRectMake(0, 0, mainFrame.size.width, mainFrame.size.height);
     self.myNotesView.frame = self.allCourseView.frame;
     self.videoHistoryView.frame = self.allCourseView.frame;
+    self.searchView.frame = self.allCourseView.frame;
 }
 
 
@@ -141,7 +146,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 //}
 
 #pragma mark - SCAllCourseViewDelegate
--(IBAction)contendClick:(NSInteger)secIndex AndRowIndex:(NSInteger)rouIndex{
+-(IBAction)contendClick:(NSInteger)secIndex AndRowIndex:(NSInteger)rouIndex AndUrl:(NSString *)url{
     [self.view addSubview:self.hubView];
     self.webView = [[UIWebView alloc]initWithFrame:CGRectMake(100, 100, 1000, 800)];
     
@@ -162,9 +167,25 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     
     
     [self.webView loadRequest:request];
+    
+}
+
+//-(void)videoPlayClickwithUrl:(NSString *)url{
+//    SCPlayerViewController *playVC = [[SCPlayerViewController alloc]init];
+//    playVC.currentVideoInfo = allCourseArr[5];
+//    [self.navigationController pushViewController:playVC animated:YES];
+//}
+-(void)videoPlayClickWithCourse:(SCCourse *)SCcourse{
+    SCPlayerViewController *playVC = [[SCPlayerViewController alloc]init];
+    NSString *courseId = SCcourse.les_id;
+    [self.navigationController pushViewController:playVC animated:YES];
 
 }
--(IBAction)imageClick{
+
+
+
+-(IBAction)imageClickWithUrl:(NSString *)url{
+    //加错了 加入的是简介 回来改
     [self.view addSubview:self.hubView];
     [self.view addSubview:self.itemView];
 }
@@ -206,6 +227,10 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 
 
 -(void)allCourseBtnClick:(UIButton *)sender{
+    if(self.searchView){
+        [self.searchView removeFromSuperview];
+    }
+    
     self.allCourseBtn.selected=YES;
     self.allCourseBtnImage.selected=YES;
     self.videoHistoryBtn.selected=NO;
@@ -217,8 +242,9 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     
     [self.scroll setHidden:NO];
     if (!_scroll) {
-        [self scroll:self.allCourseBtn.frame.origin.y];
         [self.leftView addSubview:self.scroll];
+        [self scroll:self.allCourseBtn.frame.origin.y];
+        
     }
     else{
         CGFloat a=self.allCourseBtn.frame.origin.y+self.Variety;
@@ -245,6 +271,10 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 
 
 -(void)historyBtnClick:(UIButton *)sender{
+    if(self.searchView){
+        [self.searchView removeFromSuperview];
+    }
+    
     self.allCourseBtn.selected=NO;
     self.allCourseBtnImage.selected=NO;
     self.videoHistoryBtn.selected=YES;
@@ -284,6 +314,10 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     
 }
 -(void)noteBtnClick:(UIButton *)sender{
+    if(self.searchView){
+        [self.searchView removeFromSuperview];
+    }
+    
     self.allCourseBtn.selected=NO;
     self.allCourseBtnImage.selected=NO;
     self.videoHistoryBtn.selected=NO;
@@ -371,23 +405,23 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     self.itemView = nil;
     [self.webView removeFromSuperview];
     self.webView=nil;
-
+    
 }
 
 //-(void)leftBtnClick:(UIButton *)sender{
-//    
+//
 //    [self changeViewFrom:self.selectedBtn.tag to:sender.tag];
 //    self.selectedBtn.selected=NO;
 //    sender.selected=YES;
-//    
-//    
-//    
+//
+//
+//
 //    NSInteger tempTag = sender.tag;
 //    sender.tag = self.selectedBtn.tag;
-//    
-//    
+//
+//
 //    self.selectedBtn.tag = tempTag;
-//    
+//
 //    self.selectedBtn = sender;
 //}
 
@@ -464,7 +498,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         //设置按钮的边界颜色
         
         [_leftView.layer setBorderColor:UIColorFromRGB(0xeeeeee).CGColor];
-
+        
         
     }
     return _leftView;
@@ -483,12 +517,39 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 //    }
 //    return _searchView;
 //}
+-(void)clickToSearch:(NSString *)text{
+    [self.view addSubview:self.searchView];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    if(textField==self.searchTextField){
+        self.allCourseBtn.selected=NO;
+        self.allCourseBtnImage.selected=NO;
+        self.videoHistoryBtn.selected=NO;
+        self.videoHistoryBtnImage.selected=NO;
+        self.myNotesBtn.selected=NO;
+        self.myNotesBtnImage.selected=NO;
+        self.favouriteSettingBtn.selected=NO;
+        self.favouriteSettingBtnImage.selected=NO;
+        [self.scroll setHidden:YES];
+        [self.searchTextField resignFirstResponder];//放弃当前焦点
+        
+        if(textField.text){
+            [self.mainView addSubview:self.searchView];
+        }
+    }
+    return YES;
+}
 -(UITextField *)searchTextField{
     if(!_searchTextField){
         _searchTextField=[[UITextField alloc]init];
         //_SearchTextField=[[UITextField alloc]init];
         [_searchTextField setBackgroundColor:[UIColor whiteColor]];
         _searchTextField.placeholder = @"请输入搜索内容";
+        //_searchTextField.keyboardType=UIKeyboardAppearanceDefault;
+        //_searchTextField.clearButtonMode=UITextFieldViewModeWhileEditing;
+        //_searchTextField.secureTextEntry=YES;
+        _searchTextField.returnKeyType=UIReturnKeyDone;
         _searchTextField.font = [UIFont systemFontOfSize:45*WidthScale];
         _searchTextField.layer.masksToBounds = YES;
         _searchTextField.layer.cornerRadius = 35;
@@ -668,6 +729,14 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         _myNotesView = [[SCMyNotesView alloc]init];
     }
     return _myNotesView;
+}
+
+-(SCSearchView *)searchView{
+    if(!_searchView){
+        _searchView=[[SCSearchView alloc]init];
+        _searchView.backgroundColor=[UIColor whiteColor];
+    }
+    return _searchView;
 }
 
 @end

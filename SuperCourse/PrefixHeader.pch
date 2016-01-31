@@ -25,7 +25,18 @@
 #define HeightScale [UIScreen mainScreen].bounds.size.height/1536
 #define kyd [UIScreen mainScreen].bounds.size.height/1536*1000
 
+
+
+#define ApplicationDelegate ((AppDelegate *)[UIApplication sharedApplication].delegate)
+
+
+//用户身份标示
+#define UserSessionKey @"UserSession"
+//未登录学员标示
+#define UnLoginUserSession @"UnLoginUserSession"
+
 #import "UIView+SZY.h"
+#import "AppDelegate.h"
 
 
 #endif /* PrefixHeader_pch */

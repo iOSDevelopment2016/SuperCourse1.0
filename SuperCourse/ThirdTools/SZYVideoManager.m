@@ -5,15 +5,18 @@
 //  Created by Develop on 16/1/25.
 //  Copyright © 2016年 RockyFung. All rights reserved.
 //
+//开启应用后台播放的功能:
+/*在Info property list中加一个Required background modes
+ *节点，它是一个数组，将第一项设置成设置App plays audio
+ */
+//在后台运行的播放的功能在模拟器中看不出来，只有在真机上看效果
 
 #import "SZYVideoManager.h"
 #import <objc/runtime.h>
 #import <MediaPlayer/MediaPlayer.h>
 
 #define kTimerUpdateFrequency 0.1
-
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-
 
 @interface SZYVideoManager ()
 
@@ -26,6 +29,7 @@
     BOOL isLoadDone;
 }
 
+
 +(instancetype)defaultManager{
     
     static SZYVideoManager *manager = nil;
@@ -34,6 +38,13 @@
         manager = [[SZYVideoManager alloc]init];
     });
     return manager;
+}
+
+
+
+-(void)dealloc{
+    
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:MPMovieDurationAvailableNotification object:nil];
 }
 
 -(void)setUpRemoteVideoPlayerWithContentURL:(NSURL *)contentURL view:(UIView *)view
@@ -47,8 +58,10 @@
     _player.view.userInteractionEnabled = NO;
     [_player.view setFrame:view.bounds]; // player's frame must match parent's
     [view addSubview:_player.view];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(movieDurationAvailable) name:
      MPMovieDurationAvailableNotification object:nil];
+    
 }
 
 //已经加载好，准备播放
@@ -92,6 +105,31 @@
 -(void)moveToSecond:(NSTimeInterval)second
 {
     _player.currentPlaybackTime = second;
+}
+
+-(CGFloat)currentTime
+{
+    return _player.currentPlaybackTime;
+}
+
+-(void)setCurrentRate:(float)rate{
+    _player.currentPlaybackRate = rate;
+}
+
+-(float)currentRate{
+    return _player.currentPlaybackRate;
+}
+
+-(void)beginSeekingForward{
+    [_player beginSeekingForward];
+}
+
+-(void)beginSeekingBackward{
+    [_player beginSeekingBackward];
+}
+
+-(void)endSeeking{
+    [_player endSeeking];
 }
 
 @end

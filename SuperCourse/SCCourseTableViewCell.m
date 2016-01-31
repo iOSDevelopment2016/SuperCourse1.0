@@ -44,6 +44,8 @@
 }
 
 #pragma - mark click
+
+// 点击课程名称
 - (IBAction)contendFieldClick:(UIButton *)sender {
     NSInteger tag = sender.tag;
     NSInteger secIndex = tag / 1000;
@@ -51,12 +53,21 @@
     [self.delegate contendFieldDidClickWithSectionIndex:secIndex AndRowIndex:rowIndex ];
 }
 
-- (IBAction)imageBtnClick:(id)sender {
-    [self.delegate imageBtnDidClick];
+// 点击课程详情
+- (IBAction)imageBtnClick:(UIButton *)sender {
+    
+    NSInteger tag = sender.tag;
+    NSInteger secIndex = tag / 1000;
+    NSInteger rowIndex = tag - secIndex * 1000;
+    [self.delegate imageBtnDidClickWithSectionIndex:secIndex AndRowIndex:rowIndex];
 }
 
-- (IBAction)downloadBtnClick:(id)sender {
-    [self.delegate downloadClick:sender];
+// 点击下载
+- (IBAction)downloadBtnClick:(UIButton *)sender {
+    NSInteger tag = sender.tag;
+    NSInteger secIndex = tag / 1000;
+    NSInteger rowIndex = tag - secIndex * 1000;
+    [self.delegate downloadClickWithWithSectionIndex:secIndex AndRowIndex:rowIndex];
     
 }
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "ZQTagList.h"
+#import "SCVideoLinkMode.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define CORNER_RADIUS 0.0f
@@ -21,6 +22,10 @@
 #define BORDER_COLOR UIColorFromRGB(0xcccccc).CGColor
 #define BORDER_WIDTH 0.5f
 
+@interface ZQTagList ()
+@property (nonatomic, strong) NSMutableArray *linkArr;
+@end
+
 @implementation ZQTagList
 - (id)initWithFrame:(CGRect)frame
 {
@@ -31,44 +36,46 @@
     return self;
 }
 
-- (void)setTags:(NSArray *)array
+- (void)setTags:(NSMutableArray *)linkArr
 {
-    self.textArray = [[NSMutableArray alloc] initWithCapacity:0];
-    for (int i = 0; i < array.count; i ++) {
-        NSDictionary *dic = [array objectAtIndex:i];
-        [self.textArray addObject:[dic objectForKey:@"name"]];
-    }
     sizeFit = CGSizeZero;
-    [self display];
+    self.linkArr = linkArr;
+    [self displayWithLinkArr:linkArr];
 }
 
-- (void)setLabelBackgroundColor:(UIColor *)color
+- (void)setLabelBackgroundColor:(UIColor *)color AndLinkArr:(NSMutableArray *)linkArr
 {
     lblBackgroundColor = color;
-    [self display];
+    self.linkArr = linkArr;
+    [self displayWithLinkArr:linkArr];
 }
 
-- (void)display
+- (void)displayWithLinkArr:(NSMutableArray *)linkArr
 {
     for (UILabel *subview in [self subviews]) {
         
         [subview removeFromSuperview];
         
     }
+    
     float totalHeight = 0;
     CGRect previousFrame = CGRectZero;
     BOOL gotPreviousFrame = NO;
     CGSize boundSize = CGSizeMake(self.frame.size.width, CGFLOAT_MAX);
 
-    for (NSString *text in self.textArray) {
-
-        CGSize textSize =  [text boundingRectWithSize:boundSize options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:13],NSFontAttributeName, nil] context:nil].size;
+    for (int i=0; i<linkArr.count; i++) {
+        
+        SCVideoLinkMode *m = linkArr[i];
+        
+        NSString *text = m.title;
+        CGSize textSize =  [text boundingRectWithSize:boundSize options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:45],NSFontAttributeName, nil] context:nil].size;
         
         textSize.width += HORIZONTAL_PADDING * 2;
         textSize.height += VERTICAL_PADDING * 2;
 
         UIButton *button = nil;
-        
+        [button.layer setBorderWidth:3];
+        button.selected = NO;
         if (!gotPreviousFrame) {
             
             button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, textSize.width, textSize.height)];
@@ -96,7 +103,8 @@
         previousFrame = button.frame;
         gotPreviousFrame = YES;
 
-        button.titleLabel.font = [UIFont fontWithName:@"YouYuan-----" size:13.0];
+        button.titleLabel.font = [UIFont systemFontOfSize:35*WidthScale];
+        button.titleLabel.backgroundColor = [UIColor whiteColor];
         
         if (!lblBackgroundColor) {
 
@@ -109,11 +117,13 @@
         }
         
         [button setTitle:text forState:UIControlStateNormal];
-        [button setTitleColor:TEXT_COLOR forState:UIControlStateNormal];
+        [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        button.tag = i;
         [button.layer setMasksToBounds:YES];
+        
         [button.layer setCornerRadius:CORNER_RADIUS];
-        [button.layer setBorderColor:BORDER_COLOR];
-        [button.layer setBorderWidth: BORDER_WIDTH];
+        [button.layer setBorderColor:[UIColor clearColor].CGColor];
+        [button.layer setBorderWidth: 2];
         
         [button addTarget:self action:@selector(searchButtonClicke:) forControlEvents:UIControlEventTouchUpInside];
         
@@ -122,11 +132,40 @@
     sizeFit = CGSizeMake(self.frame.size.width, totalHeight + 1.0f);
 
 }
-
-
-- (void)searchButtonClicke:(id)sender {
+- (void)changeBtnLookingWithTime:(NSTimeInterval)beginTime{
     
-    [self.delegate searchThis:sender];
+    for (UIButton *btn in self.subviews) {
+        SCVideoLinkMode *currentLink = self.linkArr[btn.tag];
+        int linkBeginTime = currentLink.beginTime;
+        if (linkBeginTime == (int)beginTime) {
+            if (btn.titleLabel.textColor == [UIColor blackColor]) {
+                [self clearBtnLooking];
+                btn.titleLabel.textColor = UIThemeColor;
+                [btn.layer setBorderColor:UIThemeColor.CGColor];
+            }
+        }
+    }
+}
+
+- (void)clearBtnLooking{
+    
+    for (UIButton *btn in self.subviews) {
+        btn.titleLabel.textColor = [UIColor blackColor];
+        [btn.layer setBorderColor:[UIColor clearColor].CGColor];
+    }
+}
+
+
+- (void)searchButtonClicke:(UIButton *)sender {
+    
+    [self clearBtnLooking];
+//    sender.selected = YES;
+    [sender setTitleColor:UIThemeColor forState:UIControlStateSelected];
+    sender.layer.borderColor = UIThemeColor.CGColor;
+    
+    SCVideoLinkMode *link = self.linkArr[sender.tag];
+    [self.delegate searchThis:link];
+    
 }
 
 - (CGSize)fittedSize {

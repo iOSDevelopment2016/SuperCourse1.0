@@ -8,15 +8,35 @@
 
 #import "SCAllCourseView.h"
 #import "SCCustomButton.h"
-#import "SCCourse.h"
-#import "SCCourseGroup.h"
-#import "SCCourseCategory.h"
+//#import "SCCourse.h"
+//#import "SCCourseGroup.h"
+//#import "SCCourseCategory.h"
 #import "SCCourseTableViewCell.h"
 #import "AFNetworking.h"
 #import "NSData+SZYKit.h"
 #import "AFDownloadRequestOperation.h"
 
+
+#import "MJExtension.h"
+
+
+#import "HttpTool.h"
+
 @interface SCAllCourseView ()<UITableViewDataSource, UITableViewDelegate,SCCourseTableViewDelegate>
+
+
+
+@property (weak, nonatomic) IBOutlet UITextField *phone;
+@property (weak, nonatomic) IBOutlet UITextField *password;
+@property (weak, nonatomic) IBOutlet UIButton *sendPsw;
+@property (weak, nonatomic) IBOutlet UIButton *login;
+@property (weak, nonatomic) IBOutlet UIButton *usertext;
+
+
+
+
+
+
 
 @property (nonatomic ,strong) UIImageView *topImageView;
 @property (nonatomic ,strong) UIImageView *headImageView;
@@ -24,17 +44,20 @@
 @property (nonatomic ,strong) SCCustomButton *startBtn;
 
 @property (nonatomic ,strong) UITableView *firstTableView;
-@property (nonatomic ,strong) UITableView *secondTableView;
+//@property (nonatomic ,strong) UITableView *secondTableView;
 
 @property (nonatomic ,strong) UIButton     *leftBtn;
 @property (nonatomic ,strong) UIButton     *rightBtn;
 
 @property (nonatomic ,strong) UIView       *scrollView;
+@property (nonatomic ,strong) UIView       *leftView;
+@property (nonatomic ,strong) UIView       *rightView;
 
 @property (nonatomic, strong) SCCourseCategory *firstCategory;
 @property (nonatomic, strong) SCCourseCategory *secondCategory;
 @property (nonatomic, strong) SCCourseCategory *currentSource;
 
+@property(retain,nonatomic) UIActivityIndicatorView *activityIndicator;
 
 @property (nonatomic ,strong) AFDownloadRequestOperation *fileDownloader;
 
@@ -45,9 +68,11 @@
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
+
     self = [super initWithFrame:frame];
     if (self) {
-        [self initData];
+        //        [self initData];
+    
         self.backgroundColor = [UIColor whiteColor];
         [self addSubview:self.topImageView];
         [self.topImageView addSubview:self.startBtn];
@@ -55,13 +80,76 @@
         [self.topImageView addSubview:self.headImageView];
         [self addSubview:self.leftBtn];
         [self addSubview:self.rightBtn];
-        //[self addSubview:self.scrollView];
+        [self addSubview:self.scrollView];
+        //将Indicator添加到视图中
+        [self addSubview:self.activityIndicator];
+        //开始转动
+        [self.activityIndicator startAnimating];
+
         //[self addSubview:self.secondTableView];
-        [self addSubview:self.firstTableView];
+       
+        //        [self addSubview:self.firstTableView];
+        
+        [self loadCourseListFromNetwork];
+        
+        
+        
         
     }
     return self;
 }
+
+//从网络请求课程列表
+-(void)loadCourseListFromNetwork{
+    NSDictionary *para = @{@"method":@"VideoList",
+                           @"param":@{@"Data":@""}};
+//    NSDictionary *para = @{@"method":@"Login",
+//                           @"param":@{@"Data":@{@"phone":@"111",@"password":@"111"}}};
+    [HttpTool postWithparams:para success:^(id responseObject) {
+        
+        
+        
+        NSData *data = [[NSData alloc] initWithData:responseObject];
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        
+        NSLog(@"%@",dic[@"data"]);
+        
+        [SCCourseGroup setupObjectClassInArray:^NSDictionary *{
+            return @{@"lesarr":@"SCCourse"};
+        }];
+        [SCCourseCategory setupObjectClassInArray:^NSDictionary *{
+            return @{@"sec_arr":@"SCCourseGroup"};
+        }];
+        SCCourseCategory *firstColumn = [SCCourseCategory objectWithKeyValues:dic[@"data"]];
+
+        self.firstCategory=firstColumn;
+        self.secondCategory=firstColumn;
+        self.currentSource=self.firstCategory;
+
+        [self addSubview:self.firstTableView];
+
+        //[self.activityIndicator stopAnimating];               !!!!!!!!!停止加载动画
+        //        NSLog(@"%@", first.course_catagory_title);
+//        NSLog(@"%@", first.course_category_id);
+//        NSLog(@"%@", first.sec_arr);
+//        for (int i = 0; i<first.sec_arr.count; i++) {
+//            SCCourseGroup *m = first.sec_arr[i];
+//            NSLog(@"%@",m.lessections_id);
+//            NSLog(@"%@",m.lessections_name);
+//            NSLog(@"%@",m.lesarr);
+//            for (int j = 0; j<m.lesarr.count; j++) {
+//                SCCourse *c = m.lesarr[j];
+//                NSLog(@"%@", c.les_id);
+//                NSLog(@"%@", c.les_name);
+//            }
+//        }
+//        NSLog(@"%@", first.sec_arr);
+        
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+    }];
+}
+
 
 -(void)layoutSubviews{
     [super layoutSubviews];
@@ -73,7 +161,7 @@
     self.leftBtn.frame=CGRectMake(0.312*self.width, 670*HeightScale, 0.127*self.width, 130*HeightScale);
     self.rightBtn.frame=CGRectMake(0.562*self.width, 670*HeightScale, 0.127*self.width, 130*HeightScale);
     self.firstTableView.frame = CGRectMake(0, 800*HeightScale, self.width, 500*HeightScale);
-    self.secondTableView.frame = CGRectMake(0, 800*HeightScale, self.width, 500*HeightScale);
+    //self.secondTableView.frame = CGRectMake(0, 800*HeightScale, self.width, 500*HeightScale);
 }
 
 #pragma mark - delegate
@@ -83,11 +171,18 @@
 //         return cell.frame.size.height;
 //}
 
--(IBAction)downloadClick:(id)sender{
-    NSString *srlStr = @"http://www.shengcaibao.com/download/SCB/1.mp3";
+-(IBAction)downloadClickWithWithSectionIndex:(NSInteger)secIndex AndRowIndex:(NSInteger)rowIndex{
+    //    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    //    NSString *docDir = [paths objectAtIndex:0];
+    SCCourseGroup *courseGroup=self.firstCategory.sec_arr[secIndex];
+    SCCourse *selectedCourse = courseGroup.lesarr[rowIndex];
+
+    NSString *url=selectedCourse.les_url;
+
+    //NSString *srlStr = @"http://www.shengcaibao.com/download/SCB/1.mp3";
     //如果请求正文包含中文，需要处理
     //    srlStr = [srlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:srlStr]];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
     NSString *filePath = [NSHomeDirectory() stringByAppendingPathComponent:@"/Library/Caches/music.mp3"];
     self.fileDownloader = [[AFDownloadRequestOperation alloc]initWithRequest:request fileIdentifier:@"music.mp3" targetPath:filePath shouldResume:YES];
     self.fileDownloader.shouldOverwrite = YES;
@@ -99,6 +194,9 @@
         
         CGFloat percent = (float)totalBytesReadForFile / (float)totalBytesExpectedToReadForFile;
         NSLog(@"百分比:%.3f%% %ld  %lld  %lld  %lld", percent * 100, (long)bytesRead, totalBytesRead, totalBytesReadForFile, totalBytesExpectedToReadForFile);
+        
+        
+        
     }];
     
     //结束
@@ -114,14 +212,42 @@
         NSLog(@"下载失败 %@", error);
         
     }];
-
+    
 }
+
+-(IBAction)contendFieldDidClickWithSectionIndex:(NSInteger)secIndex AndRowIndex:(NSInteger)rowIndex{
+    SCCourseGroup *courseGroup=self.firstCategory.sec_arr[secIndex];
+    SCCourse *selectedCourse = courseGroup.lesarr[rowIndex];
+    if ([selectedCourse.operations isEqualToString:@"视频"]) {
+        //NSString *urlvideo = selectedCourse.les_url;
+        [self.delegate videoPlayClickWithCourse:selectedCourse];
+    }else if ([selectedCourse.operations isEqualToString:@"网页"]) {
+        NSString *urlWeb=selectedCourse.les_url;
+        [self.delegate contendClick:secIndex AndRowIndex:rowIndex AndUrl:urlWeb];
+    }
+}
+
+-(IBAction)imageBtnDidClickWithSectionIndex:(NSInteger)secIndex AndRowIndex:(NSInteger)rowIndex{
+    SCCourseGroup *courseGroup=self.firstCategory.sec_arr[secIndex];
+    SCCourse *selectedCourse = courseGroup.lesarr[rowIndex];
+    NSString *url=selectedCourse.les_url;
+    [self.delegate imageClickWithUrl:url];
+}
+
 
 # pragma mark - 私有方法
 -(void)move:(CGFloat)x{
-    [UIView animateWithDuration:0.5 animations:^{
-        self.scrollView.transform=CGAffineTransformMakeTranslation(0,x);
-    }];
+    if(x>0){
+        [UIView animateWithDuration:0.5 animations:^{
+            self.scrollView.transform=CGAffineTransformMakeTranslation(x,0);
+        }];
+    }
+    else{
+        [UIView animateWithDuration:0.5 animations:^{
+            self.scrollView.transform=CGAffineTransformIdentity;
+        }];
+        //self.scrollView.transform=CGAffineTransformIdentity;
+    }
 }
 
 
@@ -130,21 +256,16 @@
     
     [self.delegate startBtnDidClick];
 }
--(IBAction)contendFieldDidClickWithSectionIndex:(NSInteger)secIndex AndRowIndex:(NSInteger)rowIndex{
-    [self.delegate contendClick:secIndex AndRowIndex:rowIndex];
-}
 
--(IBAction)imageBtnDidClick{
-    [self.delegate imageClick];
-}
+
 
 -(void)leftBtnClick{
     self.leftBtn.selected=YES;
     self.rightBtn.selected=NO;
     self.currentSource=self.firstCategory;
     [self.firstTableView reloadData];
-//    CGFloat variety=self.leftBtn.frame.origin.x-self.scrollView.frame.origin.x;
-//    [self move:variety];
+    [self.leftBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateSelected];
+    [self move:-1];
     
 }
 -(void)rightBtnClick{
@@ -152,8 +273,9 @@
     self.rightBtn.selected=YES;
     self.currentSource=self.secondCategory;
     [self.firstTableView reloadData];
-//    CGFloat variety=self.rightBtn.frame.origin.x-self.scrollView.frame.origin.x;
-//    [self move:variety];
+    CGFloat variety=self.rightBtn.frame.origin.x-self.scrollView.frame.origin.x;
+    [self.leftBtn setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
+    [self move:variety];
 }
 
 #pragma mark - getters
@@ -207,21 +329,21 @@
     return  _firstTableView;
 }
 
--(UITableView *)secondTableView{
-    if(!_secondTableView){
-        _secondTableView = [[UITableView alloc]init];
-        _secondTableView.dataSource = self;
-        _secondTableView.delegate = self;
-    }
-    return  _secondTableView;
-}
-
+//-(UITableView *)secondTableView{
+//    if(!_secondTableView){
+//        _secondTableView = [[UITableView alloc]init];
+//        _secondTableView.dataSource = self;
+//        _secondTableView.delegate = self;
+//    }
+//    return  _secondTableView;
+//}
+//
 
 
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
-   // NSString *key = [keys objectAtIndex:section];
+    // NSString *key = [keys objectAtIndex:section];
     
     
     // create the parent view that will hold header Label
@@ -244,9 +366,9 @@
     
     headerLabel.frame = CGRectMake(40.0, 10.0, 300.0, 44.0);
     
-    SCCourseGroup *temp = self.currentSource.courseGroupArr[section];
+    SCCourseGroup *temp = self.currentSource.sec_arr[section];
     
-    headerLabel.text = temp.courseGroupTitle;
+    headerLabel.text = temp.lessections_name;
     
     
     [customView addSubview:headerLabel];
@@ -275,18 +397,18 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
     //return 2;//返回标题数组中元素的个数来确定分区的个数
-    return self.currentSource.courseGroupArr.count;
+    return self.currentSource.sec_arr.count;
     
 }
 
 //- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-//    
+//
 //    SCCourseGroup *temp = self.firstCategory.courseGroupArr[section];
-//    
+//
 //    return temp.courseGroupTitle;
-//    
-//    
-//    
+//
+//
+//
 //}
 
 
@@ -303,8 +425,8 @@
 //每组中的行数
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     //return 0;
-    SCCourseGroup *temp = self.currentSource.courseGroupArr[section];
-    return temp.courseArr.count;
+    SCCourseGroup *temp = self.currentSource.sec_arr[section];
+    return temp.lesarr.count;
 }
 
 //返回cell
@@ -317,12 +439,13 @@
         [cell.layer setBorderWidth:1];//设置边界的宽度
         [cell.layer setBorderColor:UIColorFromRGB(0xeeeeee).CGColor];
         cell.delegate=self;
-        SCCourseGroup *temp=self.currentSource.courseGroupArr[indexPath.section];
-        SCCourse *temp_=temp.courseArr[indexPath.row];
+        SCCourseGroup *temp=self.currentSource.sec_arr[indexPath.section];
+        SCCourse *temp_=temp.lesarr[indexPath.row];
         //cell.textLabel.text=temp_.courseTitle;
-        [cell.contentField setTitle:temp_.lesName forState:UIControlStateNormal];
+        [cell.contentField setTitle:temp_.les_name forState:UIControlStateNormal];
         [cell.contentField setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateHighlighted];
         cell.contentField.tag =indexPath.section * 1000 + indexPath.row;
+        cell.imageBtn.tag =indexPath.section * 1000 + indexPath.row;
         
     }
     return cell;
@@ -348,13 +471,13 @@
 
 -(SCCourseCategory *)getCourseCatagory2:(NSString *)title{
     SCCourseCategory *temp = [[SCCourseCategory alloc]init];
-    temp.courseCatagoryTitle = title;
-    temp.courseCategoryId = @"UUID";
+    temp.course_catagory_title = title;
+    temp.course_category_id = @"UUID";
     SCCourseGroup *c1 = [self getCourseGroup:@"改变了"];
     SCCourseGroup *c2 = [self getCourseGroup:@"第二分组"];
     SCCourseGroup *c3 = [self getCourseGroup:@"第三分组"];
     SCCourseGroup *c4 = [self getCourseGroup:@"第四分组"];
-    temp.courseGroupArr = @[c1,c2,c3,c4];
+    temp.sec_arr = @[c1,c2,c3,c4];
     return temp;
     
 }
@@ -363,27 +486,27 @@
 
 -(SCCourseGroup *)getCourseGroup:(NSString *)title{
     SCCourseGroup *temp = [[SCCourseGroup alloc]init];
-    temp.courseGroupTitle = title;
-    temp.courseGroupId = @"UUID";
+    temp.lessections_name = title;
+    temp.lessections_id = @"UUID";
     SCCourse *c1 = [self getCourse:@"这是视频"];
     SCCourse *c2 = [self getCourse:@"这是网页"];
     SCCourse *c3 = [self getCourse:@"第3节课"];
     SCCourse *c4 = [self getCourse:@"第4节课"];
     SCCourse *c5 = [self getCourse:@"第5节课"];
     SCCourse *c6 = [self getCourse:@"第6节课"];
-    temp.courseArr = @[c1,c2,c3,c4,c5,c6];
+    temp.lesarr = @[c1,c2,c3,c4,c5,c6];
     return temp;
     
 }
 -(SCCourseCategory *)getCourseCatagory:(NSString *)title{
     SCCourseCategory *temp = [[SCCourseCategory alloc]init];
-    temp.courseCatagoryTitle = title;
-    temp.courseCategoryId = @"UUID";
+    temp.course_catagory_title = title;
+    temp.course_category_id = @"UUID";
     SCCourseGroup *c1 = [self getCourseGroup:@"第一分组"];
     SCCourseGroup *c2 = [self getCourseGroup:@"第二分组"];
     SCCourseGroup *c3 = [self getCourseGroup:@"第三分组"];
     SCCourseGroup *c4 = [self getCourseGroup:@"第四分组"];
-    temp.courseGroupArr = @[c1,c2,c3,c4];
+    temp.sec_arr = @[c1,c2,c3,c4];
     return temp;
     
 }
@@ -391,10 +514,10 @@
 //生成一个课程信息
 -(SCCourse *)getCourse:(NSString *)title{
     SCCourse *temp = [[SCCourse alloc]init];
-    temp.lesName = title;
-    temp.lesId = @"UUID";
+    temp.les_name = title;
+    temp.les_id = @"UUID";
     //temp.courseUrl = @"";
-    temp.courseAbstract = @"描述";
+//    temp.courseAbstract = @"描述";
     return temp;
 }
 
@@ -427,12 +550,49 @@
 
 -(UIView *)scrollView{
     if(!_scrollView){
-    _scrollView=[[UIView alloc]initWithFrame:CGRectMake(520*WidthScale, 780*HeightScale, 200*HeightScale, 9*HeightScale)];
-    [_scrollView setBackgroundColor:UIColorFromRGB(0x6fccdb)];
+        _scrollView=[[UIView alloc]initWithFrame:CGRectMake(520*WidthScale, 780*HeightScale, 200*HeightScale, 9*HeightScale)];
+        [_scrollView setBackgroundColor:UIColorFromRGB(0x6fccdb)];
     }
     return _scrollView;
 }
 
+
+//-(UIView *)leftView{
+//    if(!_leftView){
+//        _leftView=[[UIView alloc]initWithFrame:CGRectMake(0.312*self.width, 670*HeightScale, 0.127*self.width, 9*HeightScale)];
+//        [_leftView setBackgroundColor:UIColorFromRGB(0x6fccdb)];
+//    }
+//    return _leftView;
+//}
+//-(UIView *)rightView{
+//    if(!_rightView){
+//        _rightView=[[UIView alloc]initWithFrame:CGRectMake(0.312*self.width, 670*HeightScale, 0.127*self.width, 9*HeightScale)];
+//        [_rightView setBackgroundColor:UIColorFromRGB(0x6fccdb)];
+//    }
+//    return _rightView;
+//    
+//}
+-(UIActivityIndicatorView *)activityIndicator{
+    if(!_activityIndicator){
+        self.activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(140, 450, 100, 100)];
+        
+        /*
+         指定指示器的类型
+         一共有三种类型：
+         UIActivityIndicatorViewStyleWhiteLarge   //大型白色指示器
+         UIActivityIndicatorViewStyleWhite      //标准尺寸白色指示器
+         UIActivityIndicatorViewStyleGray    //灰色指示器，用于白色背景
+         */
+        self.activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+        
+        //停止后是否隐藏(默认为YES)
+        self.activityIndicator.hidesWhenStopped = YES;
+        
+     
+        
+    }
+    return _activityIndicator;
+}
 
 @end
 

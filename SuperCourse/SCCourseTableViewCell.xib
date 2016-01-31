@@ -21,7 +21,7 @@
                         <rect key="frame" x="78" y="14" width="537" height="30"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="23.450000762939453"/>
                         <state key="normal" title="no data">
-                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         </state>
                         <connections>
                             <action selector="contendFieldClick:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="ZGJ-DQ-mZu"/>

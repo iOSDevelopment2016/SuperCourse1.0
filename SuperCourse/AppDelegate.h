@@ -12,6 +12,11 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
+@property (strong, nonatomic) NSString *userSession;
+
+
+-(void)solidateUserSession:(NSString *)userSession;
+
 
 @end
 
