@@ -22,6 +22,10 @@
 #define BORDER_COLOR UIColorFromRGB(0xcccccc).CGColor
 #define BORDER_WIDTH 0.5f
 
+@interface ZQTagList ()
+@property (nonatomic, strong) NSMutableArray *linkArr;
+@end
+
 @implementation ZQTagList
 - (id)initWithFrame:(CGRect)frame
 {
@@ -35,12 +39,14 @@
 - (void)setTags:(NSMutableArray *)linkArr
 {
     sizeFit = CGSizeZero;
+    self.linkArr = linkArr;
     [self displayWithLinkArr:linkArr];
 }
 
 - (void)setLabelBackgroundColor:(UIColor *)color AndLinkArr:(NSMutableArray *)linkArr
 {
     lblBackgroundColor = color;
+    self.linkArr = linkArr;
     [self displayWithLinkArr:linkArr];
 }
 
@@ -51,6 +57,7 @@
         [subview removeFromSuperview];
         
     }
+    
     float totalHeight = 0;
     CGRect previousFrame = CGRectZero;
     BOOL gotPreviousFrame = NO;
@@ -59,6 +66,7 @@
     for (int i=0; i<linkArr.count; i++) {
         
         SCVideoLinkMode *m = linkArr[i];
+        
         NSString *text = m.title;
         CGSize textSize =  [text boundingRectWithSize:boundSize options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:45],NSFontAttributeName, nil] context:nil].size;
         
@@ -110,7 +118,7 @@
         
         [button setTitle:text forState:UIControlStateNormal];
         [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        button.tag = m.beginTime;
+        button.tag = i;
         [button.layer setMasksToBounds:YES];
         
         [button.layer setCornerRadius:CORNER_RADIUS];
@@ -127,7 +135,9 @@
 - (void)changeBtnLookingWithTime:(NSTimeInterval)beginTime{
     
     for (UIButton *btn in self.subviews) {
-        if (btn.tag == (int)beginTime) {
+        SCVideoLinkMode *currentLink = self.linkArr[btn.tag];
+        int linkBeginTime = currentLink.beginTime;
+        if (linkBeginTime == (int)beginTime) {
             if (btn.titleLabel.textColor == [UIColor blackColor]) {
                 [self clearBtnLooking];
                 btn.titleLabel.textColor = UIThemeColor;
@@ -146,9 +156,16 @@
 }
 
 
-- (void)searchButtonClicke:(id)sender {
+- (void)searchButtonClicke:(UIButton *)sender {
     
-    [self.delegate searchThis:sender];
+    [self clearBtnLooking];
+//    sender.selected = YES;
+    [sender setTitleColor:UIThemeColor forState:UIControlStateSelected];
+    sender.layer.borderColor = UIThemeColor.CGColor;
+    
+    SCVideoLinkMode *link = self.linkArr[sender.tag];
+    [self.delegate searchThis:link];
+    
 }
 
 - (CGSize)fittedSize {

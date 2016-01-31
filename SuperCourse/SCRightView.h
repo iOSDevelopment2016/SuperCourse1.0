@@ -9,6 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "SCPointView.h"
 #import "ZQTagList.h"
+#import "SCVideoLinkMode.h"
+
+@protocol SCRightViewDelegate <NSObject>
+
+-(void)openLink:(SCVideoLinkMode *)link;
+
+@end
+
+
 @interface SCRightView : UIView<ZQTagListDelegate>
 @property (nonatomic, strong) IBOutlet UIView *topView;
 @property (nonatomic, strong) IBOutlet UIButton *pointBtn;
@@ -28,5 +37,8 @@
 @property (nonatomic, strong) NSMutableArray *linkArr;
 
 @property (nonatomic, assign) id<SCPointViewDelegate> pointViewDelegate;
+
+@property (nonatomic, assign) id<SCRightViewDelegate> delegate;
+
 @end
 

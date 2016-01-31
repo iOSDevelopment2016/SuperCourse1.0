@@ -10,8 +10,11 @@
 #import "SCPointView.h"
 #import "ZQTagList.h"
 #import "SCVideoSubTitleMode.h"
-#import "SCVideoLinkMode.h"
+
 #import "SCVideoInfoModel.h"
+
+
+
 
 @implementation SCRightView
 
@@ -62,30 +65,32 @@
     
 }
 
--(void)searchThis:(UIButton *)sender{
+-(void)searchThis:(SCVideoLinkMode *)link{
     
-    
-    [self clearBtnLooking];
-    sender.selected = YES;
-    [self changeBtnLooking:sender];
+//    
+//    [self clearBtnLooking];
+//    sender.selected = YES;
+//    [self changeBtnLooking:sender];
+
+    [self.delegate openLink:link];
 }
 
--(void)changeBtnLooking:(UIButton *)sender{
+//-(void)changeBtnLooking:(UIButton *)sender{
+//
+//    [sender setTitleColor:UIThemeColor forState:UIControlStateSelected];
+//    sender.layer.borderColor = UIThemeColor.CGColor;
+//}
 
-    [sender setTitleColor:UIThemeColor forState:UIControlStateSelected];
-    sender.layer.borderColor = UIThemeColor.CGColor;
-}
-
--(void)clearBtnLooking{
-    
-    for (UIButton *btn in self.tagList.subviews) {
-        
-       btn.titleLabel.textColor = [UIColor blackColor];
-       btn.layer.borderColor = [UIColor clearColor].CGColor;
-       btn.selected = NO;
-        
-    }
-}
+//-(void)clearBtnLooking{
+//    
+//    for (UIButton *btn in self.tagList.subviews) {
+//        
+//       btn.titleLabel.textColor = [UIColor blackColor];
+//       btn.layer.borderColor = [UIColor clearColor].CGColor;
+//       btn.selected = NO;
+//        
+//    }
+//}
 
 
 

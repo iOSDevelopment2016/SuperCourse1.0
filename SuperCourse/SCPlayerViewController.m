@@ -15,9 +15,13 @@
 #import "SCVideoLinkMode.h"
 #import "SCVideoSubTitleMode.h"
 
-@interface SCPlayerViewController ()<SCPointViewDelegate>{
+@interface SCPlayerViewController ()<SCPointViewDelegate, SCRightViewDelegate>{
     BOOL isAnimating; // 正在动画
 }
+
+@property (nonatomic ,strong) SCVIdeoInfo *currentVideoInfo;
+@property (nonatomic ,assign) NSTimeInterval lastPlayTime;
+
 
 @property (nonatomic, strong) SCRightView *rightView;
 @property (nonatomic, strong) IBOutlet UIView *container;
@@ -485,6 +489,7 @@
         _rightView.subTitleArr = self.videoInfo.videoSubTitles;
 //        _rightView.linkArr = self.videoInfo.videoLinks;
         [_rightView.tagList setTags:self.videoInfo.videoLinks];
+        _rightView.delegate = self;
     }
     return _rightView;
 }
@@ -787,6 +792,17 @@
     }
     return _pan;
 }
+
+-(void)openLink:(SCVideoLinkMode *)link{
+    SCPlayerViewController *playerVC = [[SCPlayerViewController alloc]init];
+    if ([link.targetType isEqualToString:@"视频"]) {
+        playerVC.lessonId = link.lessonId;
+        [self.navigationController pushViewController:playerVC animated:YES];
+    }else if ([link.targetType isEqualToString:@"网页"]){
+        // 打开网页，未完成
+    }
+}
+
 
 
 @end
