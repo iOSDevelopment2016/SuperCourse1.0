@@ -48,16 +48,16 @@
                            @"param":@{@"Data":@{@"phone":phone,@"password":password}}};
     [HttpTool postWithparams:para success:^(id responseObject) {
         
-        //更新用户标示
-//        [ApplicationDelegate solidateUserSession:@"ccccc"];
-        
         NSData *data = [[NSData alloc] initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-        NSLog(@"%@",dic);
-        NSString *nowState=[dic objectForKey:@"msg"];
+        NSString *nowState=[dic objectForKey:@"LoginSucceed"];
+        NSString *errorMsg = dic[@"msg"];
         //NSLog(@"%@",nowState);
-        NSString *State=@"";
+        NSString *State=@"OK";
         if ([nowState isEqualToString:State]) {
+            //更新用户标示
+            [ApplicationDelegate solidateUserSession:dic[@"stu_id"]];
+            ApplicationDelegate.userPsw = self.password.text;
             [self removeFromSuperview];
         }else{
             [self shakeAnimationForView:self];

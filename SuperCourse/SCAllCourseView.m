@@ -112,8 +112,6 @@
         
         SCCourseGroup *courseGroup = [SCCourseGroup modelWithDict:dic[@"data"]];
         
-        
-        
         NSLog(@"%@",dic[@"data"]);
         
         [SCCourseGroup setupObjectClassInArray:^NSDictionary *{

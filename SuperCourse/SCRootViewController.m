@@ -179,10 +179,10 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 -(void)videoPlayClickWithCourse:(SCCourse *)SCcourse{
     SCPlayerViewController *playVC = [[SCPlayerViewController alloc]init];
     NSString *courseId = SCcourse.les_id;
+    playVC.lessonId = courseId;
     [self.navigationController pushViewController:playVC animated:YES];
 
 }
-
 
 
 -(IBAction)imageClickWithUrl:(NSString *)url{
@@ -193,7 +193,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 -(void)startBtnDidClick{
     
     SCPlayerViewController *playVC = [[SCPlayerViewController alloc]init];
-    playVC.currentVideoInfo = allCourseArr[5];
+    //这里要传递lessonID
     [self.navigationController pushViewController:playVC animated:YES];
     
 }
