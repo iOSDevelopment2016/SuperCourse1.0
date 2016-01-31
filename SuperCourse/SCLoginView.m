@@ -73,7 +73,7 @@
         
         NSData *data = [[NSData alloc] initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-        NSString *nowState=[dic objectForKey:@"LoginSucceed"];
+        NSString *nowState=[dic objectForKey:@"data"][@"LoginSucceed"];
         NSString *errorMsg = dic[@"msg"];
         //NSLog(@"%@",nowState);
         NSString *State=@"OK";
