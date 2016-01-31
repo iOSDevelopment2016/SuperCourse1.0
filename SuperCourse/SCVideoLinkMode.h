@@ -10,6 +10,7 @@
 
 @interface SCVideoLinkMode : NSObject
 
+@property (nonatomic, strong)NSString *linkId;
 @property (nonatomic, strong)NSString *title;
 @property (nonatomic, assign)float beginTime;
 @property (nonatomic, strong)NSString *targetType; //跳转目标的类型（视频课程、网页）

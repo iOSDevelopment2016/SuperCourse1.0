@@ -14,7 +14,7 @@
 
 @interface SCPlayerViewController : SCBaseViewController
 
-@property (nonatomic ,strong) SCVIdeoInfo *currentVideoInfo;
-@property (nonatomic ,assign) NSTimeInterval lastPlayTime;
+
+@property (nonatomic, strong) NSString *lessonId;
 
 @end
