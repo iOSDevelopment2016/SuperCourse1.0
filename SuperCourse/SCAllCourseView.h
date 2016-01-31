@@ -11,9 +11,10 @@
 @protocol SCAllCourseViewDelegate <NSObject>
 //contendFieldDidClickWithSectionIndex:(NSInteger)secIndex AndRowIndex:(NSInteger)rowIndex
 -(void)startBtnDidClick;
--(IBAction)contendClick:(NSInteger)secIndex AndRowIndex:(NSInteger)rouIndex;
--(IBAction)imageClick;
+-(IBAction)contendClick:(NSInteger)secIndex AndRowIndex:(NSInteger)rouIndex AndUrl:(NSString *)url;
+-(IBAction)imageClickWithUrl:(NSString *)url;
 -(void)viewmove:(CGFloat) variety andUIView:(UIView *)scrollView;
+-(void)videoPlayClickWithUrl:(NSString *)url;
 @end
 
 @interface SCAllCourseView : UIView

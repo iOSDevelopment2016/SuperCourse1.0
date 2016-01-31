@@ -15,6 +15,8 @@
 #import "AFNetworking.h"
 #import "NSData+SZYKit.h"
 #import "AFDownloadRequestOperation.h"
+
+
 #import "MJExtension.h"
 
 
@@ -42,7 +44,7 @@
 @property (nonatomic ,strong) SCCustomButton *startBtn;
 
 @property (nonatomic ,strong) UITableView *firstTableView;
-@property (nonatomic ,strong) UITableView *secondTableView;
+//@property (nonatomic ,strong) UITableView *secondTableView;
 
 @property (nonatomic ,strong) UIButton     *leftBtn;
 @property (nonatomic ,strong) UIButton     *rightBtn;
@@ -123,9 +125,8 @@
         self.currentSource=self.firstCategory;
 
         [self addSubview:self.firstTableView];
-        [self addSubview:self.secondTableView];
 
-        //[self.activityIndicator stopAnimating];               !!!!!!!!!
+        //[self.activityIndicator stopAnimating];               !!!!!!!!!停止加载动画
         //        NSLog(@"%@", first.course_catagory_title);
 //        NSLog(@"%@", first.course_category_id);
 //        NSLog(@"%@", first.sec_arr);
@@ -158,7 +159,7 @@
     self.leftBtn.frame=CGRectMake(0.312*self.width, 670*HeightScale, 0.127*self.width, 130*HeightScale);
     self.rightBtn.frame=CGRectMake(0.562*self.width, 670*HeightScale, 0.127*self.width, 130*HeightScale);
     self.firstTableView.frame = CGRectMake(0, 800*HeightScale, self.width, 500*HeightScale);
-    self.secondTableView.frame = CGRectMake(0, 800*HeightScale, self.width, 500*HeightScale);
+    //self.secondTableView.frame = CGRectMake(0, 800*HeightScale, self.width, 500*HeightScale);
 }
 
 #pragma mark - delegate
@@ -168,13 +169,18 @@
 //         return cell.frame.size.height;
 //}
 
--(IBAction)downloadClick:(id)sender{
+-(IBAction)downloadClickWithWithSectionIndex:(NSInteger)secIndex AndRowIndex:(NSInteger)rowIndex{
     //    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     //    NSString *docDir = [paths objectAtIndex:0];
-    NSString *srlStr = @"http://www.shengcaibao.com/download/SCB/1.mp3";
+    SCCourseGroup *courseGroup=self.firstCategory.sec_arr[secIndex];
+    SCCourse *selectedCourse = courseGroup.lesarr[rowIndex];
+
+    NSString *url=selectedCourse.les_url;
+
+    //NSString *srlStr = @"http://www.shengcaibao.com/download/SCB/1.mp3";
     //如果请求正文包含中文，需要处理
     //    srlStr = [srlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:srlStr]];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
     NSString *filePath = [NSHomeDirectory() stringByAppendingPathComponent:@"/Library/Caches/music.mp3"];
     self.fileDownloader = [[AFDownloadRequestOperation alloc]initWithRequest:request fileIdentifier:@"music.mp3" targetPath:filePath shouldResume:YES];
     self.fileDownloader.shouldOverwrite = YES;
@@ -204,6 +210,26 @@
     
 }
 
+-(IBAction)contendFieldDidClickWithSectionIndex:(NSInteger)secIndex AndRowIndex:(NSInteger)rowIndex{
+    SCCourseGroup *courseGroup=self.firstCategory.sec_arr[secIndex];
+    SCCourse *selectedCourse = courseGroup.lesarr[rowIndex];
+    if ([selectedCourse.operations isEqualToString:@"视频"]) {
+        NSString *urlvideo = selectedCourse.les_url;
+        [self.delegate videoPlayClickWithUrl:urlvideo];
+    }else if ([selectedCourse.operations isEqualToString:@"网页"]) {
+        NSString *urlWeb=selectedCourse.les_url;
+        [self.delegate contendClick:secIndex AndRowIndex:rowIndex AndUrl:urlWeb];
+    }
+}
+
+-(IBAction)imageBtnDidClickWithSectionIndex:(NSInteger)secIndex AndRowIndex:(NSInteger)rowIndex{
+    SCCourseGroup *courseGroup=self.firstCategory.sec_arr[secIndex];
+    SCCourse *selectedCourse = courseGroup.lesarr[rowIndex];
+    NSString *url=selectedCourse.les_url;
+    [self.delegate imageClickWithUrl:url];
+}
+
+
 # pragma mark - 私有方法
 -(void)move:(CGFloat)x{
     if(x>0){
@@ -225,18 +251,8 @@
     
     [self.delegate startBtnDidClick];
 }
--(IBAction)contendFieldDidClickWithSectionIndex:(NSInteger)secIndex AndRowIndex:(NSInteger)rowIndex{
-    SCCourse *selectedCourse = self.firstCategory.sec_arr[secIndex][rowIndex];
-    if ([selectedCourse.operations isEqualToString:@"视频"]) {
-        //
-    }else if ([selectedCourse.operations isEqualToString:@"网页"]) {
-        [self.delegate contendClick:secIndex AndRowIndex:rowIndex];
-    }
-}
 
--(IBAction)imageBtnDidClick{
-    [self.delegate imageClick];
-}
+
 
 -(void)leftBtnClick{
     self.leftBtn.selected=YES;
@@ -308,15 +324,15 @@
     return  _firstTableView;
 }
 
--(UITableView *)secondTableView{
-    if(!_secondTableView){
-        _secondTableView = [[UITableView alloc]init];
-        _secondTableView.dataSource = self;
-        _secondTableView.delegate = self;
-    }
-    return  _secondTableView;
-}
-
+//-(UITableView *)secondTableView{
+//    if(!_secondTableView){
+//        _secondTableView = [[UITableView alloc]init];
+//        _secondTableView.dataSource = self;
+//        _secondTableView.delegate = self;
+//    }
+//    return  _secondTableView;
+//}
+//
 
 
 
@@ -424,6 +440,7 @@
         [cell.contentField setTitle:temp_.les_name forState:UIControlStateNormal];
         [cell.contentField setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateHighlighted];
         cell.contentField.tag =indexPath.section * 1000 + indexPath.row;
+        cell.imageBtn.tag =indexPath.section * 1000 + indexPath.row;
         
     }
     return cell;

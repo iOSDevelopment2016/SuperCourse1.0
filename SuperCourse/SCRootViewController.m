@@ -143,7 +143,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 //}
 
 #pragma mark - SCAllCourseViewDelegate
--(IBAction)contendClick:(NSInteger)secIndex AndRowIndex:(NSInteger)rouIndex{
+-(IBAction)contendClick:(NSInteger)secIndex AndRowIndex:(NSInteger)rouIndex AndUrl:(NSString *)url{
     [self.view addSubview:self.hubView];
     self.webView = [[UIWebView alloc]initWithFrame:CGRectMake(100, 100, 1000, 800)];
     
@@ -166,7 +166,18 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     [self.webView loadRequest:request];
     
 }
--(IBAction)imageClick{
+
+-(void)videoPlayClickwithUrl:(NSString *)url{
+    SCPlayerViewController *playVC = [[SCPlayerViewController alloc]init];
+    playVC.currentVideoInfo = allCourseArr[5];
+    [self.navigationController pushViewController:playVC animated:YES];
+
+}
+
+
+
+-(IBAction)imageClickWithUrl:(NSString *)url{
+    //加错了 加入的是简介 回来改
     [self.view addSubview:self.hubView];
     [self.view addSubview:self.itemView];
 }

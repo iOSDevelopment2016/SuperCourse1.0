@@ -51,12 +51,20 @@
     [self.delegate contendFieldDidClickWithSectionIndex:secIndex AndRowIndex:rowIndex ];
 }
 
-- (IBAction)imageBtnClick:(id)sender {
-    [self.delegate imageBtnDidClick];
+- (IBAction)imageBtnClick:(UIButton *)sender {
+    
+    NSInteger tag = sender.tag;
+    NSInteger secIndex = tag / 1000;
+    NSInteger rowIndex = tag - secIndex * 1000;
+
+    [self.delegate imageBtnDidClickWithSectionIndex:secIndex AndRowIndex:rowIndex];
 }
 
-- (IBAction)downloadBtnClick:(id)sender {
-    [self.delegate downloadClick:sender];
+- (IBAction)downloadBtnClick:(UIButton *)sender {
+    NSInteger tag = sender.tag;
+    NSInteger secIndex = tag / 1000;
+    NSInteger rowIndex = tag - secIndex * 1000;
+    [self.delegate downloadClickWithWithSectionIndex:secIndex AndRowIndex:rowIndex];
     
 }
 @end

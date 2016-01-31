@@ -11,8 +11,8 @@
 @protocol SCCourseTableViewDelegate <NSObject>
 
 - (IBAction)contendFieldDidClickWithSectionIndex:(NSInteger)secIndex AndRowIndex:(NSInteger)rowIndex;
-- (IBAction)imageBtnDidClick;
-- (IBAction)downloadClick:(id)sender;
+- (IBAction)imageBtnDidClickWithSectionIndex:(NSInteger)secIndex AndRowIndex:(NSInteger)rowIndex;
+- (IBAction)downloadClickWithWithSectionIndex:(NSInteger)secIndex AndRowIndex:(NSInteger)rowIndex;
 
 @end
 @interface SCCourseTableViewCell : UITableViewCell

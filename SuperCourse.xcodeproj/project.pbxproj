@@ -40,6 +40,7 @@
 		FE005B991C55FFD200920EFB /* SCCourseCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = FE005B981C55FFD200920EFB /* SCCourseCategory.m */; };
 		FE005B9D1C56190400920EFB /* SCCourseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE005B9B1C56190300920EFB /* SCCourseTableViewCell.m */; };
 		FE005B9E1C56190400920EFB /* SCCourseTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE005B9C1C56190300920EFB /* SCCourseTableViewCell.xib */; };
+		FE10F0011C5BAC61001FC52E /* SCSettingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE10F0001C5BAC61001FC52E /* SCSettingView.xib */; };
 		FE5835601C58FC01004DFA97 /* AFDownloadRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5835371C58FC01004DFA97 /* AFDownloadRequestOperation.m */; };
 		FE5835611C58FC01004DFA97 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE58353A1C58FC01004DFA97 /* AFHTTPRequestOperation.m */; };
 		FE5835621C58FC01004DFA97 /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FE58353C1C58FC01004DFA97 /* AFHTTPRequestOperationManager.m */; };
@@ -154,6 +155,7 @@
 		FE005B9A1C56190300920EFB /* SCCourseTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCourseTableViewCell.h; sourceTree = "<group>"; };
 		FE005B9B1C56190300920EFB /* SCCourseTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCourseTableViewCell.m; sourceTree = "<group>"; };
 		FE005B9C1C56190300920EFB /* SCCourseTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCCourseTableViewCell.xib; sourceTree = "<group>"; };
+		FE10F0001C5BAC61001FC52E /* SCSettingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCSettingView.xib; sourceTree = "<group>"; };
 		FE5835361C58FC01004DFA97 /* AFDownloadRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFDownloadRequestOperation.h; sourceTree = "<group>"; };
 		FE5835371C58FC01004DFA97 /* AFDownloadRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFDownloadRequestOperation.m; sourceTree = "<group>"; };
 		FE5835391C58FC01004DFA97 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
@@ -430,6 +432,7 @@
 			children = (
 				C9E4E68D1C53C2AC0052030E /* SCSettingViewController.h */,
 				C9E4E68E1C53C2AC0052030E /* SCSettingViewController.m */,
+				FE10F0001C5BAC61001FC52E /* SCSettingView.xib */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -670,6 +673,7 @@
 				FE005B9E1C56190400920EFB /* SCCourseTableViewCell.xib in Resources */,
 				DAE2880E1C59EA3A00426DDD /* SCLoginView.xib in Resources */,
 				FE60E6771C5783870005F9F3 /* SCItemView.xib in Resources */,
+				FE10F0011C5BAC61001FC52E /* SCSettingView.xib in Resources */,
 				C9E4E6521C53BAF30052030E /* LaunchScreen.storyboard in Resources */,
 				C9E4E64F1C53BAF30052030E /* Assets.xcassets in Resources */,
 			);
