@@ -35,8 +35,7 @@
 {
     self.textArray = [[NSMutableArray alloc] initWithCapacity:0];
     for (int i = 0; i < array.count; i ++) {
-        NSDictionary *dic = [array objectAtIndex:i];
-        [self.textArray addObject:[dic objectForKey:@"name"]];
+        [self.textArray addObject: [array objectAtIndex:i]];
     }
     sizeFit = CGSizeZero;
     [self display];
@@ -62,13 +61,14 @@
 
     for (NSString *text in self.textArray) {
 
-        CGSize textSize =  [text boundingRectWithSize:boundSize options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:13],NSFontAttributeName, nil] context:nil].size;
+        CGSize textSize =  [text boundingRectWithSize:boundSize options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:45],NSFontAttributeName, nil] context:nil].size;
         
         textSize.width += HORIZONTAL_PADDING * 2;
         textSize.height += VERTICAL_PADDING * 2;
 
         UIButton *button = nil;
-        
+        [button.layer setBorderWidth:3];
+        button.selected = NO;
         if (!gotPreviousFrame) {
             
             button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, textSize.width, textSize.height)];
@@ -96,7 +96,7 @@
         previousFrame = button.frame;
         gotPreviousFrame = YES;
 
-        button.titleLabel.font = [UIFont fontWithName:@"YouYuan-----" size:13.0];
+        button.titleLabel.font = [UIFont systemFontOfSize:35*WidthScale];
         
         if (!lblBackgroundColor) {
 
@@ -109,11 +109,12 @@
         }
         
         [button setTitle:text forState:UIControlStateNormal];
-        [button setTitleColor:TEXT_COLOR forState:UIControlStateNormal];
+        [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [button.layer setMasksToBounds:YES];
+        
         [button.layer setCornerRadius:CORNER_RADIUS];
-        [button.layer setBorderColor:BORDER_COLOR];
-        [button.layer setBorderWidth: BORDER_WIDTH];
+        [button.layer setBorderColor:[UIColor clearColor].CGColor];
+        [button.layer setBorderWidth: 2];
         
         [button addTarget:self action:@selector(searchButtonClicke:) forControlEvents:UIControlEventTouchUpInside];
         

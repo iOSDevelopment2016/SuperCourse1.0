@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SCPointView.h"
 #import "ZQTagList.h"
-@interface SCRightView : UIView
+@interface SCRightView : UIView<ZQTagListDelegate>
 @property (nonatomic, strong) IBOutlet UIView *topView;
 @property (nonatomic, strong) IBOutlet UIButton *pointBtn;
 @property (nonatomic, strong) IBOutlet UIButton *extendBtn;
@@ -26,5 +26,6 @@
 @property NSArray *extendArr;
 @property (nonatomic, strong) NSMutableArray *subTitleArr;
 
+@property (nonatomic, assign) id<SCPointViewDelegate> pointViewDelegate;
 @end
 

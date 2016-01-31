@@ -15,8 +15,8 @@ typedef void (^playProgressHandler)(NSTimeInterval elapsedTime, NSTimeInterval t
 
 @interface SZYVideoManager : NSObject
 
-//获取单例（初始化方法）
 +(instancetype)defaultManager;
+
 //加载网络视频
 -(void)setUpRemoteVideoPlayerWithContentURL:(NSURL *)contentURL view:(UIView *)view;
 //开始播放
@@ -29,6 +29,18 @@ typedef void (^playProgressHandler)(NSTimeInterval elapsedTime, NSTimeInterval t
 -(void)stop;
 //调节进度
 -(void)moveToSecond:(NSTimeInterval)second;
+//获取当前正在播放的进度
+-(CGFloat)currentTime;
+//设置播放速率
+-(void)setCurrentRate:(float)rate;
+//获取当前播放速率
+-(float)currentRate;
+//以当前速率向前
+-(void)beginSeekingForward;
+//以当前速率向后
+-(void)beginSeekingBackward;
+//结束追溯
+-(void)endSeeking;
 
 @end
 
