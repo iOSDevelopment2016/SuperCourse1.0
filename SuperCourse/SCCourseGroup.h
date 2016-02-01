@@ -10,8 +10,8 @@
 
 @interface SCCourseGroup : NSObject
 
-@property (nonatomic, strong) NSString *lessections_id;      //课程分组内码
-@property (nonatomic, strong) NSString *lessections_name;   //课程分组标题
+@property (nonatomic, strong) NSString *lesgrouping_id;      //课程分组内码
+@property (nonatomic, strong) NSString *lesgrouping_name;   //课程分组标题
 
 
 @property (nonatomic, strong) NSString *order_num;
@@ -20,5 +20,7 @@
 @property (nonatomic, strong) NSArray *lesarr;           //课程列表
 
 //[{"lessections_id":"0000","order_num":"0","lessections_name":"Xcode\u4ecb\u7ecd","lesarr":
+
++(instancetype)modelWithDict:(NSDictionary *)dict;
 
 @end

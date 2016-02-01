@@ -331,14 +331,6 @@
 			children = (
 				C90DE85E1C54AA9A00B7137F /* SCVIdeoInfo.h */,
 				C90DE85F1C54AA9A00B7137F /* SCVIdeoInfo.m */,
-				FE005B911C55FD2500920EFB /* SCCourse.h */,
-				FE005B921C55FD2500920EFB /* SCCourse.m */,
-				FE005B941C55FEB100920EFB /* SCCourseGroup.h */,
-				FE005B951C55FEB100920EFB /* SCCourseGroup.m */,
-				FE005B971C55FFD200920EFB /* SCCourseCategory.h */,
-				FE005B981C55FFD200920EFB /* SCCourseCategory.m */,
-				FE7F65161C5DA9EF009C7F21 /* SCCourseCategoryList.h */,
-				FE89CABF1C5B440C0091D23B /* SCCourseCategoryList.m */,
 			);
 			name = DataModel;
 			sourceTree = "<group>";
@@ -601,6 +593,14 @@
 		FE7F65171C5DE2EF009C7F21 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				FE005B911C55FD2500920EFB /* SCCourse.h */,
+				FE005B921C55FD2500920EFB /* SCCourse.m */,
+				FE005B941C55FEB100920EFB /* SCCourseGroup.h */,
+				FE005B951C55FEB100920EFB /* SCCourseGroup.m */,
+				FE005B971C55FFD200920EFB /* SCCourseCategory.h */,
+				FE005B981C55FFD200920EFB /* SCCourseCategory.m */,
+				FE7F65161C5DA9EF009C7F21 /* SCCourseCategoryList.h */,
+				FE89CABF1C5B440C0091D23B /* SCCourseCategoryList.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";

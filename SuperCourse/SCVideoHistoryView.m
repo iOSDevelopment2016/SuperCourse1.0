@@ -186,8 +186,8 @@
 
 -(SCCourseCategory *)getCourseCatagory2:(NSString *)title{
     SCCourseCategory *temp = [[SCCourseCategory alloc]init];
-    temp.course_catagory_title = title;
-    temp.course_category_id = @"UUID";
+    temp.lesgrouping_name = title;
+    temp.lesgrouping_id = @"UUID";
     SCCourseGroup *c1 = [self getCourseGroup:@"改变了"];
     SCCourseGroup *c2 = [self getCourseGroup:@"第二分组"];
     SCCourseGroup *c3 = [self getCourseGroup:@"第三分组"];
@@ -201,8 +201,8 @@
 
 -(SCCourseGroup *)getCourseGroup:(NSString *)title{
     SCCourseGroup *temp = [[SCCourseGroup alloc]init];
-    temp.lessections_name = title;
-    temp.lessections_id = @"UUID";
+//    temp.lessections_name = title;
+//    temp.lessections_id = @"UUID";
     SCCourse *c1 = [self getCourse:@"这是视频"];
     SCCourse *c2 = [self getCourse:@"这是网页"];
     SCCourse *c3 = [self getCourse:@"第3节课"];
@@ -215,8 +215,8 @@
 }
 -(SCCourseCategory *)getCourseCatagory:(NSString *)title{
     SCCourseCategory *temp = [[SCCourseCategory alloc]init];
-    temp.course_catagory_title = title;
-    temp.course_category_id = @"UUID";
+    temp.lesgrouping_name = title;
+    temp.lesgrouping_id = @"UUID";
     SCCourseGroup *c1 = [self getCourseGroup:@"第一分组"];
     SCCourseGroup *c2 = [self getCourseGroup:@"第二分组"];
     SCCourseGroup *c3 = [self getCourseGroup:@"第三分组"];

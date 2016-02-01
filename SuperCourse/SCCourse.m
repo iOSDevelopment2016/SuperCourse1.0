@@ -7,8 +7,17 @@
 //
 
 #import "SCCourse.h"
+#import "MJExtension.h"
 
 @implementation SCCourse
+
+
++(instancetype)modelWithDict:(NSDictionary *)dict{
+    
+    SCCourse *course = [SCCourse objectWithKeyValues:dict];
+    return course;
+    
+}
 
 
 @end

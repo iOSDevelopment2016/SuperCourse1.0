@@ -28,7 +28,6 @@
 @property (nonatomic,strong)UIView *scrollSearchView;
 @property (nonatomic, strong)UIView *stateView;
 @property (nonatomic,strong)UILabel *state;
-@property (nonatomic,strong)NSString *keyWord;
 @end
 @implementation SCSearchView
 
@@ -41,12 +40,12 @@
 */
 
 
-- (instancetype)initWithFrame:(CGRect)frame searchKeyWord:(NSString *)keyWord
+
+- (instancetype)init
 {
-    self = [super initWithFrame:frame];
+    self = [super init];
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
-        self.keyWord = keyWord;
         [self initData];
         [self addSubview:self.firstSearchTableView];
         [self addSubview:self.scrollSearchView];
@@ -54,7 +53,6 @@
         [self addSubview:self.rightBtn];
         [self addSubview:self.stateView];
         [self addSubview:self.state];
-
     }
     return self;
 }
@@ -241,54 +239,54 @@
     
     //网络调用
     
-    self.firstSearchCategory = [self getCourseCatagory:@"大纲"];
-    self.secondSearchCategory = [self getCourseCatagory:@"拓展"];
+//    self.firstSearchCategory = [self getCourseCatagory:@"大纲"];
+//    self.secondSearchCategory = [self getCourseCatagory:@"拓展"];
 
     self.currentSource = self.firstSearchCategory;
 }
 
 
--(SCCourseCategory *)getCourseCatagory2:(NSString *)title{
-    SCCourseCategory *temp = [[SCCourseCategory alloc]init];
-    temp.course_catagory_title = title;
-    temp.course_category_id = @"UUID";
-    SCCourseGroup *c1 = [self getCourseGroup:@"改变了"];
-    SCCourseGroup *c2 = [self getCourseGroup:@"第二分组"];
-    SCCourseGroup *c3 = [self getCourseGroup:@"第三分组"];
-    SCCourseGroup *c4 = [self getCourseGroup:@"第四分组"];
-    temp.sec_arr = @[c1,c2,c3,c4];
-    return temp;
-    
-}
-
-
-
--(SCCourseGroup *)getCourseGroup:(NSString *)title{
-    SCCourseGroup *temp = [[SCCourseGroup alloc]init];
-    temp.lessections_name = title;
-    temp.lessections_id = @"UUID";
-    SCCourse *c1 = [self getCourse:@"这是视频"];
-    SCCourse *c2 = [self getCourse:@"这是网页"];
-    SCCourse *c3 = [self getCourse:@"第3节课"];
-    SCCourse *c4 = [self getCourse:@"第4节课"];
-    SCCourse *c5 = [self getCourse:@"第5节课"];
-    SCCourse *c6 = [self getCourse:@"第6节课"];
-    temp.lesarr = @[c1,c2,c3,c4,c5,c6];
-    return temp;
-    
-}
--(SCCourseCategory *)getCourseCatagory:(NSString *)title{
-    SCCourseCategory *temp = [[SCCourseCategory alloc]init];
-    temp.course_catagory_title = title;
-    temp.course_category_id = @"UUID";
-    SCCourseGroup *c1 = [self getCourseGroup:@"第一分组"];
-    SCCourseGroup *c2 = [self getCourseGroup:@"第二分组"];
-    SCCourseGroup *c3 = [self getCourseGroup:@"第三分组"];
-    SCCourseGroup *c4 = [self getCourseGroup:@"第四分组"];
-    temp.sec_arr = @[c1,c2,c3,c4];
-    return temp;
-    
-}
+//-(SCCourseCategory *)getCourseCatagory2:(NSString *)title{
+//    SCCourseCategory *temp = [[SCCourseCategory alloc]init];
+//    temp.course_catagory_title = title;
+//    temp.course_category_id = @"UUID";
+//    SCCourseGroup *c1 = [self getCourseGroup:@"改变了"];
+//    SCCourseGroup *c2 = [self getCourseGroup:@"第二分组"];
+//    SCCourseGroup *c3 = [self getCourseGroup:@"第三分组"];
+//    SCCourseGroup *c4 = [self getCourseGroup:@"第四分组"];
+//    temp.sec_arr = @[c1,c2,c3,c4];
+//    return temp;
+//    
+//}
+//
+//
+//
+//-(SCCourseGroup *)getCourseGroup:(NSString *)title{
+//    SCCourseGroup *temp = [[SCCourseGroup alloc]init];
+//    temp.lessections_name = title;
+//    temp.lessections_id = @"UUID";
+//    SCCourse *c1 = [self getCourse:@"这是视频"];
+//    SCCourse *c2 = [self getCourse:@"这是网页"];
+//    SCCourse *c3 = [self getCourse:@"第3节课"];
+//    SCCourse *c4 = [self getCourse:@"第4节课"];
+//    SCCourse *c5 = [self getCourse:@"第5节课"];
+//    SCCourse *c6 = [self getCourse:@"第6节课"];
+//    temp.lesarr = @[c1,c2,c3,c4,c5,c6];
+//    return temp;
+//    
+//}
+//-(SCCourseCategory *)getCourseCatagory:(NSString *)title{
+//    SCCourseCategory *temp = [[SCCourseCategory alloc]init];
+//    temp.course_catagory_title = title;
+//    temp.course_category_id = @"UUID";
+//    SCCourseGroup *c1 = [self getCourseGroup:@"第一分组"];
+//    SCCourseGroup *c2 = [self getCourseGroup:@"第二分组"];
+//    SCCourseGroup *c3 = [self getCourseGroup:@"第三分组"];
+//    SCCourseGroup *c4 = [self getCourseGroup:@"第四分组"];
+//    temp.sec_arr = @[c1,c2,c3,c4];
+//    return temp;
+//    
+//}
 
 //生成一个课程信息
 -(SCCourse *)getCourse:(NSString *)title{
