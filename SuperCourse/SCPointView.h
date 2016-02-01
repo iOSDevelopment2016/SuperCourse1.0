@@ -24,5 +24,5 @@
 
 - (instancetype)initWithFrame:(CGRect)frame AndObject:(NSMutableArray *)tempModel;
 - (void)changeSubTitleViewWithTime:(NSTimeInterval)elapsedTime;
-
+- (NSString *)getCurrentSubTitle:(NSTimeInterval)elapsedTime;
 @end

@@ -90,7 +90,20 @@
     }
 
 }
-                          
+
+-(NSString *)getCurrentSubTitle:(NSTimeInterval)elapsedTime{
+
+    UIView *subTitleView = nil;
+    NSString *text;
+    for (subTitleView in self.subviews) {
+        if (subTitleView.tag <= (int)elapsedTime) {
+            [self getCurrentImageViewAndLabel:subTitleView];
+            text = self.currentLabel.text;
+        }
+    }
+    return text;
+}
+
 -(UIView *)getLetterViewWithLabel:(UILabel *)letterLabel AndView:(UIView *)letterView AndimageView:(UIImageView *)imageView Andimage:(UIImage *)image AndLetter:(NSString *)letter{
     
     imageView.frame = CGRectMake(32*WidthScale , 32*HeightScale, 36*WidthScale, 36*HeightScale);

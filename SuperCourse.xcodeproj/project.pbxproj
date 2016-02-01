@@ -15,6 +15,7 @@
 		7D3629531C5DAEF100A52AFA /* SCPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3629521C5DAEF100A52AFA /* SCPlayerViewController.m */; };
 		7D3629561C5DAF1D00A52AFA /* ZQTagList.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3629551C5DAF1D00A52AFA /* ZQTagList.m */; };
 		7D3629591C5DAF2E00A52AFA /* SZYVideoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3629581C5DAF2E00A52AFA /* SZYVideoManager.m */; };
+		7D45DEA31C5E1F2C00462B56 /* SCWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D45DEA21C5E1F2C00462B56 /* SCWebViewController.m */; };
 		C90DE85C1C53FABA00B7137F /* SCCustomButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C90DE85B1C53FABA00B7137F /* SCCustomButton.m */; };
 		C90DE8601C54AA9A00B7137F /* SCVIdeoInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = C90DE85F1C54AA9A00B7137F /* SCVIdeoInfo.m */; };
 		C9E4E6441C53BAF30052030E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E4E6431C53BAF30052030E /* main.m */; };
@@ -113,6 +114,8 @@
 		7D3629551C5DAF1D00A52AFA /* ZQTagList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZQTagList.m; sourceTree = "<group>"; };
 		7D3629571C5DAF2E00A52AFA /* SZYVideoManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SZYVideoManager.h; sourceTree = "<group>"; };
 		7D3629581C5DAF2E00A52AFA /* SZYVideoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SZYVideoManager.m; sourceTree = "<group>"; };
+		7D45DEA11C5E1F2C00462B56 /* SCWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCWebViewController.h; sourceTree = "<group>"; };
+		7D45DEA21C5E1F2C00462B56 /* SCWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCWebViewController.m; sourceTree = "<group>"; };
 		C90DE85A1C53FABA00B7137F /* SCCustomButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCustomButton.h; sourceTree = "<group>"; };
 		C90DE85B1C53FABA00B7137F /* SCCustomButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCustomButton.m; sourceTree = "<group>"; };
 		C90DE85E1C54AA9A00B7137F /* SCVIdeoInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCVIdeoInfo.h; sourceTree = "<group>"; };
@@ -276,6 +279,23 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
+		7D45DE9F1C5E1EFE00462B56 /* Web */ = {
+			isa = PBXGroup;
+			children = (
+				7D45DEA01C5E1F0A00462B56 /* Controller */,
+			);
+			name = Web;
+			sourceTree = "<group>";
+		};
+		7D45DEA01C5E1F0A00462B56 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				7D45DEA11C5E1F2C00462B56 /* SCWebViewController.h */,
+				7D45DEA21C5E1F2C00462B56 /* SCWebViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
 		C90DE8511C53EDB000B7137F /* Player */ = {
 			isa = PBXGroup;
 			children = (
@@ -346,6 +366,7 @@
 		C9E4E6411C53BAF30052030E /* SuperCourse */ = {
 			isa = PBXGroup;
 			children = (
+				7D45DE9F1C5E1EFE00462B56 /* Web */,
 				DAF87A751C59073E00079F69 /* WebService */,
 				FE5835351C58FC01004DFA97 /* ThirdTools */,
 				C90DE85D1C54AA7A00B7137F /* DataModel */,
@@ -791,6 +812,7 @@
 				7D3629591C5DAF2E00A52AFA /* SZYVideoManager.m in Sources */,
 				FE005B931C55FD2500920EFB /* SCCourse.m in Sources */,
 				FE7F65151C5DA9AF009C7F21 /* SCVideoHistoryView.m in Sources */,
+				7D45DEA31C5E1F2C00462B56 /* SCWebViewController.m in Sources */,
 				DA9CF7741C599D3100F6CEA6 /* HttpTool.m in Sources */,
 				FE005B9D1C56190400920EFB /* SCCourseTableViewCell.m in Sources */,
 				FE5835671C58FC01004DFA97 /* AFURLRequestSerialization.m in Sources */,

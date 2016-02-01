@@ -30,16 +30,15 @@
 }
 
 
-+(instancetype)defaultManager{
-    
-    static SZYVideoManager *manager = nil;
-    static dispatch_once_t once;
-    dispatch_once(&once, ^{
-        manager = [[SZYVideoManager alloc]init];
-    });
-    return manager;
-}
-
+//+(instancetype)defaultManager{
+//    
+//    static SZYVideoManager *manager = nil;
+//    static dispatch_once_t once;
+//    dispatch_once(&once, ^{
+//        manager = [[SZYVideoManager alloc]init];
+//    });
+//    return manager;
+//}
 
 
 -(void)dealloc{

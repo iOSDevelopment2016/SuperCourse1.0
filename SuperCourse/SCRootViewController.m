@@ -192,7 +192,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 -(void)startBtnDidClick{
     
     SCPlayerViewController *playVC = [[SCPlayerViewController alloc]init];
-    playVC.currentVideoInfo = allCourseArr[5];
+//    playVC.currentVideoInfo = allCourseArr[5];
     [self.navigationController pushViewController:playVC animated:YES];
     
 }

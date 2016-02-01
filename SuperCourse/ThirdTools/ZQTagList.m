@@ -159,7 +159,7 @@
 - (void)searchButtonClicke:(UIButton *)sender {
     
     [self clearBtnLooking];
-//    sender.selected = YES;
+    sender.selected = YES;
     [sender setTitleColor:UIThemeColor forState:UIControlStateSelected];
     sender.layer.borderColor = UIThemeColor.CGColor;
     

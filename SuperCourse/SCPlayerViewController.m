@@ -14,9 +14,12 @@
 #import "SCVideoInfoModel.h"
 #import "SCVideoLinkMode.h"
 #import "SCVideoSubTitleMode.h"
+#import "SCWebViewController.h"
 
 @interface SCPlayerViewController ()<SCPointViewDelegate, SCRightViewDelegate>{
     BOOL isAnimating; // 正在动画
+    BOOL isFirstView;
+    BOOL shouldPlaying;
 }
 
 @property (nonatomic ,strong) SCVIdeoInfo *currentVideoInfo;
@@ -49,14 +52,12 @@
 @property (nonatomic, strong) IBOutlet UIView *writeNoteView;
 @property (nonatomic, strong) IBOutlet UILabel *isDownloadLabel;
 @property (nonatomic, strong) SCPointView *pointView;
-
 @property (nonatomic, assign) CGFloat currentTime;
-
 @property (nonatomic, strong) UIPanGestureRecognizer *pan;
 @property (nonatomic, strong) IBOutlet UIButton *nextPlayerPlayBtn;
-
-
 @property (nonatomic, strong) SCVideoInfoModel *videoInfo;
+@property (nonatomic, strong) NSString *nowPointString;
+@property (nonatomic, assign) CGFloat stopTime;
 
 @end
 
@@ -67,14 +68,36 @@
     isAnimating = NO; //防止重复的动画
     [self loadDataStub]; //加载数据桩
     [self addAllControl]; //加载界面上的所有控件
-    [self initVideoManager]; //初始化视频播放器
+//    [self addAllControl]; //加载界面上的所有控件
+    isFirstView = YES;
+    
+    [self loadVideoInfo]; //从网络上下载视频文件的所有信息
+    
+    shouldPlaying = YES;
+    self.videoManager = [[SZYVideoManager alloc]init];
+    [self initVideoManager];
+}
+
+// 从网络下载视频文件的所有信息
+-(void)loadVideoInfo{
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+
+//    [self initVideoManager]; //初始化视频播放器
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:VideoLoadDoneNotification object:nil];
 }
 
 -(void)initVideoManager{
 
     NSURL *murl=[NSURL fileURLWithPath:self.videoInfo.videoUrl];
-    [[SZYVideoManager defaultManager] setUpRemoteVideoPlayerWithContentURL:murl view:self.container];
+    [self.videoManager setUpRemoteVideoPlayerWithContentURL:murl view:self.container];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoLoadDone:) name:VideoLoadDoneNotification object:nil];
+
     [self.container addSubview:self.startBtnView];
     [self.view addSubview:self.writeNoteView];
 }
@@ -163,8 +186,7 @@
 
 -(void)playerPlayFinished{
 
-    [self.pauseBtn removeFromSuperview];
-    [self.bottomView addSubview:self.nextPlayerPlayBtn];
+
     
 }
 
@@ -181,7 +203,9 @@
     int allSecond = playableDuration - allHour*3600 - allMinute*60;
     NSString *time = [NSString stringWithFormat:@"%02d:%02d:%02d/%02d:%02d:%02d",hour,minute,second,allHour,allMinute,allSecond];
     self.timeLable.text = time;
-    if (hour*2600+minute*60+second == allHour*3600+allMinute*60+allSecond) {
+    int nowTime =hour*2600+minute*60+second;
+    int fullTime =allHour*3600+allMinute*60+allSecond;
+    if (nowTime == fullTime) {
         [self playerPlayFinished];
     }
     
@@ -189,7 +213,7 @@
 
 -(void)turnToTime:(UIButton *)sender{
     
-    [[SZYVideoManager defaultManager] moveToSecond:(NSTimeInterval)sender.superview.tag];
+    [self.videoManager moveToSecond:(NSTimeInterval)sender.superview.tag];
 }
 
 
@@ -198,26 +222,31 @@
 -(void)backBtnClick{
     
     [self.navigationController popViewControllerAnimated:YES];
+    [self.videoManager stop];
 }
 
--(void)dealloc{
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:VideoLoadDoneNotification object:nil];
 
-}
 -(void)videoLoadDone:(NSNotification *)noti{
     
 
-    [[SZYVideoManager defaultManager] startWithHandler:^(NSTimeInterval elapsedTime, NSTimeInterval timeRemaining, NSTimeInterval playableDuration, BOOL finished) {
+    [self.videoManager moveToSecond:self.stopTime];
+    [self.videoManager startWithHandler:^(NSTimeInterval elapsedTime, NSTimeInterval timeRemaining, NSTimeInterval playableDuration, BOOL finished) {
         [self showCurrentTime:elapsedTime AndplayableDuration:playableDuration];
         self.currentTime = elapsedTime;
+        self.nowPointString = [self.rightView.pointView getCurrentSubTitle:elapsedTime];
         if (self.rightView.pointView) {
             [self.rightView.pointView changeSubTitleViewWithTime:elapsedTime];
         }
         [self.rightView.tagList changeBtnLookingWithTime:elapsedTime];
+        [self.nowPoint setTitle:self.nowPointString forState:UIControlStateNormal];
         
+        NSLog(@"-------%@",self);
     }];
-    
+    if (!shouldPlaying) {
+        [self.videoManager pause];
+    }else{
+        [self.videoManager resume];
+    }
     _slider = [[UISlider alloc]initWithFrame:CGRectMake(0 , self.startBtnView.height-60, self.startBtnView.width, 50)];
     [_slider addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
     _slider.minimumValue = 0;
@@ -232,44 +261,46 @@
 
 -(void)playBtnClick:(UIButton *)sender{
     if (!isAnimating) {
-        [[SZYVideoManager defaultManager] resume];
+        [self.videoManager resume];
         [self.playBtn removeFromSuperview];
         [self.bottomView addSubview:self.pauseBtn];
         self.startBtnView.hidden = YES;
         [self transformRecover];
+        shouldPlaying = YES;
     }
 }
 
 
 -(void)pauseBtnClick{
 
-    [[SZYVideoManager defaultManager] pause];
-//    [self.speedBtn setImage:[UIImage imageNamed:@"2X"] forState:UIControlStateNormal];
+    [self.videoManager pause];
     [self.pauseBtn removeFromSuperview];
     [self.bottomView addSubview:self.playBtn];
     self.startBtnView.hidden = NO;
     [self transformAnimated];
+    shouldPlaying = NO;
 }
 
 
 
 -(void)sliderValueChanged:(UISlider *)sender{
     
-    [[SZYVideoManager defaultManager] moveToSecond:sender.value];
-    [[SZYVideoManager defaultManager] pause];
+    [self.videoManager moveToSecond:sender.value];
+    [self.videoManager pause];
     [self.bottomView addSubview:self.playBtn];
     [self.pauseBtn removeFromSuperview];
 }
 
 -(CGFloat)currentRate{
     
-    return [[SZYVideoManager defaultManager]currentRate];
+    return [self.videoManager currentRate];
     
 }
 
 -(void)resume{
 
-    [[SZYVideoManager defaultManager] resume];
+    [self.videoManager resume];
+    shouldPlaying = YES;
     [self.bottomView addSubview:self.pauseBtn];
     [self.playBtn removeFromSuperview];
     self.startBtnView.hidden = YES;
@@ -281,23 +312,23 @@
     
     rate = [self currentRate];
     if (rate == 1.0) {
-        [[SZYVideoManager defaultManager]setCurrentRate:2.0];
+        [self.videoManager setCurrentRate:2.0];
         [self.speedBtn setImage:[UIImage imageNamed:@"5X"] forState:UIControlStateNormal];
         [self resume];
     }else if (rate == 2.0){
-        [[SZYVideoManager defaultManager]setCurrentRate:5.0];
+        [self.videoManager setCurrentRate:5.0];
         [self.speedBtn setImage:[UIImage imageNamed:@"10X"] forState:UIControlStateNormal];
         [self resume];
     }else if (rate == 5.0){
-        [[SZYVideoManager defaultManager]setCurrentRate:10.0];
+        [self.videoManager setCurrentRate:10.0];
         [self.speedBtn setImage:[UIImage imageNamed:@"20X"] forState:UIControlStateNormal];
         [self resume];
     }else if (rate == 10.0){
-        [[SZYVideoManager defaultManager]setCurrentRate:20.0];
+        [self.videoManager setCurrentRate:20.0];
         [self.speedBtn setImage:[UIImage imageNamed:@"1X"] forState:UIControlStateNormal];
         [self resume];
     }else {
-        [[SZYVideoManager defaultManager]setCurrentRate:1.0];
+        [self.videoManager setCurrentRate:1.0];
         [self.speedBtn setImage:[UIImage imageNamed:@"2X"] forState:UIControlStateNormal];
         [self resume];
     }
@@ -335,7 +366,8 @@
     if (!isAnimating) {
         self.startBtnView.hidden = YES;
         [self transformRecover];
-        [[SZYVideoManager defaultManager] resume];
+        [self.videoManager resume];
+        shouldPlaying = YES;
         [self.bottomView addSubview:self.pauseBtn];
         [self.playBtn removeFromSuperview];
     }
@@ -364,7 +396,8 @@
 -(void)addPoint{
     
     self.writeNoteView.hidden = YES;
-    [[SZYVideoManager defaultManager] resume];
+    [self.videoManager resume];
+    shouldPlaying = YES;
     [self.bottomView addSubview:self.pauseBtn];
     [self.playBtn removeFromSuperview];
 }
@@ -378,19 +411,20 @@
         if ([self.pauseBtn isDescendantOfView:self.bottomView]) {
             self.startBtnView.hidden = NO;
             [self transformAnimated];
-            [[SZYVideoManager defaultManager] pause];
+            [self.videoManager pause];
+            shouldPlaying = NO;
 //            [self.speedBtn setImage:[UIImage imageNamed:@"2X"] forState:UIControlStateNormal];
             [self.bottomView addSubview:self.playBtn];
             [self.pauseBtn removeFromSuperview];
             
         }else{
-            
-            if (_hidden == YES) {
-                [[SZYVideoManager defaultManager] resume];
+            shouldPlaying = YES;
+            if (_hidden) {
+                [self.videoManager resume];
                 [self.bottomView addSubview:self.pauseBtn];
                 [self.playBtn removeFromSuperview];
             }else{
-                [[SZYVideoManager defaultManager] resume];
+                [self.videoManager resume];
                 [self.bottomView addSubview:self.pauseBtn];
                 [self.playBtn removeFromSuperview];
                 self.startBtnView.hidden = YES;
@@ -398,6 +432,7 @@
                 
             }
         }
+//        shouldPlaying = !shouldPlaying;
 
     }
     
@@ -465,15 +500,15 @@
     CGFloat moveDistance = endStateX - beginStateX;
     if (endStateY >= 0 && endStateY < self.container.height/3) {
         CGFloat turnToSecond = self.currentTime+360*moveDistance/self.container.width ;
-        [[SZYVideoManager defaultManager] moveToSecond:turnToSecond];
+        [self.videoManager moveToSecond:turnToSecond];
 //        self.currentTime = turnToSecond;
     }else if (endStateY >= self.container.height/3 && endStateY < self.container.height*2/3){
         CGFloat turnToSecond = self.currentTime+(60*moveDistance/self.container.width) ;
-        [[SZYVideoManager defaultManager] moveToSecond:turnToSecond];
+        [self.videoManager moveToSecond:turnToSecond];
 //        self.currentTime = turnToSecond;
     }else if (endStateY >= self.container.height*2/3 && endStateY < self.container.height){
         CGFloat turnToSecond = self.currentTime+10*moveDistance/self.container.width ;
-        [[SZYVideoManager defaultManager] moveToSecond:turnToSecond];
+        [self.videoManager moveToSecond:turnToSecond];
 //        self.currentTime = turnToSecond;
     }
 }
@@ -544,6 +579,7 @@
         _nextPlayerPlayBtn.frame = CGRectMake(50*WidthScale, 45*HeightScale, 64*WidthScale, 64*HeightScale);
         [_nextPlayerPlayBtn setImage:[UIImage imageNamed:@"播放"] forState:UIControlStateNormal];
         [_nextPlayerPlayBtn addTarget:self action:@selector(nextPlayerPlayBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        
     }
     return _nextPlayerPlayBtn;
 }
@@ -612,7 +648,7 @@
     if (!_nowPoint) {
         _nowPoint = [UIButton buttonWithType:UIButtonTypeCustom];
         _nowPoint.frame = CGRectMake(630*WidthScale, 10, 440*WidthScale, 90*HeightScale);
-        [_nowPoint setTitle:@"当前：2.编程环境的搭建" forState:UIControlStateNormal];
+//        [_nowPoint setTitle:self.nowPointString forState:UIControlStateNormal];
         _nowPoint.titleLabel.font = [UIFont systemFontOfSize:35*WidthScale];
         [_nowPoint setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         [_nowPoint setTitleColor:UIThemeColor forState:UIControlStateHighlighted];
@@ -793,13 +829,30 @@
     return _pan;
 }
 
+-(void)pausePlayer{
+    
+    if ([self.videoManager currentRate] != 0) {
+        [self.videoManager pause];
+        [self.pauseBtn removeFromSuperview];
+        [self.bottomView addSubview:self.playBtn];
+        self.startBtnView.hidden = NO;
+        [self transformAnimated];
+        shouldPlaying = NO;
+    }
+}
+
 -(void)openLink:(SCVideoLinkMode *)link{
     SCPlayerViewController *playerVC = [[SCPlayerViewController alloc]init];
+    SCWebViewController *webVC = [[SCWebViewController alloc]init];
     if ([link.targetType isEqualToString:@"视频"]) {
+        self.stopTime = self.currentTime;
         playerVC.lessonId = link.lessonId;
+        isFirstView = NO;
+        [self pausePlayer];
         [self.navigationController pushViewController:playerVC animated:YES];
     }else if ([link.targetType isEqualToString:@"网页"]){
-        // 打开网页，未完成
+        [self pausePlayer];
+        [self.navigationController pushViewController:webVC animated:YES ];
     }
 }
 

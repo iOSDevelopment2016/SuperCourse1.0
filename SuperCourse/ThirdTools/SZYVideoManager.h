@@ -15,7 +15,7 @@ typedef void (^playProgressHandler)(NSTimeInterval elapsedTime, NSTimeInterval t
 
 @interface SZYVideoManager : NSObject
 
-+(instancetype)defaultManager;
+//+(instancetype)defaultManager;
 
 //加载网络视频
 -(void)setUpRemoteVideoPlayerWithContentURL:(NSURL *)contentURL view:(UIView *)view;
