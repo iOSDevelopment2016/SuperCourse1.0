@@ -9,7 +9,7 @@
 #import "SCSearchTableViewCell.h"
 #import "SCPlayerViewController.h"
 @interface SCSearchTableViewCell()
-- (IBAction)searchBtnClick:(id)sender;
+//- (IBAction)searchBtnClick:(id)sender;
 
 
 @end
@@ -33,12 +33,12 @@
     return _status;
 }
 #pragma  - mark click
-- (IBAction)searchBtnClick:(UIButton *)sender {
-    NSInteger tag = sender.tag;
-    NSInteger secIndex = tag / 1000;
-    NSInteger rowIndex = tag - secIndex * 1000;
-    [self.delegate searchBtnDidClickWithSectionIndex:secIndex AndRowIndex:rowIndex ];
-}
+//- (IBAction)searchBtnClick:(UIButton *)sender {
+////    NSInteger tag = sender.tag;
+////    NSInteger secIndex = tag / 1000;
+////    NSInteger rowIndex = tag - secIndex * 1000;
+////    [self.delegate searchBtnDidClickWithSectionIndex:secIndex AndRowIndex:rowIndex ];
+//}
 
 
 

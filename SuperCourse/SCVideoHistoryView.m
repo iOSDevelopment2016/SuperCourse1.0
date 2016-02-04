@@ -47,6 +47,7 @@
     return self;
 }
 -(void)loadCourseListFromNetwork{
+    
     NSString *stuid = @"0000";
     NSDictionary *para = @{@"method":@"History",
                            @"param":@{@"Data":@{@"stuid":stuid}}};
@@ -112,14 +113,14 @@
 //        SCHistoryList *h=self.currentSource.lesarr;
         SCHistory *h=historyArr[indexPath.row];
         //cell.textLabel.text=temp_.courseTitle;
-//        [cell.historyBtn setTitle:h_.les_name forState:UIControlStateNormal];
+        [cell.historyBtn setTitle:h.les_name forState:UIControlStateNormal];
         [cell.historyBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateHighlighted];
-//        cell.historyBtn.tag =indexPath.section * 1000 + indexPath.row;
+        cell.historyBtn.tag =indexPath.section * 1000 + indexPath.row;
 //
         if ([h.is_ready isEqualToString:@"是"]) {
             cell.state.text=@"已看完";
         }else{
-            cell.state.text=h.lastplay_time;
+            cell.state.text= [NSString stringWithFormat:@"%f",h.lastplay_time];
         }
     }
     
@@ -129,6 +130,14 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell*cell =[self tableView:tableView cellForRowAtIndexPath:indexPath];
     return cell.frame.size.height;
+}
+
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    SCHistory *currentHis = historyArr[indexPath.row];
+    
+    [self.delegate historyDidClick:currentHis.les_id];
 }
 
 

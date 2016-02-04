@@ -37,7 +37,8 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 };
 
 
-@interface SCRootViewController ()<SCLoginViewDelegate,SCAllCourseViewDelegate,UITextFieldDelegate,SCCourseTableViewDelegate,SCExtendViewDelegate,SCSettingViewControllerDelegate>
+@interface SCRootViewController ()<SCLoginViewDelegate,SCAllCourseViewDelegate,UITextFieldDelegate,SCCourseTableViewDelegate,SCExtendViewDelegate,SCHistoryViewDelegate,SCSearchViewDelegate,SCSettingViewControllerDelegate>
+
 
 @property (nonatomic ,strong) UIButton           *loginBtn;
 @property (nonatomic ,strong) UIButton           *loginBtnImage;
@@ -107,7 +108,6 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     [self.leftView addSubview:self.favouriteSettingBtn];
     [self.leftView addSubview:self.favouriteSettingBtnImage];
     
-    //[self.view addSubview:self.searchView];
     [self.view addSubview:self.searchTextField];
     [self.view addSubview:self.mainView];
     
@@ -137,7 +137,6 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     self.myNotesBtnImage.frame=CGRectMake(51*WidthScale, 350*HeightScale+35*HeightScale, 64*WidthScale, 64*HeightScale);
     self.favouriteSettingBtn.frame = CGRectMake(0, self.leftView.height-150*HeightScale,400*WidthScale, 150*HeightScale);
     self.favouriteSettingBtnImage.frame = CGRectMake(51*WidthScale, self.leftView.height-150*HeightScale+35*HeightScale,64*WidthScale, 64*HeightScale);
-    //self.searchView.frame = CGRectMake(1224*WidthScale, 56*HeightScale, 718*WidthScale, 100*HeightScale);
     self.searchTextField.frame= CGRectMake(1234*WidthScale, 56*HeightScale, 708*WidthScale, 100*HeightScale);
     
     //中央视图尺寸
@@ -147,7 +146,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     self.allCourseView.frame = CGRectMake(0, 0, mainFrame.size.width, mainFrame.size.height);
     self.myNotesView.frame = self.allCourseView.frame;
     self.videoHistoryView.frame = self.allCourseView.frame;
-    self.searchView.frame = self.allCourseView.frame;
+//    self.searchView.frame = self.allCourseView.frame;
 }
 
 
@@ -377,6 +376,25 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 //    [self.navigationController pushViewController:playVC animated:YES];
 //
 //}
+
+
+#pragma mark - SCHistoryViewDelegate
+-(void)historyDidClick:(NSString *)les_id
+{
+    
+    SCPlayerViewController *playerVC = [[SCPlayerViewController alloc]init];
+    playerVC.lessonId = les_id;
+    [self.navigationController pushViewController:playerVC animated:YES];
+    
+}
+-(void)searchDidClick:(NSString *)les_id {
+    SCPlayerViewController *playerVC=[[SCPlayerViewController alloc]init];
+    playerVC.lessonId = les_id;
+//    playerVC.beginTime = b
+    [self.navigationController pushViewController:playerVC animated:YES];
+//
+}
+
 #pragma mark - 私有方法
 -(void)move{
     //CGFloat ScaleHeight=[self getScaleHeight];
@@ -611,10 +629,9 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 
 -(void)searchBtnClick:(UIButton *)sender{
     
-    
-    [self.mainView addSubview:self.searchView];
     self.searchView.keyWord = self.searchTextField.text;
-    
+
+    [self.mainView addSubview:self.searchView];
 }
 
 #pragma mark - SCSettingViewControllerDelegate
@@ -623,6 +640,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     [self.view addSubview:self.loginBtn];
     [self.view addSubview:self.loginBtnImage];
     [self.setVC removeFromParentViewController];
+
 }
 
 
@@ -706,9 +724,9 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 //    }
 //    return _searchView;
 //}
--(void)clickToSearch:(NSString *)text{
-    [self.view addSubview:self.searchView];
-}
+//-(void)clickToSearch:(NSString *)text{
+//    [self.view addSubview:self.searchView];
+//}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     if(textField==self.searchTextField){
@@ -723,8 +741,9 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         [self.scroll setHidden:YES];
         [self.searchTextField resignFirstResponder];//放弃当前焦点
         
-        if(textField.text){
+        if([textField.text isEqualToString:@""]){
             [self.mainView addSubview:self.searchView];
+            self.searchView.keyWord = textField.text;
         }
     }
     return YES;
@@ -925,6 +944,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 -(SCVideoHistoryView *)videoHistoryView{
     if (!_videoHistoryView){
         _videoHistoryView = [[SCVideoHistoryView alloc]init];
+        _videoHistoryView.delegate = self;
     }
     return _videoHistoryView;
 }
@@ -938,8 +958,9 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 
 -(SCSearchView *)searchView{
     if(!_searchView){
-        _searchView=[[SCSearchView alloc]init];
+        _searchView=[[SCSearchView alloc]initWithFrame:CGRectMake(0, 0, mainFrame.size.width, mainFrame.size.height)];
         _searchView.backgroundColor=[UIColor whiteColor];
+        _searchView.delegate = self;
     }
     return _searchView;
 }

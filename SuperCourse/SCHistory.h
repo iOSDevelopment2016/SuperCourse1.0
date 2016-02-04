@@ -10,13 +10,13 @@
 
 @interface SCHistory : NSObject
 
-@property (nonatomic, strong)NSString* bgsty_time;
+@property (nonatomic, assign)CGFloat  bgsty_time;
 @property (nonatomic, strong)NSString* is_ready;
-@property (nonatomic, strong)NSString* lastplay_time;
-@property (nonatomic, strong)NSString* oversty_time;
+@property (nonatomic, assign)CGFloat lastplay_time;
+@property (nonatomic, assign)CGFloat oversty_time;
 @property (nonatomic ,strong)NSString* les_id;
 @property (nonatomic ,strong)NSString* stu_id;
 @property (nonatomic ,strong)NSString* num;
-
+@property (nonatomic ,strong)NSString* les_name;
 @end
 
