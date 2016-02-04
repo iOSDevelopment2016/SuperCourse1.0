@@ -90,6 +90,7 @@
             //更新用户标示
             [ApplicationDelegate solidateUserSession:stu_id];
             ApplicationDelegate.userPsw = self.password.text;
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"ImageShouldChange" object:nil];
             [self removeFromSuperview];
         }else{
             [self shakeAnimationForView:self];
@@ -97,6 +98,7 @@
     } failure:^(NSError *error) {
         NSLog(@"%@",error);
     }];
+    
     [self.delegate removeHub];
     
 }

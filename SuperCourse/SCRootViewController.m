@@ -65,7 +65,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 @property (nonatomic ,strong) SCExtendView             *extendView;
 @property (nonatomic ,strong) SCSettingViewController  *setVC;
 @property (nonatomic ,strong) SCIntroductionDataSource *datasource;
-@property (nonatomic ,strong) MBProgressHUD *hud;
+@property (nonatomic ,strong) MBProgressHUD            *hud;
 
 @property CGFloat Variety;
 
@@ -282,7 +282,9 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     
 }
 
-
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    [self.searchTextField resignFirstResponder];
+}
 
 
 -(void)startBtnDidClick{
@@ -410,7 +412,9 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 }
 
 #pragma mark - 响应事件
-
+-(void)changeImage{
+    
+}
 
 
 -(void)allCourseBtnClick:(UIButton *)sender{
@@ -628,10 +632,10 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     [self.navigationController pushViewController:self.setVC animated:YES];
 }
 
--(void)searchBtnClick:(UIButton *)sender{
+-(void)searchBtnClick{
     
     self.searchView.keyWord = self.searchTextField.text;
-
+    [self.searchTextField resignFirstResponder];
     [self.mainView addSubview:self.searchView];
 }
 
@@ -641,6 +645,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     [self.view addSubview:self.loginBtn];
     [self.view addSubview:self.loginBtnImage];
     [self.setVC removeFromParentViewController];
+    [self.allCourseView.startBtn setImage:[UIImage imageNamed:@"SC_start"] forState:UIControlStateNormal];
 
 }
 
@@ -741,7 +746,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         self.favouriteSettingBtnImage.selected=NO;
         [self.scroll setHidden:YES];
         [self.searchTextField resignFirstResponder];//放弃当前焦点
-        
+        [self searchBtnClick];
         if([textField.text isEqualToString:@""]){
             [self.mainView addSubview:self.searchView];
             self.searchView.keyWord = textField.text;
@@ -770,7 +775,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         UIButton *searchBtn=[[UIButton alloc]init];
         [searchBtn setImage:[UIImage imageNamed:@"搜索白色"] forState:UIControlStateNormal];
         searchBtn.frame=CGRectMake(68*WidthScale, 45*HeightScale, 64*WidthScale, 64*HeightScale);
-        [searchBtn addTarget:self action:@selector(searchBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [searchBtn addTarget:self action:@selector(searchBtnClick) forControlEvents:UIControlEventTouchUpInside];
         [_searchTextField.rightView addSubview:searchBtn];
         _searchTextField.delegate=self;
         

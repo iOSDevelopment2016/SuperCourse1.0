@@ -63,6 +63,7 @@
         [self addSubview:self.firstSearchTableView];
         
         currentSource  = [NSMutableArray array];
+        //[self leftBtnClick];
         
     }
     return self;
@@ -82,6 +83,8 @@
     self.stateView.frame = CGRectMake(0, 0, self.width, 100*HeightScale);
     self.state.frame= CGRectMake(500, 0, 0.5*self.width, 100*HeightScale);
     self.label.frame= CGRectMake(0, 0, self.width, 100*HeightScale);
+         [self addSubview:self.firstSearchTableView];
+    
 }
 
 -(void)willMoveToSuperview:(UIView *)newSuperview{
@@ -94,7 +97,7 @@
     
     
     NSDictionary *para = @{@"method":@"Search",
-                           @"param":@{@"Data":@{@"searchinfo":@"侧边栏",@"stuid":@"39d3f9d4-b6ec-f3d8-20cd-9b410b68091"}}};
+                           @"param":@{@"Data":@{@"searchinfo":self.keyWord,@"stuid":ApplicationDelegate.userSession}}};
 
     [HttpTool postWithparams:para success:^(id responseObject) {
         
@@ -116,12 +119,18 @@
             SClesson_list *list =  [SClesson_list objectWithKeyValues:tempDict];
             [secondLessonArr addObject:list];
         }
-        SClesson_list *l =[[SClesson_list alloc]init];
+//        currentSource=firstLessonArr;
+        [self addSubview:self.firstSearchTableView];
+        SClesson_list *l =firstLessonArr[0];
         if (!l.les_name) {
             _state.text= [NSString stringWithFormat:@"搜索%@共找到0个视频课程",_keyWord];
         }else{
-            _state.text=[NSString stringWithFormat:@"搜索%@共找到%lu个视频课程",_keyWord,(unsigned long)currentSource.count];
+            _state.text=[NSString stringWithFormat:@"搜索%@共找到%lu个视频课程",_keyWord,(unsigned long)firstLessonArr.count];
         }
+       
+        currentSource = firstLessonArr;
+        [self.firstSearchTableView reloadData];
+        //[self.leftBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateSelected];
 
     } failure:^(NSError *error) {
         NSLog(@"%@",error);
@@ -296,17 +305,33 @@
     currentSource = firstLessonArr;
     [self.firstSearchTableView reloadData];
     [self.leftBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateSelected];
-    [self move:-1];
+//    [self addSubview:self.firstSearchTableView];
+    //[self move:-1];
+    if (!currentSource) {
+        _state.text= [NSString stringWithFormat:@"搜索%@共找到0个视频课程",_keyWord];
+    }else{
+        _state.text=[NSString stringWithFormat:@"搜索%@共找到%lu个视频课程",_keyWord,(unsigned long)currentSource.count];
+    }
+
     
 }
 -(void)rightBtnClick{
     self.leftBtn.selected=NO;
     self.rightBtn.selected=YES;
     currentSource = secondLessonArr;
-    [self.secondSearchTableView reloadData];
-    CGFloat variety=self.rightBtn.frame.origin.x-self.scrollSearchView.frame.origin.x;
+    [self.firstSearchTableView reloadData];
+    //CGFloat variety=self.rightBtn.frame.origin.x-self.scrollSearchView.frame.origin.x;
     [self.leftBtn setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
-    [self move:variety];
+    
+    
+    if (!currentSource) {
+        _state.text= [NSString stringWithFormat:@"搜索%@共找到0个视频课程",_keyWord];
+    }else{
+        _state.text=[NSString stringWithFormat:@"搜索%@共找到%lu个视频课程",_keyWord,(unsigned long)currentSource.count];
+    }
+
+    
+    //[self move:variety];
 }
 
 

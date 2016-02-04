@@ -11,7 +11,7 @@
 #import "SCCourseGroup.h"
 #import "SCCourseCategory.h"
 #import "SCCourseCategoryList.h"
-
+#import "SCCustomButton.h"
 @protocol SCAllCourseViewDelegate <NSObject>
 //contendFieldDidClickWithSectionIndex:(NSInteger)secIndex AndRowIndex:(NSInteger)rowIndex
 -(void)startBtnDidClick;
@@ -22,7 +22,7 @@
 @end
 
 @interface SCAllCourseView : UIView
-
+@property (nonatomic ,strong) SCCustomButton *startBtn;
 @property (nonatomic ,weak) id<SCAllCourseViewDelegate> delegate;
 
 -(NSString *)getNextLessonID:(NSString *)currentLessonID;

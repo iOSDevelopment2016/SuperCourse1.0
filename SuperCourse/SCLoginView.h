@@ -12,6 +12,7 @@
 //-(void)regBtnDidClick:(UIButton *)sender;
 -(void)getuser:(NSString *)userphone;
 -(void)removeHub;
+-(void)changeImage;
 @end
 
 @interface SCLoginView : UIView

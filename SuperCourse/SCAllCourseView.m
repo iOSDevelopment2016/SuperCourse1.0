@@ -15,13 +15,13 @@
 #import "AFNetworking.h"
 #import "NSData+SZYKit.h"
 #import "AFDownloadRequestOperation.h"
-
 #import "MJExtension.h"
 #import "MBProgressHUD+MJ.h"
-
+#import "SCLoginView.h"
 #import "HttpTool.h"
+#import "SCCoursePlayLog.h"
 
-@interface SCAllCourseView ()<UITableViewDataSource, UITableViewDelegate,SCCourseTableViewDelegate,MBProgressHUDDelegate>
+@interface SCAllCourseView ()<UITableViewDataSource, UITableViewDelegate,SCCourseTableViewDelegate,MBProgressHUDDelegate,SCLoginViewDelegate>
 
 
 
@@ -40,7 +40,7 @@
 @property (nonatomic ,strong) UIImageView *topImageView;
 @property (nonatomic ,strong) UIImageView *headImageView;
 @property (nonatomic ,strong) UIImageView *characterImageView;
-@property (nonatomic ,strong) SCCustomButton *startBtn;
+
 
 @property (nonatomic ,strong) UITableView *firstTableView;
 //@property (nonatomic ,strong) UITableView *secondTableView;
@@ -73,12 +73,7 @@
 
     self = [super initWithFrame:frame];
     if (self) {
-        //        [self initData];
-//        self.HUD=[MBProgressHUD showHUDAddedTo:self animated:YES];
-//        self.HUD.delegate = self;
-//        
-//        self.HUD.dimBackground = YES;
-        
+
         self.backgroundColor = [UIColor whiteColor];
         [self addSubview:self.topImageView];
         [self.topImageView addSubview:self.startBtn];
@@ -87,25 +82,47 @@
         [self addSubview:self.leftBtn];
         [self addSubview:self.rightBtn];
         [self addSubview:self.scrollView];
-        //将Indicator添加到视图中
-        //[self addSubview:self.activityIndicator];
-        //开始转动
-        //[self.activityIndicator startAnimating];
-
-        //[self addSubview:self.secondTableView];
-       
-        //        [self addSubview:self.firstTableView];
-        
         [self.HUD show:YES];
-        
         [self loadCourseListFromNetwork];
         
-        
-        
-        
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(imageShouldChange) name:@"ImageShouldChange" object:nil];
+
     }
     return self;
 }
+
+-(void)imageShouldChange{
+    
+    
+//    NSDictionary *para = @{@"method":@"GetStudentPlayLog",
+//                           @"param":@{@"Data":@{@"stu_id":ApplicationDelegate.userSession,
+//                                                @"stu_pwd":ApplicationDelegate.userPsw}}};
+//    
+//    NSString *psw = ApplicationDelegate.userPsw;
+//    NSString *uid =ApplicationDelegate.userSession;
+//    
+//    [HttpTool postWithparams:para success:^(id responseObject) {
+//        
+//        NSData *data = [[NSData alloc] initWithData:responseObject];
+//        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+//        
+//        SCCoursePlayLog *playLog = [SCCoursePlayLog objectWithKeyValues:dic[@"data"]];
+//        NSLog(@"");
+//        
+//
+//    } failure:^(NSError *error) {
+//        NSLog(@"%@",error);
+//    }];
+
+}
+
+
+
+
+-(void)changeImage{
+    [self.startBtn setImage:[UIImage imageNamed:@"SC_continue"] forState:UIControlStateNormal];
+}
+
 
 //从网络请求课程列表
 -(void)loadCourseListFromNetwork{
