@@ -66,6 +66,14 @@
   
     
 }
+-(void)reloadSubTitlesWithObject:(NSMutableArray *)subTitleArr AndStudentSubTitle:(NSMutableArray *)stuSubTitleArr{
+    
+    for (UIView *view in self.subviews) {
+        [view removeFromSuperview];
+    }
+    [self createCellWithData:subTitleArr];
+    [self creatStudentSubTitleWithData:stuSubTitleArr];
+}
 
 -(void)creatStudentSubTitleWithData:(NSMutableArray *)stuSubTitleArr{
 
@@ -129,9 +137,10 @@
 -(void)deleteView:(UIButton *)sender{
 
     [sender.superview removeFromSuperview];
-    for (int i=0; i<self.subviews.count; i++) {
-        UIView *subTitleView = self.subviews[i];
-        subTitleView.y = i*110*HeightScale;
+    for (UIView *view in self.subviews) {
+        if (view.tag>sender.superview.tag) {
+            view.y = view.y-110*HeightScale;
+        }
     }
 }
 
@@ -203,7 +212,7 @@
 -(void)getCurrectOrder{
     
     NSMutableArray *subTitleArr = [[NSMutableArray alloc]init];
-    int shouldInsert;
+    int j=0;
     for (UIView *view in self.subviews) {
         [subTitleArr addObject:view];
     }
@@ -213,18 +222,11 @@
         UIView *changeView = subTitleArr[m];
         UIView *nowView = subTitleArr[i];
         if (changeView.tag<nowView.tag) {
-            changeView.y = nowView.y - 100*HeightScale;
-            shouldInsert = i;
-            break;
+            changeView.y = nowView.y-j*110*HeightScale;
+            j = j+1;
+            nowView.y = nowView.y+110*HeightScale;
         }
     }
-    for (shouldInsert; shouldInsert<subTitleArr.count; shouldInsert++) {
-        UIView *nowView = subTitleArr[shouldInsert];
-        nowView.y = nowView.y+100*HeightScale;
-    }
-    
-    
-    
 }
 
 -(void)getCurrentImageViewAndLabel:(UIView *)subTitleView{

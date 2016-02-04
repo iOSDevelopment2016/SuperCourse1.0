@@ -25,6 +25,9 @@
 - (instancetype)initWithFrame:(CGRect)frame AndObject:(NSMutableArray *)subTitleArr AndStudentSubTitle:(NSMutableArray *)stuSubTitleArr;
 - (void)changeSubTitleViewWithTime:(NSTimeInterval)elapsedTime;
 - (NSString *)getCurrentSubTitle:(NSTimeInterval)elapsedTime;
+- (void)createCellWithData:(NSMutableArray *)subTitleArr;
+-(void)creatStudentSubTitleWithData:(NSMutableArray *)stuSubTitleArr;
 - (UIView *)addCustomSubTitleWithData:(SCVideoSubTitleMode *)subTitle;
+-(void)reloadSubTitlesWithObject:(NSMutableArray *)subTitleArr AndStudentSubTitle:(NSMutableArray *)stuSubTitleArr;
 - (void)getCurrectOrder;
 @end

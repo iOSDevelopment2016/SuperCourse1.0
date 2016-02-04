@@ -67,6 +67,7 @@
 @property (nonatomic, strong) UIActivityIndicatorView *indicatorView;
 @property (nonatomic, strong) IBOutlet UIView *indicatorShowView;
 @property (nonatomic, strong) NSArray *letterArr;
+@property (nonatomic, assign) NSTimeInterval beginTime;
 
 
 @end
@@ -95,7 +96,7 @@
     NSString *userID = ApplicationDelegate.userSession; // 学员内码
     NSString *userPassword = ApplicationDelegate.userPsw; // 登录密码
     if (!userPassword) {
-        userPassword = @"0000";
+        userPassword = @"7213116e861ef185275fcfd6e5fab98b";
     }
     
     NSString *lesson_id = self.lessonId;
@@ -187,6 +188,7 @@
 
     self.isNeedBack = NO;
     [self.videoManager moveToSecond:self.oversty_time];
+    self.slider.value = self.oversty_time;
     [self.videoManager pause];
 
 }
@@ -195,6 +197,7 @@
     self.oversty_time = self.currentTime;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:VideoLoadDoneNotification object:nil];
     [self.videoManager moveToSecond:self.oversty_time];
+    self.slider.value = self.oversty_time;
     [self.videoManager pause];
     self.isNeedBack = YES;
 }
@@ -349,8 +352,7 @@
         shouldPlaying = YES;
 //    }
     [self.videoManager moveToSecond:(NSTimeInterval)sender.superview.tag];
-
-    
+    self.slider.value = (NSTimeInterval)sender.superview.tag;
 }
 
 -(void)getStopTime{
@@ -405,6 +407,7 @@
     
     [self.indicatorShowView removeFromSuperview];
     [self.videoManager moveToSecond:self.beginTime];
+    self.slider.value = self.beginTime;
     [self.videoManager startWithHandler:^(NSTimeInterval elapsedTime, NSTimeInterval timeRemaining, NSTimeInterval playableDuration, BOOL finished) {
         [self showCurrentTime:elapsedTime];
         self.currentTime = elapsedTime;
@@ -638,7 +641,7 @@
         NSString *userPassword = ApplicationDelegate.userPsw; // 登录密码
         NSString *lesson_id = self.lessonId;
         if (!userPassword) {
-            userPassword = @"0000";
+            userPassword = @"7213116e861ef185275fcfd6e5fab98b";
         }
         [methodParameter setValue:userID forKey:@"stu_id"];
         [methodParameter setValue:userPassword forKey:@"stu_pwd"];
@@ -659,14 +662,14 @@
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
             
             [self.rightView.pointView addSubview:[self.rightView.pointView addCustomSubTitleWithData:subTitle]];
+            [self.videoInfo.studentSubTitle addObject:subTitle];
             
             self.writeNoteView.hidden = YES;
             [self.videoManager resume];
             shouldPlaying = YES;
             [self.bottomView addSubview:self.pauseBtn];
             [self.playBtn removeFromSuperview];
-            [self.rightView.pointView getCurrectOrder];
-            
+            [self.rightView.pointView reloadSubTitlesWithObject:self.videoInfo.videoSubTitles AndStudentSubTitle:self.videoInfo.studentSubTitle];
         } failure:^(NSError *error) {
             NSLog(@"%@",error);
             // 给出插入失败的提示
@@ -684,11 +687,7 @@
         [self.textField endEditing:YES];
     }
     
-    
-    
 
-
-    
 }
 
 - (void)tapBtn:(UIPanGestureRecognizer *) recognizer{
@@ -775,6 +774,8 @@
     
 }
 
+
+
 -(void)panToTime:(UIPanGestureRecognizer*) recognizer{
 
     CGPoint beginStatePoint;
@@ -791,15 +792,15 @@
     if (endStateY >= 0 && endStateY < self.container.height/3) {
         CGFloat turnToSecond = self.currentTime+360*moveDistance/self.container.width ;
         [self.videoManager moveToSecond:turnToSecond];
-//        self.currentTime = turnToSecond;
+        self.slider.value = turnToSecond;
     }else if (endStateY >= self.container.height/3 && endStateY < self.container.height*2/3){
         CGFloat turnToSecond = self.currentTime+(60*moveDistance/self.container.width) ;
         [self.videoManager moveToSecond:turnToSecond];
-//        self.currentTime = turnToSecond;
+        self.slider.value = turnToSecond;
     }else if (endStateY >= self.container.height*2/3 && endStateY < self.container.height){
         CGFloat turnToSecond = self.currentTime+10*moveDistance/self.container.width ;
         [self.videoManager moveToSecond:turnToSecond];
-//        self.currentTime = turnToSecond;
+        self.slider.value = turnToSecond;
     }
 }
 
