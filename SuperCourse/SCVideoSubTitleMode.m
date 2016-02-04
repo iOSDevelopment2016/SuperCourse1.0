@@ -20,8 +20,8 @@
 {
     self = [super init];
     if (self) {
-        self.title = title;
-        self.beginTime = beginTime;
+        self.subtitle = title;
+        self.bg_time = beginTime;
     }
     return self;
 }

@@ -10,15 +10,17 @@
 #import "SCRightView.h"
 #import "SCPlayerViewController.h"
 #import "SCVideoSubTitleMode.h"
-
+#import "SCVideoInfoModel.h"
 
 @implementation SCPointView
 
-- (instancetype)initWithFrame:(CGRect)frame AndObject:(NSMutableArray *)subTitleArr{
+- (instancetype)initWithFrame:(CGRect)frame AndObject:(NSMutableArray *)subTitleArr AndStudentSubTitle:(NSMutableArray *)stuSubTitleArr{
     self = [super init];
     if (self) {
         self.frame = frame;
         [self createCellWithData:subTitleArr];
+        [self creatStudentSubTitleWithData:stuSubTitleArr];
+        
         self.backgroundColor = [UIColor clearColor];
     }
     return self;
@@ -31,7 +33,7 @@
     [self setSubTitlesLetter:subTitleArr];
     for (int i=0; i<subTitleArr.count; i++) {
         SCVideoSubTitleMode *m = subTitleArr[i];
-        UIView *noteView = [[UIView alloc]initWithFrame:CGRectMake(12*WidthScale, viewY, self.width, height)];
+        UIView *noteView = [[UIView alloc]initWithFrame:CGRectMake(12*WidthScale, viewY, self.width-12*WidthScale, height)];
         [noteView setBackgroundColor:[UIColor whiteColor]];
         UIButton *hudBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         hudBtn.frame = CGRectMake(0, 0, noteView.bounds.size.width, noteView.bounds.size.height);
@@ -45,13 +47,14 @@
         UILabel *noteLabel = [[UILabel alloc]initWithFrame:CGRectMake(90*WidthScale, 0, 467*WidthScale, 100*HeightScale)];
         [noteView addSubview:imageView];
         [noteView addSubview:[self getLetterViewWithLabel:letterLabel AndView:letterView AndimageView:imageView Andimage:image AndLetter:m.letter]];
-        [noteView addSubview:[self getNoteLabel:noteLabel WithText:m.title]];
+        [noteView addSubview:[self getNoteLabel:noteLabel WithText:m.subtitle]];
         [self addSubview:noteView];
         
 //        noteView.tag = (int)m.beginTime;
-        noteView.tag = m.beginTime;
+        noteView.tag = m.bg_time;
     
         imageView.tag = 1;
+        letterLabel.tag = 3;
         noteLabel.tag = 2;
         
         viewY = viewY + height+10*HeightScale;
@@ -64,6 +67,53 @@
     
 }
 
+-(void)creatStudentSubTitleWithData:(NSMutableArray *)stuSubTitleArr{
+
+    for (int i=0; i<stuSubTitleArr.count; i++) {
+        SCVideoSubTitleMode *m = stuSubTitleArr[i];
+        [self addCustomSubTitleWithData:m];
+        [self getCurrectOrder];
+        
+    }
+    
+}
+
+
+-(UIView *)addCustomSubTitleWithData:(SCVideoSubTitleMode *)subTitle{
+    
+    int i = (int)self.subviews.count;
+    float height = 100*HeightScale;
+
+    UIView *noteView = [[UIView alloc]initWithFrame:CGRectMake(12*WidthScale, i*height+40*HeightScale, self.width-12*WidthScale, height)];
+    [noteView setBackgroundColor:[UIColor whiteColor]];
+    UIButton *hudBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    hudBtn.frame = CGRectMake(0, 0, noteView.bounds.size.width, noteView.bounds.size.height);
+    [hudBtn addTarget:self action:@selector(turnToPoint:) forControlEvents:UIControlEventTouchUpInside];
+    [noteView addSubview:hudBtn];
+    
+    UIView *letterView = [[UIView alloc]initWithFrame:CGRectMake(32*WidthScale , 32*HeightScale, 36*WidthScale, 36*HeightScale)];
+    UIImage *image = [UIImage imageNamed:@"B"];
+    UIImageView *imageView = [[UIImageView alloc]initWithImage:image];
+    UILabel *letterLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, letterView.width, letterView.height)];
+    UILabel *noteLabel = [[UILabel alloc]initWithFrame:CGRectMake(90*WidthScale, 0, 467*WidthScale, 100*HeightScale)];
+    [noteView addSubview:imageView];
+
+    [noteView addSubview:[self getLetterViewWithLabel:letterLabel AndView:letterView AndimageView:imageView Andimage:image AndLetter:@"i"]];
+    [noteView addSubview:[self getNoteLabel:noteLabel WithText:subTitle.subtitle]];
+    UIButton *deleteBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [deleteBtn setImage:[UIImage imageNamed:@"delete"] forState:UIControlStateNormal];
+    [deleteBtn setFrame:CGRectMake(self.width-12*WidthScale -46 , 32*HeightScale, 36*WidthScale, 36*HeightScale)];
+    [deleteBtn addTarget:self action:@selector(deleteView:) forControlEvents:UIControlEventTouchUpInside];
+    noteView.tag = subTitle.bg_time;
+    imageView.tag = 1;
+    noteLabel.tag = 2;
+    [noteView addSubview:deleteBtn];
+    [self addSubview:noteView];
+    
+    return noteView;
+}
+
+
 -(void)setSubTitlesLetter:(NSMutableArray *)subTitleArr{
     for (int i = 0; i<subTitleArr.count; i++) {
         SCVideoSubTitleMode *subTitle = subTitleArr[i];
@@ -74,6 +124,15 @@
 -(NSString *)charString:(unichar)ascii{
     NSString *str =[NSString stringWithUTF8String:(char *)&ascii];
     return str;
+}
+
+-(void)deleteView:(UIButton *)sender{
+
+    [sender.superview removeFromSuperview];
+    for (int i=0; i<self.subviews.count; i++) {
+        UIView *subTitleView = self.subviews[i];
+        subTitleView.y = i*110*HeightScale;
+    }
 }
 
 
@@ -90,7 +149,20 @@
     }
 
 }
-                          
+
+-(NSString *)getCurrentSubTitle:(NSTimeInterval)elapsedTime{
+
+    UIView *subTitleView = nil;
+    NSString *text;
+    for (subTitleView in self.subviews) {
+        if (subTitleView.tag <= (int)elapsedTime) {
+            [self getCurrentImageViewAndLabel:subTitleView];
+            text = self.currentLabel.text;
+        }
+    }
+    return text;
+}
+
 -(UIView *)getLetterViewWithLabel:(UILabel *)letterLabel AndView:(UIView *)letterView AndimageView:(UIImageView *)imageView Andimage:(UIImage *)image AndLetter:(NSString *)letter{
     
     imageView.frame = CGRectMake(32*WidthScale , 32*HeightScale, 36*WidthScale, 36*HeightScale);
@@ -128,6 +200,33 @@
     }
 }
 
+-(void)getCurrectOrder{
+    
+    NSMutableArray *subTitleArr = [[NSMutableArray alloc]init];
+    int shouldInsert;
+    for (UIView *view in self.subviews) {
+        [subTitleArr addObject:view];
+    }
+    
+    for (int i=0; i<subTitleArr.count-1; i++) {
+        int m = (int)subTitleArr.count-1;
+        UIView *changeView = subTitleArr[m];
+        UIView *nowView = subTitleArr[i];
+        if (changeView.tag<nowView.tag) {
+            changeView.y = nowView.y - 100*HeightScale;
+            shouldInsert = i;
+            break;
+        }
+    }
+    for (shouldInsert; shouldInsert<subTitleArr.count; shouldInsert++) {
+        UIView *nowView = subTitleArr[shouldInsert];
+        nowView.y = nowView.y+100*HeightScale;
+    }
+    
+    
+    
+}
+
 -(void)getCurrentImageViewAndLabel:(UIView *)subTitleView{
     for (UIView *subView in subTitleView.subviews) {
         NSInteger tag = subView.tag;
@@ -163,15 +262,13 @@
 }
 
 - (void)turnToPoint:(UIButton *)sender{
+    
     [self clearAllSelected];
     UIView *subTitleView = sender.superview;
     [self getCurrentImageViewAndLabel:subTitleView];
     [self highLightSubTitleView:subTitleView];
     [self.delegate turnToTime:sender];
-    
-   
 }
-
 
 
 

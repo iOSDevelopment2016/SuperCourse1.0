@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "SCVideoSubTitleMode.h"
 @protocol SCPointViewDelegate <NSObject>
 
 -(void)turnToTime:(UIButton *)sender;
@@ -20,9 +20,11 @@
 
 @property (nonatomic, strong) UIImageView *currentImageView;
 @property (nonatomic, strong) UILabel *currentLabel;
+@property (nonatomic, strong) UILabel *letterLabel;
 @property (nonatomic, weak) id<SCPointViewDelegate> delegate;
-
-- (instancetype)initWithFrame:(CGRect)frame AndObject:(NSMutableArray *)tempModel;
+- (instancetype)initWithFrame:(CGRect)frame AndObject:(NSMutableArray *)subTitleArr AndStudentSubTitle:(NSMutableArray *)stuSubTitleArr;
 - (void)changeSubTitleViewWithTime:(NSTimeInterval)elapsedTime;
-
+- (NSString *)getCurrentSubTitle:(NSTimeInterval)elapsedTime;
+- (UIView *)addCustomSubTitleWithData:(SCVideoSubTitleMode *)subTitle;
+- (void)getCurrectOrder;
 @end

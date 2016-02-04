@@ -169,7 +169,7 @@
 -(SCPointView *)pointView{
 
     if (!_pointView) {
-        _pointView = [[SCPointView alloc]initWithFrame:CGRectMake(0, 100*HeightScale, 659*WidthScale, 1282*HeightScale) AndObject:self.subTitleArr];
+        _pointView = [[SCPointView alloc]initWithFrame:CGRectMake(0, 100*HeightScale, 659*WidthScale, 1282*HeightScale) AndObject:self.subTitleArr AndStudentSubTitle:self.stuSubTitleArr];
         _pointView.delegate = self.pointViewDelegate;
     }
     return _pointView;

@@ -34,6 +34,7 @@
 //@property NSArray *dataArr;
 @property NSArray *extendArr;
 @property (nonatomic, strong) NSMutableArray *subTitleArr;
+@property (nonatomic, strong) NSMutableArray *stuSubTitleArr;
 @property (nonatomic, strong) NSMutableArray *linkArr;
 
 @property (nonatomic, assign) id<SCPointViewDelegate> pointViewDelegate;

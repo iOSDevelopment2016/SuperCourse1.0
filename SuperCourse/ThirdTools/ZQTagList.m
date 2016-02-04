@@ -67,7 +67,7 @@
         
         SCVideoLinkMode *m = linkArr[i];
         
-        NSString *text = m.title;
+        NSString *text = m.hot_title;
         CGSize textSize =  [text boundingRectWithSize:boundSize options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:45],NSFontAttributeName, nil] context:nil].size;
         
         textSize.width += HORIZONTAL_PADDING * 2;
@@ -136,7 +136,7 @@
     
     for (UIButton *btn in self.subviews) {
         SCVideoLinkMode *currentLink = self.linkArr[btn.tag];
-        int linkBeginTime = currentLink.beginTime;
+        int linkBeginTime = currentLink.bg_time;
         if (linkBeginTime == (int)beginTime) {
             if (btn.titleLabel.textColor == [UIColor blackColor]) {
                 [self clearBtnLooking];
@@ -159,7 +159,7 @@
 - (void)searchButtonClicke:(UIButton *)sender {
     
     [self clearBtnLooking];
-//    sender.selected = YES;
+    sender.selected = YES;
     [sender setTitleColor:UIThemeColor forState:UIControlStateSelected];
     sender.layer.borderColor = UIThemeColor.CGColor;
     
