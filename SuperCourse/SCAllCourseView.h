@@ -16,7 +16,7 @@
 //contendFieldDidClickWithSectionIndex:(NSInteger)secIndex AndRowIndex:(NSInteger)rowIndex
 -(void)startBtnDidClick;
 -(IBAction)contendClick:(NSInteger)secIndex AndRowIndex:(NSInteger)rouIndex AndUrl:(NSString *)url;
--(IBAction)imageClickWithUrl:(NSString *)url;
+-(IBAction)imageClickWithCoutse:(SCCourse *)Course;
 -(void)viewmove:(CGFloat) variety andUIView:(UIView *)scrollView;
 -(void)videoPlayClickWithCourse:(SCCourse *)SCcourse;
 @end
@@ -24,5 +24,7 @@
 @interface SCAllCourseView : UIView
 
 @property (nonatomic ,weak) id<SCAllCourseViewDelegate> delegate;
+
+-(NSString *)getNextLessonID:(NSString *)currentLessonID;
 
 @end

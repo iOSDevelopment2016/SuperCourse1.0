@@ -12,16 +12,16 @@
 @implementation SCCourseGroup
 
 
-+(instancetype)modelWithDict:(NSDictionary *)dict{
-    
-    [SCCourseGroup setupObjectClassInArray:^NSDictionary *{
-        return @{@"lesarr":@"SCCourse"};
-    }];
-    
-    SCCourseGroup *courseGroup = [SCCourseGroup objectWithKeyValues:dict];
-    
-    return courseGroup;
-    
-}
+//+(instancetype)modelWithDict:(NSDictionary *)dict{
+//    
+//    [SCCourseGroup setupObjectClassInArray:^NSDictionary *{
+//        return @{@"lesarr":@"SCCourse"};
+//    }];
+//    
+//    SCCourseGroup *courseGroup = [SCCourseGroup objectWithKeyValues:dict];
+//    
+//    return courseGroup;
+//    
+//}
 
 @end
