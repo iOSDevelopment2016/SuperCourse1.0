@@ -82,10 +82,8 @@
     [self addAllControl]; //加载界面上的所有控件
     isFirstView = YES;
     [self.view addSubview:self.indicatorShowView];
-//
-//    if (self.beginTime == 0) {
-//        self.beginTime = 100;
-//    }
+
+    
     
     [self loadVideoInfo]; //从网络上下载视频文件的所有信息
     self.isNeedBack = NO;
@@ -98,6 +96,7 @@
     if (!userPassword) {
         userPassword = @"7213116e861ef185275fcfd6e5fab98b";
     }
+    
     
     NSString *lesson_id = self.lessonId;
 
@@ -117,6 +116,8 @@
     [HttpTool postWithparams:thirdDic success:^(id responseObject) {
         
         NSData *data = [[NSData alloc] initWithData:responseObject];
+        
+//        NSString *str = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         
 
@@ -126,7 +127,7 @@
         self.videoManager = [[SZYVideoManager alloc]init];
         [self initVideoManager];
         [self.view addSubview:self.rightView];
-
+        [self.rightView deleteDate:userID And:userPassword And:self.lessonId];
     } failure:^(NSError *error) {
         NSLog(@"%@",error);
     }];
@@ -134,12 +135,17 @@
 
 }
 
+
+
 -(SCVideoInfoModel *)getVideoInfo:(NSDictionary *)dict{
+   
     SCVideoInfoModel *m = [[SCVideoInfoModel alloc]init];
     NSMutableDictionary *dataDict = dict[@"data"];
     NSArray *videoInfoDict = dataDict[@"videoInfo"];
     m.les_name = videoInfoDict[0][@"les_name"];
     m.les_alltime = [videoInfoDict[0][@"les_alltime"] floatValue];
+//    m.ovesity_time = [videoInfoDict[0][@"ovesity_time"] floatValue];
+//    self.beginTime = m.ovesity_time;
 //    m.les_url = videoInfoDict[0][@"les_url"];
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docDir = [paths objectAtIndex:0];
@@ -159,6 +165,12 @@
         [videoLinks addObject:link];
     }
     m.videoLinks = videoLinks;
+    
+    NSArray *oversty_time = videoInfoDict[0][@"oversty_time"];
+    
+    NSDictionary *timeDict = oversty_time[0];
+    self.beginTime = [timeDict[@"oversty_time"] floatValue];
+    
     NSMutableArray *videoSubTitle = [[NSMutableArray alloc]init];
     NSArray *videoSubTitleArr = videoInfoDict[0][@"videoSubTitles"];
     for (int i=0; i<videoSubTitleArr.count; i++) {
@@ -332,7 +344,7 @@
     NSString *time = [NSString stringWithFormat:@"%02d:%02d:%02d/%02d:%02d:%02d",hour,minute,second,allHour,allMinute,allSecond];
     self.timeLable.text = time;
     int nowTime =hour*3600+minute*60+second;
-    if (nowTime == self.videoInfo.les_alltime && self.isNeedBack == NO) {
+    if (nowTime == self.videoInfo.les_alltime && self.isNeedBack == NO && nowTime!=0) {
         if (_alert.tag == 0) {
             [self playerPlayFinished];
         }
@@ -365,7 +377,7 @@
     NSString *lesson_id = self.lessonId;
     float oversty_time = self.oversty_time;
     if (!userPassword) {
-        userPassword = @"0000";
+        userPassword = @"7213116e861ef185275fcfd6e5fab98b";
     }
     [methodParameter setValue:userID forKey:@"stu_id"];
     [methodParameter setValue:userPassword forKey:@"stu_pwd"];
@@ -647,7 +659,7 @@
         [methodParameter setValue:userPassword forKey:@"stu_pwd"];
         [methodParameter setValue:lesson_id forKey:@"lesson_id"];
         [methodParameter setValue:subTitle.subtitle forKey:@"subtitle"];
-        [methodParameter setValue:@(subTitle.bg_time) forKey:@"bg_time"];
+        [methodParameter setValue:@((int)subTitle.bg_time) forKey:@"bg_time"];
         
         NSMutableDictionary *dataParameter = [[NSMutableDictionary alloc]init];
         [dataParameter setValue:methodParameter forKey:@"Data"];

@@ -15,9 +15,7 @@
 		7D3629531C5DAEF100A52AFA /* SCPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3629521C5DAEF100A52AFA /* SCPlayerViewController.m */; };
 		7D3629561C5DAF1D00A52AFA /* ZQTagList.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3629551C5DAF1D00A52AFA /* ZQTagList.m */; };
 		7D3629591C5DAF2E00A52AFA /* SZYVideoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3629581C5DAF2E00A52AFA /* SZYVideoManager.m */; };
-
 		7D45DEA31C5E1F2C00462B56 /* SCWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D45DEA21C5E1F2C00462B56 /* SCWebViewController.m */; };
-		B9477BFB1C6268D100B87A33 /* SCHistoryList.m in Sources */ = {isa = PBXBuildFile; fileRef = B9477BFA1C6268D100B87A33 /* SCHistoryList.m */; };
 		B9477BFE1C62785A00B87A33 /* SCsearchCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = B9477BFD1C62785A00B87A33 /* SCsearchCategory.m */; };
 		B99897511C5F2A16001DCA7D /* SCSearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = B99897501C5F2A16001DCA7D /* SCSearchResult.m */; };
 		B99897541C5F2AD4001DCA7D /* SClesson_list.m in Sources */ = {isa = PBXBuildFile; fileRef = B99897531C5F2AD4001DCA7D /* SClesson_list.m */; };
@@ -130,11 +128,8 @@
 		7D3629551C5DAF1D00A52AFA /* ZQTagList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZQTagList.m; sourceTree = "<group>"; };
 		7D3629571C5DAF2E00A52AFA /* SZYVideoManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SZYVideoManager.h; sourceTree = "<group>"; };
 		7D3629581C5DAF2E00A52AFA /* SZYVideoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SZYVideoManager.m; sourceTree = "<group>"; };
-
 		7D45DEA11C5E1F2C00462B56 /* SCWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCWebViewController.h; sourceTree = "<group>"; };
 		7D45DEA21C5E1F2C00462B56 /* SCWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCWebViewController.m; sourceTree = "<group>"; };
-		B9477BF91C6268D100B87A33 /* SCHistoryList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHistoryList.h; sourceTree = "<group>"; };
-		B9477BFA1C6268D100B87A33 /* SCHistoryList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHistoryList.m; sourceTree = "<group>"; };
 		B9477BFC1C62785A00B87A33 /* SCsearchCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCsearchCategory.h; sourceTree = "<group>"; };
 		B9477BFD1C62785A00B87A33 /* SCsearchCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCsearchCategory.m; sourceTree = "<group>"; };
 		B998974F1C5F2A16001DCA7D /* SCSearchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSearchResult.h; sourceTree = "<group>"; };

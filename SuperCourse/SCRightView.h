@@ -41,5 +41,7 @@
 
 @property (nonatomic, assign) id<SCRightViewDelegate> delegate;
 
+-(void)deleteDate:(NSString *)stuId And:(NSString *)stuPsw And:(NSString *)lessonId;
+
 @end
 
