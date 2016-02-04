@@ -614,7 +614,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     
     [self.mainView addSubview:self.searchView];
     self.searchView.keyWord = self.searchTextField.text;
-    [self.setVC removeFromParentViewController];
+    
 }
 
 #pragma mark - SCSettingViewControllerDelegate
@@ -622,7 +622,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 -(void)unlogin{
     [self.view addSubview:self.loginBtn];
     [self.view addSubview:self.loginBtnImage];
-    
+    [self.setVC removeFromParentViewController];
 }
 
 

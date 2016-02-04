@@ -74,7 +74,10 @@
     self = [super initWithFrame:frame];
     if (self) {
         //        [self initData];
-        
+//        self.HUD=[MBProgressHUD showHUDAddedTo:self animated:YES];
+//        self.HUD.delegate = self;
+//        
+//        self.HUD.dimBackground = YES;
         
         self.backgroundColor = [UIColor whiteColor];
         [self addSubview:self.topImageView];
@@ -93,6 +96,7 @@
        
         //        [self addSubview:self.firstTableView];
         
+        [self.HUD show:YES];
         
         [self loadCourseListFromNetwork];
         
@@ -112,7 +116,7 @@
     [HttpTool postWithparams:para success:^(id responseObject) {
         
         
-        [self.HUD hide:YES];
+//        [self.HUD hide:YES];
         NSData *data = [[NSData alloc] initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         courseCategoryArr = [NSMutableArray array];
