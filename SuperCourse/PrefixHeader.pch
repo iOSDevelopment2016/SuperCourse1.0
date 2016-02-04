@@ -37,6 +37,7 @@
 
 #import "UIView+SZY.h"
 #import "AppDelegate.h"
+#import "UIAlertController+SZYKit.h"
 
 
 #endif /* PrefixHeader_pch */
