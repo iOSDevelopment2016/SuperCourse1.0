@@ -145,6 +145,12 @@
 }
 
 
+-(void)deleteDate:(NSString *)stuId And:(NSString *)stuPsw And:(NSString *)lessonId{
+    
+    self.pointView.stuId = stuId;
+    self.pointView.stuPsw = stuPsw;
+    self.pointView.lessonId = lessonId;
+}
 
 -(UIView *)extendView{
     

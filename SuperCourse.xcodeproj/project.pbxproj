@@ -20,6 +20,7 @@
 		B999497D1C6053D500671BF0 /* SCHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = B999497C1C6053D500671BF0 /* SCHistory.m */; };
 		C90DE85C1C53FABA00B7137F /* SCCustomButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C90DE85B1C53FABA00B7137F /* SCCustomButton.m */; };
 		C90DE8601C54AA9A00B7137F /* SCVIdeoInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = C90DE85F1C54AA9A00B7137F /* SCVIdeoInfo.m */; };
+		C9CDDD5D1C6378B300B0FBC6 /* UIAlertController+SZYKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CDDD5C1C6378B300B0FBC6 /* UIAlertController+SZYKit.m */; };
 		C9E4E6441C53BAF30052030E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E4E6431C53BAF30052030E /* main.m */; };
 		C9E4E6471C53BAF30052030E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E4E6461C53BAF30052030E /* AppDelegate.m */; };
 		C9E4E64F1C53BAF30052030E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9E4E64E1C53BAF30052030E /* Assets.xcassets */; };
@@ -149,8 +150,6 @@
 		7D3629581C5DAF2E00A52AFA /* SZYVideoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SZYVideoManager.m; sourceTree = "<group>"; };
 		7D45DEA11C5E1F2C00462B56 /* SCWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCWebViewController.h; sourceTree = "<group>"; };
 		7D45DEA21C5E1F2C00462B56 /* SCWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCWebViewController.m; sourceTree = "<group>"; };
-		B9477BFC1C62785A00B87A33 /* SCsearchCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCsearchCategory.h; sourceTree = "<group>"; };
-		B998974F1C5F2A16001DCA7D /* SCSearchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSearchResult.h; sourceTree = "<group>"; };
 		B99897521C5F2AD4001DCA7D /* SClesson_list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SClesson_list.h; sourceTree = "<group>"; };
 		B99897531C5F2AD4001DCA7D /* SClesson_list.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SClesson_list.m; sourceTree = "<group>"; };
 		B999497B1C6053D500671BF0 /* SCHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHistory.h; sourceTree = "<group>"; };
@@ -159,6 +158,8 @@
 		C90DE85B1C53FABA00B7137F /* SCCustomButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCustomButton.m; sourceTree = "<group>"; };
 		C90DE85E1C54AA9A00B7137F /* SCVIdeoInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCVIdeoInfo.h; sourceTree = "<group>"; };
 		C90DE85F1C54AA9A00B7137F /* SCVIdeoInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCVIdeoInfo.m; sourceTree = "<group>"; };
+		C9CDDD5B1C6378B300B0FBC6 /* UIAlertController+SZYKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+SZYKit.h"; sourceTree = "<group>"; };
+		C9CDDD5C1C6378B300B0FBC6 /* UIAlertController+SZYKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertController+SZYKit.m"; sourceTree = "<group>"; };
 		C9E4E63F1C53BAF30052030E /* SuperCourse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SuperCourse.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9E4E6431C53BAF30052030E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C9E4E6451C53BAF30052030E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -434,6 +435,15 @@
 			name = DataModel;
 			sourceTree = "<group>";
 		};
+		C9CDDD5A1C6378A800B0FBC6 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				C9CDDD5B1C6378B300B0FBC6 /* UIAlertController+SZYKit.h */,
+				C9CDDD5C1C6378B300B0FBC6 /* UIAlertController+SZYKit.m */,
+			);
+			name = Other;
+			sourceTree = "<group>";
+		};
 		C9E4E6361C53BAF30052030E = {
 			isa = PBXGroup;
 			children = (
@@ -457,6 +467,7 @@
 		C9E4E6411C53BAF30052030E /* SuperCourse */ = {
 			isa = PBXGroup;
 			children = (
+				C9CDDD5A1C6378A800B0FBC6 /* Other */,
 				7D45DE9F1C5E1EFE00462B56 /* Web */,
 				DAF87A751C59073E00079F69 /* WebService */,
 				FE5835351C58FC01004DFA97 /* ThirdTools */,
@@ -1015,6 +1026,7 @@
 				FE5835711C58FC01004DFA97 /* UIRefreshControl+AFNetworking.m in Sources */,
 				7D36294A1C5DAEA800A52AFA /* SCVideoSubTitleMode.m in Sources */,
 				FE89CAB81C5B2D9D0091D23B /* MJProperty.m in Sources */,
+				C9CDDD5D1C6378B300B0FBC6 /* UIAlertController+SZYKit.m in Sources */,
 				FE005B961C55FEB100920EFB /* SCCourseGroup.m in Sources */,
 				FE58356F1C58FC01004DFA97 /* UIImageView+AFNetworking.m in Sources */,
 				FE92DAAC1C635BC200737B17 /* SDImageCache.m in Sources */,

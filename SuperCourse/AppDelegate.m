@@ -9,6 +9,8 @@
 #import "AppDelegate.h"
 #import "SCCustomNavigationController.h"
 #import "SCRootViewController.h"
+#import "AFNetworking.h"
+#import "UIKit+AFNetworking.h"
 
 @interface AppDelegate ()
 
@@ -33,6 +35,9 @@
     //初始化用户标示
     [self initUserSession];
     
+    //开启网络状态指示器
+    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+    
     return YES;
 }
 
@@ -54,6 +59,73 @@
     [defaultes synchronize];
 }
 
+
+
+//监测网络状态
+-(NSString *)monitorWebState
+{
+    __block NSString *state;
+    
+    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        switch (status) {
+            case AFNetworkReachabilityStatusReachableViaWWAN:
+                state = @"Wan";
+                break;
+            case AFNetworkReachabilityStatusReachableViaWiFi:
+            {
+                state = @"Wifi";
+                break;
+            }
+            case AFNetworkReachabilityStatusNotReachable:
+                state = @"NoWeb";
+                break;
+            default:
+                break;
+        }
+    }];
+    
+    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+    return state;
+}
+
+- (NSString *)getNetWorkStates{
+    UIApplication *app = [UIApplication sharedApplication];
+    NSArray *children = [[[app valueForKeyPath:@"statusBar"]valueForKeyPath:@"foregroundView"]subviews];
+    NSString *state = [[NSString alloc]init];
+    int netType = 0;
+    //获取到网络返回码
+    for (id child in children) {
+        if ([child isKindOfClass:NSClassFromString(@"UIStatusBarDataNetworkItemView")]) {
+            //获取到状态栏
+            netType = [[child valueForKeyPath:@"dataNetworkType"]intValue];
+            
+            switch (netType) {
+                case 0:
+                    state = @"无网络";
+                    //无网模式
+                    break;
+                case 1:
+                    state = @"2g";
+                    break;
+                case 2:
+                    state = @"3g";
+                    break;
+                case 3:
+                    state = @"4g";
+                    break;
+                case 5:
+                {
+                    state = @"wifi";
+                }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+    //根据状态选择
+    return state;
+}
 
 
 - (void)applicationWillResignActive:(UIApplication *)application {
