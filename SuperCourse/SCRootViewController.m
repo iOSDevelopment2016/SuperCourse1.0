@@ -18,9 +18,7 @@
 #import "SCCourseTableViewCell.h"
 #import "SCItemView.h"
 #import "SCVideoInfoModel.h"
-
-
-
+#import "MBProgressHUD.h"
 #import "MJExtension.h"
 #import "HttpTool.h"
 #import "SCIntroduction.h"
@@ -29,6 +27,7 @@
 #import "SCIntroductionDataSource.h"
 #import "SCCoursePlayLog.h"
 #import "SCExtendView.h"
+#import "MBProgressHUD.h"
 
 typedef NS_ENUM(NSInteger,SCShowViewType) {
     SCShowViewType_MyNotes = 0,
@@ -37,44 +36,36 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 };
 
 
-@interface SCRootViewController ()<SCLoginViewDelegate,SCAllCourseViewDelegate,UITextFieldDelegate,SCCourseTableViewDelegate,SCExtendViewDelegate,SCHistoryViewDelegate,SCSearchViewDelegate,SCSettingViewControllerDelegate>
+@interface SCRootViewController ()<SCLoginViewDelegate,SCAllCourseViewDelegate,UITextFieldDelegate,SCCourseTableViewDelegate,SCExtendViewDelegate,SCHistoryViewDelegate,SCSearchViewDelegate,SCSettingViewControllerDelegate,MBProgressHUDDelegate>
 
 
-@property (nonatomic ,strong) UIButton           *loginBtn;
-@property (nonatomic ,strong) UIButton           *loginBtnImage;
-@property (nonatomic ,strong) UIView             *leftView;
-//@property (nonatomic ,strong) UIView             *searchView;
-@property (nonatomic ,strong) UITextField        *searchTextField;
-
-@property (nonatomic ,strong) UIButton           *allCourseBtn;
-@property (nonatomic ,strong) UIButton           *allCourseBtnImage;
-@property (nonatomic ,strong) UIButton           *videoHistoryBtn;
-@property (nonatomic ,strong) UIButton           *videoHistoryBtnImage;
-@property (nonatomic ,strong) UIButton           *myNotesBtn;
-@property (nonatomic ,strong) UIButton           *myNotesBtnImage;
-@property (nonatomic ,strong) UIButton           *favouriteSettingBtn;
-@property (nonatomic ,strong) UIButton           *favouriteSettingBtnImage;
-@property (nonatomic ,strong) UIView             *scroll;
-
-
-@property (nonatomic ,strong) UIView             *hubView;
-@property (nonatomic ,strong) SCLoginView        *loginView;
-@property (nonatomic ,strong) SCItemView         *itemView;
-@property (nonatomic ,strong) SCAllCourseView    *allCourseView;
-@property (nonatomic ,strong) SCVideoHistoryView *videoHistoryView;
-@property (nonatomic ,strong) SCMyNotesView      *myNotesView;
-@property (nonatomic ,strong) SCSearchView       *searchView;
-@property (nonatomic ,strong) UIButton           *selectedBtn;
-
-@property (nonatomic ,strong) UIView             *mainView;
-
-@property (nonatomic ,strong) UIWebView          *webView;
-@property (nonatomic ,strong) SCExtendView       *extendView;
-
-@property (nonatomic ,strong) SCSettingViewController *setVC;
-
-@property (nonatomic ,strong)SCIntroductionDataSource *datasource;
-//@property (nonatomic ,strong)NSString           *title;
+@property (nonatomic ,strong) UIButton                 *loginBtn;
+@property (nonatomic ,strong) UIButton                 *loginBtnImage;
+@property (nonatomic ,strong) UIView                   *leftView;
+@property (nonatomic ,strong) UITextField              *searchTextField;
+@property (nonatomic ,strong) UIButton                 *allCourseBtn;
+@property (nonatomic ,strong) UIButton                 *allCourseBtnImage;
+@property (nonatomic ,strong) UIButton                 *videoHistoryBtn;
+@property (nonatomic ,strong) UIButton                 *videoHistoryBtnImage;
+@property (nonatomic ,strong) UIButton                 *myNotesBtn;
+@property (nonatomic ,strong) UIButton                 *myNotesBtnImage;
+@property (nonatomic ,strong) UIButton                 *favouriteSettingBtn;
+@property (nonatomic ,strong) UIButton                 *favouriteSettingBtnImage;
+@property (nonatomic ,strong) UIView                   *scroll;
+@property (nonatomic ,strong) UIView                   *hubView;
+@property (nonatomic ,strong) SCLoginView              *loginView;
+@property (nonatomic ,strong) SCItemView               *itemView;
+@property (nonatomic ,strong) SCAllCourseView          *allCourseView;
+@property (nonatomic ,strong) SCVideoHistoryView       *videoHistoryView;
+@property (nonatomic ,strong) SCMyNotesView            *myNotesView;
+@property (nonatomic ,strong) SCSearchView             *searchView;
+@property (nonatomic ,strong) UIButton                 *selectedBtn;
+@property (nonatomic ,strong) UIView                   *mainView;
+@property (nonatomic ,strong) UIWebView                *webView;
+@property (nonatomic ,strong) SCExtendView             *extendView;
+@property (nonatomic ,strong) SCSettingViewController  *setVC;
+@property (nonatomic ,strong) SCIntroductionDataSource *datasource;
+@property (nonatomic ,strong) MBProgressHUD *hud;
 
 @property CGFloat Variety;
 
@@ -113,15 +104,21 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     
     [self.mainView addSubview:self.myNotesView];//0
     [self.mainView addSubview:self.videoHistoryView];//1
+    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    self.hud.delegate = self;
+    self.hud.dimBackground = YES;
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(webDataLoaddDone) name:@"WebDataHaveLoadDone" object:nil];
     [self.mainView addSubview:self.allCourseView];//2
-    
     
 //    SCIntroduction *intro= self.datasource.har_des[0];
 //    NSString *str=intro.les_intrdoc;
 //    NSLog(@"%@",str);
-    
-    
     self.selectedBtn = self.allCourseBtn;
+}
+
+-(void)webDataLoaddDone{
+    
+    [self.hud hide:YES];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -230,12 +227,16 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 }
 
 -(IBAction)imageClickWithCoutse:(SCCourse *)Course{
+
+    
    // 跳转到详情页面
     NSString *Id=@"0000";
     NSDictionary *para = @{@"method":@"Getintroduction",
                            @"param":@{@"Data":@{@"les_id":Id}}};
     
     [HttpTool postWithparams:para success:^(id responseObject) {
+        
+        
         
         NSData *data = [[NSData alloc] initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];

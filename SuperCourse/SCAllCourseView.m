@@ -116,7 +116,7 @@
     [HttpTool postWithparams:para success:^(id responseObject) {
         
         
-//        [self.HUD hide:YES];
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"WebDataHaveLoadDone" object:nil];
         NSData *data = [[NSData alloc] initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         courseCategoryArr = [NSMutableArray array];
