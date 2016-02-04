@@ -493,7 +493,7 @@
     self.currentSource = self.firstCategory;
 }
 
-
+//
 //-(SCCourseCategory *)getCourseCatagory2:(NSString *)title{
 //    SCCourseCategory *temp = [[SCCourseCategory alloc]init];
 //    temp.course_catagory_title = title;

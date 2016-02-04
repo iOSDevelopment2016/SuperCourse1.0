@@ -7,12 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "SClesson_list.h"
+#import "SCCourse.h"
 @protocol SCSearchViewDelegate <NSObject>
 //contendFieldDidClickWithSectionIndex:(NSInteger)secIndex AndRowIndex:(NSInteger)rowIndex
 
--(IBAction)searchBtnClick:(NSInteger)secIndex AndRowIndex:(NSInteger)rouIndex;
+-(IBAction)searchBtnClick:(NSInteger)secIndex AndRowIndex:(NSInteger)rouIndex AndUrl:(NSString *)url;
 -(void)viewmove:(CGFloat) variety andUIView:(UIView *)scrollSearchView;
+-(void)videoPlayClickWithCourse:(SCCourse *)SCcourse;
 @end
 
 
