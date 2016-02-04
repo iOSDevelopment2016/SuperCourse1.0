@@ -218,6 +218,8 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 //    [self.navigationController pushViewController:playVC animated:YES];
 //}
 
+
+
 -(void)videoPlayClickWithCourse:(SCCourse *)SCcourse{
     SCPlayerViewController *playVC = [[SCPlayerViewController alloc]init];
     NSString *courseId = SCcourse.les_id;
