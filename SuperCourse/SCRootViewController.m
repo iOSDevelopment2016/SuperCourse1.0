@@ -237,15 +237,17 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         NSLog(@"%@",dic);
         
         
-                [SCIntroduction setupObjectClassInArray:^NSDictionary *{
-                    return @{@"har_des":@"SCIntroduction"};
-                }];
-                [SCCourseCategory setupObjectClassInArray:^NSDictionary *{
-                    return @{@"knowledge":@"SCKnowledge"};
-                }];
-                [SCCourseCategory setupObjectClassInArray:^NSDictionary *{
-                    return @{@"willknow":@"SCWillLearn"};
-                }];
+        [SCIntroductionDataSource setupObjectClassInArray:^NSDictionary *{
+            return @{@"har_des":@"SCIntroduction"};
+        }];
+        [SCIntroductionDataSource setupObjectClassInArray:^NSDictionary *{
+            return @{@"knowledge":@"SCKnowledge"};
+        }];
+        [SCIntroductionDataSource setupObjectClassInArray:^NSDictionary *{
+            return @{@"willknow":@"SCWillLearn"};
+        }];
+        
+        
         self.datasource=[SCIntroductionDataSource objectWithKeyValues:dic[@"data"]];
         self.extendView=[[SCExtendView alloc]initWithString:Course.les_name AndDataSource:self.datasource];
         
@@ -280,9 +282,12 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 -(void)startBtnDidClick{
     // 检查学员是否登录，未登录的，转到登录界面；已登录的，开始学习
     
+    NSLog(@"%@",ApplicationDelegate.userSession);
+    
     if ([ApplicationDelegate.userSession isEqualToString:UnLoginUserSession]) {
         [self loginBtnClick]; // 去登录
     }else{
+        
         [self startCourse]; // 开始学习
     }
     

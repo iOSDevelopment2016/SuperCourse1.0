@@ -83,9 +83,9 @@
         [self addSubview:self.rightBtn];
         [self addSubview:self.scrollView];
         //将Indicator添加到视图中
-        [self addSubview:self.activityIndicator];
+        //[self addSubview:self.activityIndicator];
         //开始转动
-        [self.activityIndicator startAnimating];
+        //[self.activityIndicator startAnimating];
 
         //[self addSubview:self.secondTableView];
        
@@ -103,13 +103,9 @@
 //从网络请求课程列表
 -(void)loadCourseListFromNetwork{
     
-    
-    NSString *userSession = ApplicationDelegate.userSession;
-    
+
     NSDictionary *para = @{@"method":@"VideoList",
                            @"param":@{@"Data":@{@"stu_id":ApplicationDelegate.userSession}}};
-//    NSDictionary *para = @{@"method":@"Login",
-//                           @"param":@{@"Data":@{@"phone":@"111",@"password":@"111"}}};
     [HttpTool postWithparams:para success:^(id responseObject) {
         
         NSData *data = [[NSData alloc] initWithData:responseObject];
@@ -130,9 +126,6 @@
             cat.sec_arr = secArr;
             [courseCategoryArr addObject:cat];
         }
-
-        
-
         
 //        [SCCourseGroup setupObjectClassInArray:^NSDictionary *{
 //            return @{@"lesarr":@"SCCourse"};
@@ -253,10 +246,18 @@
 }
 
 -(IBAction)imageBtnDidClickWithSectionIndex:(NSInteger)secIndex AndRowIndex:(NSInteger)rowIndex{
-    SCCourseGroup *courseGroup=self.firstCategory.sec_arr[secIndex];
-    SCCourse *selectedCourse = courseGroup.lesarr[rowIndex];
+    if(!self.rightBtn.selected){
+        SCCourseGroup *courseGroup=self.firstCategory.sec_arr[secIndex];
+        SCCourse *selectedCourse = courseGroup.lesarr[rowIndex];
+        [self.delegate imageClickWithCoutse:selectedCourse];
+
+    }else{
+        SCCourseGroup *courseGroup=self.secondCategory.sec_arr[secIndex];
+        SCCourse *selectedCourse = courseGroup.lesarr[rowIndex];
+        [self.delegate imageClickWithCoutse:selectedCourse];
+    }
     //NSString *url=selectedCourse.les_url;
-    [self.delegate imageClickWithCoutse:selectedCourse];
+    //[self.delegate imageClickWithCoutse:selectedCourse];
 }
 
 
@@ -349,6 +350,7 @@
         _firstTableView = [[UITableView alloc]init];
         _firstTableView.delegate = self;
         _firstTableView.dataSource = self;
+        _firstTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
     }
     return  _firstTableView;

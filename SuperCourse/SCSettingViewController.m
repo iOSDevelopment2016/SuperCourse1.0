@@ -8,6 +8,7 @@
 
 #import "SCSettingViewController.h"
 #import "SCDownloadConditionViewController.h"
+
 @interface SCSettingViewController ()
 
 
@@ -39,7 +40,6 @@
     [self.view addSubview:self.memoryClearBtn];
     [self.view addSubview:self.extendBtn];
     [self.view addSubview:self.exitBtn];
-    
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -52,6 +52,7 @@
     self.memoryClearBtn.frame=CGRectMake(0, 152+HeightScale*250, self.view.width, HeightScale*125);
     self.extendBtn.frame=CGRectMake(0, 210+HeightScale*375, self.view.width, HeightScale*125);
     self.exitBtn.frame=CGRectMake(self.view.width/2-350*WidthScale, 225+HeightScale*500, 700*WidthScale, 100*HeightScale);
+    
 }
 #pragma mark - click
 -(void)backBtnClick{
@@ -86,6 +87,10 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+
+//
+//
 
 #pragma mark - getters
 -(UIButton *)backBtn{

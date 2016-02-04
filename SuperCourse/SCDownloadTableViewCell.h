@@ -11,5 +11,10 @@
 @interface SCDownloadTableViewCell : UITableViewCell
 @property (strong, nonatomic) IBOutlet UILabel *videoName;
 @property (strong, nonatomic) IBOutlet UILabel *videoSize;
+@property (strong, nonatomic) IBOutlet UILabel *completeLabel;
+@property (strong, nonatomic) IBOutlet UIButton *playBtn;
+@property (strong, nonatomic) IBOutlet UIButton *deleteBtn;
+- (IBAction)playBtnClick:(id)sender;
+- (IBAction)deleteBtnClick:(id)sender;
 
 @end
