@@ -59,6 +59,9 @@
         [self shakeAnimationForView:self];
     }
 }
+-(void)returnString:(NSString *)string{
+    [self.delegate getuser:string];
+}
 
 - (IBAction)loginClick:(id)sender {
     NSString * phone = self.phone.text;
@@ -80,6 +83,8 @@
         if ([nowState isEqualToString:State]) {
             
             
+            [self returnString:phone];
+            
             NSString *stu_id = dic[@"data"][@"stu_id"];
             
             //更新用户标示
@@ -92,6 +97,8 @@
     } failure:^(NSError *error) {
         NSLog(@"%@",error);
     }];
+    [self.delegate removeHub];
+    
 }
 
 - (IBAction)usertextClick:(id)sender {

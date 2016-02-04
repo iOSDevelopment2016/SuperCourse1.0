@@ -15,12 +15,17 @@
 #import "AFNetworking.h"
 #import "NSData+SZYKit.h"
 #import "AFDownloadRequestOperation.h"
+#import "HttpTool.h"
+#import "MJExtension.h"
+#import "SCSearchResult.h"
+#import "SClesson_list.h"
+#import "SCsearchCategory.h"
 @interface SCSearchView ()<UITableViewDataSource, UITableViewDelegate,SCSearchTableViewDelegate>
 @property (nonatomic ,strong) UITableView *firstSearchTableView;
 @property (nonatomic ,strong) UITableView *secondSearchTableView;
-@property (nonatomic, strong) SCCourseCategory *firstSearchCategory;
-@property (nonatomic, strong) SCCourseCategory *secondSearchCategory;
-@property (nonatomic, strong) SCCourseCategory *currentSource;
+@property (nonatomic, strong) SCsearchCategory *firstSearchCategory;
+@property (nonatomic, strong) SCsearchCategory *secondSearchCategory;
+@property (nonatomic, strong) SCsearchCategory *currentSource;
 @property (nonatomic, strong) UIButton *leftBtn;
 @property (nonatomic, strong) UIButton *rightBtn;
 @property (nonatomic,strong) UIView *leftView;
@@ -28,6 +33,7 @@
 @property (nonatomic,strong)UIView *scrollSearchView;
 @property (nonatomic, strong)UIView *stateView;
 @property (nonatomic,strong)UILabel *state;
+@property (nonatomic, strong)UILabel *label;
 @end
 @implementation SCSearchView
 
@@ -53,27 +59,99 @@
         [self addSubview:self.rightBtn];
         [self addSubview:self.stateView];
         [self addSubview:self.state];
+        [self addSubview:self.label];
+
     }
     return self;
 }
-
+       
 -(void)layoutSubviews{
     [super layoutSubviews];
     self.firstSearchTableView.frame = CGRectMake(0, 200*HeightScale+7, self.width,810*HeightScale );
-    self.scrollSearchView.frame = CGRectMake(0, 0, self.width, 100*HeightScale);
+    self.scrollSearchView.frame = CGRectMake(0,100*HeightScale+7 , self.width, 100*HeightScale);
     self.scrollSearchView.backgroundColor= [UIColor whiteColor];
     self.firstSearchTableView.backgroundColor=[UIColor whiteColor];
     self.stateView.backgroundColor=[UIColor whiteColor];
     self.backgroundColor=UIBackgroundColor;
-    self.leftBtn.frame=CGRectMake(350, 0, 0.127*self.width, 100*HeightScale);
-    self.rightBtn.frame=CGRectMake(560, 0, 0.127*self.width, 100*HeightScale);
-    self.stateView.frame = CGRectMake(0, 100*HeightScale+7, self.width, 100*HeightScale);
-    self.state.frame= CGRectMake(0, 100*HeightScale+7, self.width, 100*HeightScale);
+    self.leftBtn.frame=CGRectMake(350, 100*HeightScale+7 , 0.127*self.width, 100*HeightScale);
+    self.rightBtn.frame=CGRectMake(560, 100*HeightScale+7 , 0.127*self.width, 100*HeightScale);
+    self.stateView.frame = CGRectMake(0, 0, self.width, 100*HeightScale);
+    self.state.frame= CGRectMake(500, 0, 0.5*self.width, 100*HeightScale);
+    self.label.frame= CGRectMake(0, 0, self.width, 100*HeightScale);
+//    [self loadCourseListFromNetwork];
+    NSString *ti = self.keyWord;
+
+}
+
+
+
+
+
+-(void)loadCourseListFromNetwork{
+    
+    
+    NSString *userSession = ApplicationDelegate.userSession;
+    
+    NSDictionary *para = @{@"method":@"Search",
+                           @"param":@{@"Data":@{@"search_info":self.keyWord,@"stuid":ApplicationDelegate.userSession}}};
+    //    NSDictionary *para = @{@"method":@"Login",
+    //                           @"param":@{@"Data":@{@"phone":@"111",@"password":@"111"}}};
+    [HttpTool postWithparams:para success:^(id responseObject) {
+        
+        NSData *data = [[NSData alloc] initWithData:responseObject];
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        
+//        
+//        courseCategoryArr = [NSMutableArray array];
+//        for (NSDictionary *catDict in dic[@"data"][@"categoryArr"]) {
+//            SCCourseCategory *cat = [SCCourseCategory objectWithKeyValues:catDict];
+//            NSMutableArray *secArr = [[NSMutableArray alloc]init];
+////            for (NSDictionary *secDict in catDict[@"sec_arr"]) {
+////                [SCCourseGroup setupObjectClassInArray:^NSDictionary *{
+////                    return @{@"lesarr":@"SCCourse"};
+////                }];
+////                SCCourseGroup *sec = [SCCourseGroup objectWithKeyValues:secDict];
+////                [secArr addObject:sec ];
+//            }
+//            cat.sec_arr = secArr;
+//            [courseCategoryArr addObject:cat];
+//        }
+//        
+//        
+        
+        
+                [SCSearchResult setupObjectClassInArray:^NSDictionary *{
+                    return @{@"lesson_list":@"SClesson_list"};
+                }];
+        //        [SCCourseCategory setupObjectClassInArray:^NSDictionary *{
+        //            return @{@"sec_arr":@"SCCourseGroup"};
+        //        }];
+        //        [SCCourseCategory setupObjectClassInArray:^NSDictionary *{
+        //            return @{@"categoryArr":@"SCCourseCategory"};
+        //        }];
+                SCSearchResult *SearchResult = [SCSearchResult objectWithKeyValues:dic[@"data"]];
+        
+//        self.firstSearchCategory=(SCSearchResult *)(SearchResult.grouping_id[0]);
+//        
+//        self.secondSearchCategory=(SCSearchResult *)(SearchResult.grouping_id[1]);
+        //        self.firstCategory=(SCCourseCategory *)(categoryList.categoryArr[0]);
+        //        self.secondCategory=(SCCourseCategory *)(categoryList.categoryArr[1]);
+        if ( self.currentSource==self.firstSearchCategory)
+        {
+            [self addSubview:self.firstSearchTableView];
+        }else if(self.currentSource==self.secondSearchCategory){
+            [self addSubview:self.secondSearchTableView];
+        }
+   
+  
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+    }];
 }
 
 -(UIView *)scrollSearchView{
     if(!_scrollSearchView){
-        _scrollSearchView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, self.width, 100*HeightScale)];
+        _scrollSearchView=[[UIView alloc]initWithFrame:CGRectMake(0, 100*HeightScale+7, self.width, 100*HeightScale)];
         _scrollSearchView.backgroundColor = [UIColor whiteColor];
     }
     return _scrollSearchView;
@@ -87,13 +165,23 @@
 }
 -(UILabel *)state{
     if(! _state){
-        _state=[[UILabel alloc]initWithFrame:CGRectMake(0, 100, self.width, 100*HeightScale)];
+        _state=[[UILabel alloc]init];
         _state.font=[UIFont systemFontOfSize:25];
         _state.textColor=[UIColor grayColor];
-        _state.text=@"搜索“key”共找到count个视频课程";
+        _state.text=@"搜索keyWord共找到lescount个视频课程";
     }
     return _state;
 }
+-(UILabel *)label{
+    if(! _label){
+        _label=[[UILabel alloc]init];
+        _label.font=[UIFont systemFontOfSize:25];
+        _label.textColor=[UIColor grayColor];
+        _label.text=@"搜索结果";
+    }
+    return _label;
+}
+
 
 -(UITableView *)firstSearchTableView{
     if(!_firstSearchTableView){
@@ -116,8 +204,8 @@
 //每组中的行数
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     //return 0;
-    SCCourseGroup *temp = self.currentSource.sec_arr[section];
-    return temp.lesarr.count;
+    SCsearchCategory *temp = self.currentSource;
+    return temp.lesson_list.count;
 }
 
 //返回cell
@@ -133,10 +221,11 @@
         [cell.layer setBorderWidth:1];//设置边界的宽度
         [cell.layer setBorderColor:UIColorFromRGB(0xeeeeee).CGColor];
         cell.delegate=self;
-        SCCourseGroup *temp=self.currentSource.sec_arr[indexPath.section];
-        SCCourse *temp_=temp.lesarr[indexPath.row];
+     
+            SClesson_list *temp= self.currentSource.lesson_list[indexPath.row];
+//            SClesson_list *op =op.les_name;
         //cell.textLabel.text=temp_.courseTitle;
-        [cell.searchBtn setTitle:temp_.les_name forState:UIControlStateNormal];
+        [cell.searchBtn setTitle:temp.les_name forState:UIControlStateNormal];
         [cell.searchBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateHighlighted];
         cell.searchBtn.tag =indexPath.section * 1000 + indexPath.row;
     
@@ -232,24 +321,34 @@
     [self.leftBtn setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
     [self move:variety];
 }
-
+-(IBAction)searchBtnDidClickWithSectionIndex:(NSInteger)secIndex AndRowIndex:(NSInteger)rowIndex{
+//    SCCourseGroup *courseGroup=self.firstSearchCategory.sec_arr[secIndex];
+    SClesson_list *selectedCourse = self.currentSource.lesson_list[rowIndex];
+    if ([selectedCourse.operations isEqualToString:@"视频"]) {
+        //NSString *urlvideo = selectedCourse.les_url;
+        [self.delegate videoPlayClickWithCourse:selectedCourse];
+    }else if ([selectedCourse.operations isEqualToString:@"网页"]) {
+        NSString *urlWeb=selectedCourse.les_url;
+        [self.delegate searchBtnClick:secIndex AndRowIndex:rowIndex AndUrl:urlWeb];
+    }
+}
 
 //数据桩（调试程序用的假数据）
 -(void)initData{
     
     //网络调用
     
-//    self.firstSearchCategory = [self getCourseCatagory:@"大纲"];
-//    self.secondSearchCategory = [self getCourseCatagory:@"拓展"];
+    self.firstSearchCategory = [self getSearchCategory1:@"大纲"];
+//    self.secondSearchCategory = [self getSearchCatagory2:@"拓展"];
 
     self.currentSource = self.firstSearchCategory;
 }
-
-
+//
+////
 //-(SCCourseCategory *)getCourseCatagory2:(NSString *)title{
 //    SCCourseCategory *temp = [[SCCourseCategory alloc]init];
-//    temp.course_catagory_title = title;
-//    temp.course_category_id = @"UUID";
+//    temp.lesgrouping_name = title;
+//    temp.lesgrouping_id = @"UUID";
 //    SCCourseGroup *c1 = [self getCourseGroup:@"改变了"];
 //    SCCourseGroup *c2 = [self getCourseGroup:@"第二分组"];
 //    SCCourseGroup *c3 = [self getCourseGroup:@"第三分组"];
@@ -258,27 +357,52 @@
 //    return temp;
 //    
 //}
-//
-//
-//
-//-(SCCourseGroup *)getCourseGroup:(NSString *)title{
-//    SCCourseGroup *temp = [[SCCourseGroup alloc]init];
-//    temp.lessections_name = title;
-//    temp.lessections_id = @"UUID";
-//    SCCourse *c1 = [self getCourse:@"这是视频"];
-//    SCCourse *c2 = [self getCourse:@"这是网页"];
-//    SCCourse *c3 = [self getCourse:@"第3节课"];
-//    SCCourse *c4 = [self getCourse:@"第4节课"];
-//    SCCourse *c5 = [self getCourse:@"第5节课"];
-//    SCCourse *c6 = [self getCourse:@"第6节课"];
-//    temp.lesarr = @[c1,c2,c3,c4,c5,c6];
+//-(SCCourseCategory *)getCourseCatagory1:(NSString *)title{
+//    SCCourseCategory *temp = [[SCCourseCategory alloc]init];
+//    temp.lesgrouping_name = title;
+//    temp.lesgrouping_id = @"UUID";
+//    SCCourseGroup *c1 = [self getCourseGroup:@"改变了"];
+//    SCCourseGroup *c2 = [self getCourseGroup:@"第二分组"];
+//    SCCourseGroup *c3 = [self getCourseGroup:@"第三分组"];
+//    SCCourseGroup *c4 = [self getCourseGroup:@"第四分组"];
+//    temp.sec_arr = @[c1,c2,c3,c4];
 //    return temp;
-//    
-//}
+
+//
+//
+//
+-(SCsearchCategory *)getSearchCategory1:(NSString *)title{
+    SCsearchCategory *temp = [[SCsearchCategory alloc]init];
+//    temp.lesgrouping_name = title;
+//    temp.lesgrouping_id = @"UUID";
+    SClesson_list *c1 = [self getCourse:@"这是视频"];
+    SClesson_list *c2 = [self getCourse:@"这是网页"];
+    SClesson_list *c3 = [self getCourse:@"第3节课"];
+    SClesson_list *c4 = [self getCourse:@"第4节课"];
+    SClesson_list *c5 = [self getCourse:@"第5节课"];
+    SClesson_list *c6 = [self getCourse:@"第6节课"];
+    temp.lesson_list = @[c1,c2,c3,c4,c5,c6];
+    return temp;
+
+}
+-(SCsearchCategory *)getSearchCategory2:(NSString *)title{
+    SCsearchCategory *temp = [[SCsearchCategory alloc]init];
+//    temp.lesgrouping_name = title;
+//    temp.lesgrouping_id = @"UUID";
+    SClesson_list *c1 = [self getCourse:@"这是视频"];
+    SClesson_list *c2 = [self getCourse:@"这是网页"];
+    SClesson_list *c3 = [self getCourse:@"第3节课"];
+    SClesson_list *c4 = [self getCourse:@"第4节课"];
+    SClesson_list *c5 = [self getCourse:@"第5节课"];
+    SClesson_list *c6 = [self getCourse:@"第6节课"];
+    temp.lesson_list = @[c1,c2,c3,c4,c5,c6];
+    return temp;
+    
+}
 //-(SCCourseCategory *)getCourseCatagory:(NSString *)title{
 //    SCCourseCategory *temp = [[SCCourseCategory alloc]init];
-//    temp.course_catagory_title = title;
-//    temp.course_category_id = @"UUID";
+//    temp.lesgrouping_name = title;
+//    temp.lesgrouping_id = @"UUID";
 //    SCCourseGroup *c1 = [self getCourseGroup:@"第一分组"];
 //    SCCourseGroup *c2 = [self getCourseGroup:@"第二分组"];
 //    SCCourseGroup *c3 = [self getCourseGroup:@"第三分组"];
@@ -287,10 +411,10 @@
 //    return temp;
 //    
 //}
-
+//
 //生成一个课程信息
--(SCCourse *)getCourse:(NSString *)title{
-    SCCourse *temp = [[SCCourse alloc]init];
+-(SClesson_list *)getCourse:(NSString *)title{
+    SClesson_list *temp = [[SClesson_list alloc]init];
     temp.les_name = title;
     temp.les_id = @"UUID";
     //temp.courseUrl = @"";
