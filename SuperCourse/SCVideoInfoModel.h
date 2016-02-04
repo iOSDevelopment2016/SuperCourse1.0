@@ -18,7 +18,7 @@
 @property (nonatomic, strong) NSMutableArray *videoSubTitles;
 @property (nonatomic, strong) NSMutableArray *studentSubTitle;
 @property (nonatomic, strong) NSMutableArray *videoLinks;
-
+@property (nonatomic, assign) NSTimeInterval ovesity_time;
 
 - (instancetype)initWithVideoUrl:(NSString *)url AndTitle:(NSString *)title AndFileSize:(NSString *)fileSize AndSubTitles:(NSMutableArray *)subTitles AndLinks:(NSMutableArray *)links;
 

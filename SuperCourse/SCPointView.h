@@ -12,11 +12,14 @@
 
 -(void)turnToTime:(UIButton *)sender;
 
-
 @end
 
 
 @interface SCPointView : UIView
+
+@property (nonatomic, strong) NSString *stuId;
+@property (nonatomic, strong) NSString *stuPsw;
+@property (nonatomic, strong) NSString *lessonId;
 
 @property (nonatomic, strong) UIImageView *currentImageView;
 @property (nonatomic, strong) UILabel *currentLabel;
@@ -29,5 +32,5 @@
 -(void)creatStudentSubTitleWithData:(NSMutableArray *)stuSubTitleArr;
 - (UIView *)addCustomSubTitleWithData:(SCVideoSubTitleMode *)subTitle;
 -(void)reloadSubTitlesWithObject:(NSMutableArray *)subTitleArr AndStudentSubTitle:(NSMutableArray *)stuSubTitleArr;
-- (void)getCurrectOrder;
+-(void)getCurrectOrder;
 @end

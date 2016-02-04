@@ -11,6 +11,7 @@
 #import "SCPlayerViewController.h"
 #import "SCVideoSubTitleMode.h"
 #import "SCVideoInfoModel.h"
+#import "HttpTool.h"
 
 @implementation SCPointView
 
@@ -28,7 +29,7 @@
 
 - (void)createCellWithData:(NSMutableArray *)subTitleArr{
     
-    CGFloat viewY = 0;
+    CGFloat viewY = 0*HeightScale;
     CGFloat height = 100*HeightScale;
     [self setSubTitlesLetter:subTitleArr];
     for (int i=0; i<subTitleArr.count; i++) {
@@ -92,7 +93,7 @@
     int i = (int)self.subviews.count;
     float height = 100*HeightScale;
 
-    UIView *noteView = [[UIView alloc]initWithFrame:CGRectMake(12*WidthScale, i*height+40*HeightScale, self.width-12*WidthScale, height)];
+    UIView *noteView = [[UIView alloc]initWithFrame:CGRectMake(12*WidthScale, i*height+i*10*HeightScale, self.width-12*WidthScale, height)];
     [noteView setBackgroundColor:[UIColor whiteColor]];
     UIButton *hudBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     hudBtn.frame = CGRectMake(0, 0, noteView.bounds.size.width, noteView.bounds.size.height);
@@ -135,13 +136,50 @@
 }
 
 -(void)deleteView:(UIButton *)sender{
-
-    [sender.superview removeFromSuperview];
-    for (UIView *view in self.subviews) {
-        if (view.tag>sender.superview.tag) {
-            view.y = view.y-110*HeightScale;
+    
+    [self getCurrentImageViewAndLabel:sender.superview];
+    
+    NSString *tag = [NSString stringWithFormat:@"%ld",sender.superview.tag];
+    // 写入网络数据库
+    NSMutableDictionary *methodParameter = [[NSMutableDictionary alloc]init];
+    NSString *userID = self.stuId; // 学员内码
+    NSString *userPassword = self.stuPsw; // 登录密码
+    NSString *lesson_id = self.lessonId;
+    [methodParameter setValue:userID forKey:@"stu_id"];
+    [methodParameter setValue:userPassword forKey:@"stu_pwd"];
+    [methodParameter setValue:lesson_id forKey:@"lesson_id"];
+    [methodParameter setValue:self.currentLabel.text forKey:@"subtitle"];
+    [methodParameter setValue:tag forKey:@"bg_time"];
+    
+    NSMutableDictionary *dataParameter = [[NSMutableDictionary alloc]init];
+    [dataParameter setValue:methodParameter forKey:@"Data"];
+    
+    NSMutableDictionary *pageParameter = [[NSMutableDictionary alloc]init];
+    [pageParameter setValue:dataParameter forKey:@"param"];
+    [pageParameter setValue:@"DeleteStudentSubtitle" forKey:@"method"];
+    
+    [HttpTool postWithparams:pageParameter success:^(id responseObject) {
+        
+        NSData *data = [[NSData alloc] initWithData:responseObject];
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        
+        
+        [sender.superview removeFromSuperview];
+        for (UIView *view in self.subviews) {
+            if (view.tag>=sender.superview.tag) {
+                view.y = view.y-110*HeightScale;
+            }
         }
-    }
+
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+        // 给出插入失败的提示
+        
+
+        
+    }];
+
+   
 }
 
 
@@ -221,7 +259,7 @@
         int m = (int)subTitleArr.count-1;
         UIView *changeView = subTitleArr[m];
         UIView *nowView = subTitleArr[i];
-        if (changeView.tag<nowView.tag) {
+        if (changeView.tag<=nowView.tag) {
             changeView.y = nowView.y-j*110*HeightScale;
             j = j+1;
             nowView.y = nowView.y+110*HeightScale;
