@@ -29,7 +29,7 @@
 
 - (void)createCellWithData:(NSMutableArray *)subTitleArr{
     
-    CGFloat viewY = 0;
+    CGFloat viewY = 0*HeightScale;
     CGFloat height = 100*HeightScale;
     [self setSubTitlesLetter:subTitleArr];
     for (int i=0; i<subTitleArr.count; i++) {
@@ -93,7 +93,7 @@
     int i = (int)self.subviews.count;
     float height = 100*HeightScale;
 
-    UIView *noteView = [[UIView alloc]initWithFrame:CGRectMake(12*WidthScale, i*height+40*HeightScale, self.width-12*WidthScale, height)];
+    UIView *noteView = [[UIView alloc]initWithFrame:CGRectMake(12*WidthScale, i*height+i*10*HeightScale, self.width-12*WidthScale, height)];
     [noteView setBackgroundColor:[UIColor whiteColor]];
     UIButton *hudBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     hudBtn.frame = CGRectMake(0, 0, noteView.bounds.size.width, noteView.bounds.size.height);
@@ -166,7 +166,7 @@
         
         [sender.superview removeFromSuperview];
         for (UIView *view in self.subviews) {
-            if (view.tag>sender.superview.tag) {
+            if (view.tag>=sender.superview.tag) {
                 view.y = view.y-110*HeightScale;
             }
         }
@@ -259,7 +259,7 @@
         int m = (int)subTitleArr.count-1;
         UIView *changeView = subTitleArr[m];
         UIView *nowView = subTitleArr[i];
-        if (changeView.tag <= nowView.tag) {
+        if (changeView.tag<=nowView.tag) {
             changeView.y = nowView.y-j*110*HeightScale;
             j = j+1;
             nowView.y = nowView.y+110*HeightScale;

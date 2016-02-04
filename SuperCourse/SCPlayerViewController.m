@@ -672,16 +672,22 @@
             
             NSData *data = [[NSData alloc] initWithData:responseObject];
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-            
-            [self.rightView.pointView addSubview:[self.rightView.pointView addCustomSubTitleWithData:subTitle]];
-            [self.videoInfo.studentSubTitle addObject:subTitle];
+            UIView *subTitleView = [self.rightView.pointView addCustomSubTitleWithData:subTitle];
+            [self.rightView.pointView addSubview:subTitleView];
+//            [self.videoInfo.studentSubTitle addObject:subTitle];
             
             self.writeNoteView.hidden = YES;
             [self.videoManager resume];
             shouldPlaying = YES;
             [self.bottomView addSubview:self.pauseBtn];
             [self.playBtn removeFromSuperview];
-            [self.rightView.pointView reloadSubTitlesWithObject:self.videoInfo.videoSubTitles AndStudentSubTitle:self.videoInfo.studentSubTitle];
+            
+            for (UIView *view in self.rightView.pointView.subviews) {
+                if (view.tag>subTitle.bg_time) {
+                    view.y = view.y+110*HeightScale;
+                    subTitleView.y = subTitleView.y-110*HeightScale;
+                }
+            }
         } failure:^(NSError *error) {
             NSLog(@"%@",error);
             // 给出插入失败的提示
@@ -790,27 +796,28 @@
 
 -(void)panToTime:(UIPanGestureRecognizer*) recognizer{
 
-    CGPoint beginStatePoint;
-    if (recognizer.state == UIGestureRecognizerStateBegan) {
-        beginStatePoint = [recognizer locationInView:self.container];
-    }
-    CGFloat beginStateX = beginStatePoint.x;
-    CGFloat endStateX;
+    CGPoint statePoint = [recognizer translationInView:self.container];
+ 
+    
+//    beginStatePoint = [recognizer locationInView:self.container];
+//    
+//    CGFloat beginStateX = beginStatePoint.x;
+//    CGFloat endStateX;
     CGFloat endStateY;
     CGPoint endStatePoint = [recognizer locationInView:self.container];
-    endStateX = endStatePoint.x;
+//    endStateX = endStatePoint.x;
     endStateY = endStatePoint.y;
-    CGFloat moveDistance = endStateX - beginStateX;
+    CGFloat moveDistance = statePoint.x;
     if (endStateY >= 0 && endStateY < self.container.height/3) {
-        CGFloat turnToSecond = self.currentTime+360*moveDistance/self.container.width ;
+        CGFloat turnToSecond = self.currentTime+2000*moveDistance/self.container.width ;
         [self.videoManager moveToSecond:turnToSecond];
         self.slider.value = turnToSecond;
     }else if (endStateY >= self.container.height/3 && endStateY < self.container.height*2/3){
-        CGFloat turnToSecond = self.currentTime+(60*moveDistance/self.container.width) ;
+        CGFloat turnToSecond = self.currentTime+(360*moveDistance/self.container.width) ;
         [self.videoManager moveToSecond:turnToSecond];
         self.slider.value = turnToSecond;
     }else if (endStateY >= self.container.height*2/3 && endStateY < self.container.height){
-        CGFloat turnToSecond = self.currentTime+10*moveDistance/self.container.width ;
+        CGFloat turnToSecond = self.currentTime+60*moveDistance/self.container.width ;
         [self.videoManager moveToSecond:turnToSecond];
         self.slider.value = turnToSecond;
     }

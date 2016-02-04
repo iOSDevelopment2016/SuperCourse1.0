@@ -32,5 +32,5 @@
 -(void)creatStudentSubTitleWithData:(NSMutableArray *)stuSubTitleArr;
 - (UIView *)addCustomSubTitleWithData:(SCVideoSubTitleMode *)subTitle;
 -(void)reloadSubTitlesWithObject:(NSMutableArray *)subTitleArr AndStudentSubTitle:(NSMutableArray *)stuSubTitleArr;
-
+-(void)getCurrectOrder;
 @end

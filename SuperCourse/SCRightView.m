@@ -31,7 +31,6 @@
         [self addSubview:self.tagList];
     }
     return self;
-    
 }
 
 
