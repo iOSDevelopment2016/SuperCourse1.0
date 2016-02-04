@@ -10,6 +10,6 @@
 
 @interface SCCourseCategoryList : NSObject
 
-@property (nonatomic, strong) NSArray *categoryArr;
+//@property (nonatomic, strong) NSArray *categoryArr;
 
 @end

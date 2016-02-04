@@ -255,8 +255,8 @@
 -(IBAction)imageBtnDidClickWithSectionIndex:(NSInteger)secIndex AndRowIndex:(NSInteger)rowIndex{
     SCCourseGroup *courseGroup=self.firstCategory.sec_arr[secIndex];
     SCCourse *selectedCourse = courseGroup.lesarr[rowIndex];
-    NSString *url=selectedCourse.les_url;
-    [self.delegate imageClickWithUrl:url];
+    //NSString *url=selectedCourse.les_url;
+    [self.delegate imageClickWithCoutse:selectedCourse];
 }
 
 
@@ -393,7 +393,7 @@
     
     SCCourseGroup *temp = self.currentSource.sec_arr[section];
     
-    headerLabel.text = temp.lesgrouping_name;
+    headerLabel.text = temp.lessections_name;
     
     
     [customView addSubview:headerLabel];
@@ -471,6 +471,12 @@
         [cell.contentField setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateHighlighted];
         cell.contentField.tag =indexPath.section * 1000 + indexPath.row;
         cell.imageBtn.tag =indexPath.section * 1000 + indexPath.row;
+        
+        if([temp_.operations isEqualToString:@"网页"]){
+            cell.downloadBtn.hidden=YES;
+        }
+        cell.courseLabel.text=temp_.les_size;
+        
         
     }
     return cell;
@@ -618,6 +624,30 @@
     }
     return _activityIndicator;
 }
+
+-(NSString *)getNextLessonID:(NSString *)currentLessonID{
+    NSString *nextLessonID = currentLessonID;
+    NSMutableArray *lessonArr = [[NSMutableArray alloc]init];
+    for (SCCourseCategory *category in courseCategoryArr) {
+        for (SCCourseGroup *group in category.sec_arr) {
+            for (SCCourse *lesson in group.lesarr) {
+                [lessonArr addObject:lesson];
+            }
+        }
+    }
+    for (int i=0; i<lessonArr.count; i++) {
+        SCCourse *lesson = lessonArr[i];
+        if ([currentLessonID isEqualToString:lesson.les_id]) {
+            if (i<lessonArr.count-1) {
+                SCCourse *nextLesson = lessonArr[i+1];
+                nextLessonID = nextLesson.les_id;
+                break;
+            }
+        }
+    }
+    return nextLessonID;
+}
+
 
 @end
 

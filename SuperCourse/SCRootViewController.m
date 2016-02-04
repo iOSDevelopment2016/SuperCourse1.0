@@ -20,6 +20,16 @@
 #import "SCVideoInfoModel.h"
 
 
+
+#import "MJExtension.h"
+#import "HttpTool.h"
+#import "SCIntroduction.h"
+#import "SCKnowledge.h"
+#import "SCWillLearn.h"
+#import "SCIntroductionDataSource.h"
+#import "SCCoursePlayLog.h"
+#import "SCExtendView.h"
+
 typedef NS_ENUM(NSInteger,SCShowViewType) {
     SCShowViewType_MyNotes = 0,
     SCShowViewType_VideoHistory,
@@ -27,7 +37,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 };
 
 
-@interface SCRootViewController ()<SCLoginViewDelegate,SCAllCourseViewDelegate,UITextFieldDelegate,SCCourseTableViewDelegate>
+@interface SCRootViewController ()<SCLoginViewDelegate,SCAllCourseViewDelegate,UITextFieldDelegate,SCCourseTableViewDelegate,SCExtendViewDelegate>
 
 @property (nonatomic ,strong) UIButton           *loginBtn;
 @property (nonatomic ,strong) UIButton           *loginBtnImage;
@@ -58,6 +68,11 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 @property (nonatomic ,strong) UIView             *mainView;
 
 @property (nonatomic ,strong) UIWebView          *webView;
+@property (nonatomic ,strong) SCExtendView       *extendView;
+
+
+@property (nonatomic ,strong)SCIntroductionDataSource *datasource;
+//@property (nonatomic ,strong)NSString           *title;
 
 @property CGFloat Variety;
 
@@ -100,6 +115,11 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     [self.mainView addSubview:self.allCourseView];//2
     
     
+//    SCIntroduction *intro= self.datasource.har_des[0];
+//    NSString *str=intro.les_intrdoc;
+//    NSLog(@"%@",str);
+    
+    
     self.selectedBtn = self.allCourseBtn;
 }
 
@@ -137,6 +157,13 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     
     
 }
+#pragma mark - SCExtendViewDelegate
+-(void)returnToMainView{
+    [self hideLoginView];
+}
+-(NSString *)getTitle{
+    return self.title;
+}
 
 #pragma mark - SCLoginViewDelegate
 //-(void)regBtnDidClick:(UIButton *)sender{
@@ -144,6 +171,19 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 //    SCRegViewController *regVC = [[SCRegViewController alloc]init];
 //    [self presentViewController:regVC animated:YES completion:nil];
 //}
+-(void)removeHub{
+    [self.hubView removeFromSuperview];
+}
+-(void)getuser:(NSString *)userphone{
+    [self.loginBtnImage removeFromSuperview];
+    [self.loginBtn removeFromSuperview];
+    UILabel *userLabel=[[UILabel alloc]initWithFrame: CGRectMake(0, 0, 400*WidthScale, 200*HeightScale)];
+    userLabel.backgroundColor=UIThemeColor;
+    userLabel.numberOfLines=0;
+    userLabel.text=[NSString stringWithFormat:@"  欢迎你，用户：%@",userphone];
+    userLabel.font=[UIFont systemFontOfSize:30];
+    [self.view addSubview:userLabel];
+}
 
 #pragma mark - SCAllCourseViewDelegate
 -(IBAction)contendClick:(NSInteger)secIndex AndRowIndex:(NSInteger)rouIndex AndUrl:(NSString *)url{
@@ -184,18 +224,134 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 
 }
 
+-(IBAction)imageClickWithCoutse:(SCCourse *)Course{
+   // 跳转到详情页面
+    NSString *Id=@"0000";
+    NSDictionary *para = @{@"method":@"Getintroduction",
+                           @"param":@{@"Data":@{@"les_id":Id}}};
+    
+    [HttpTool postWithparams:para success:^(id responseObject) {
+        
+        NSData *data = [[NSData alloc] initWithData:responseObject];
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        NSLog(@"%@",dic);
+        
+        
+                [SCIntroduction setupObjectClassInArray:^NSDictionary *{
+                    return @{@"har_des":@"SCIntroduction"};
+                }];
+                [SCCourseCategory setupObjectClassInArray:^NSDictionary *{
+                    return @{@"knowledge":@"SCKnowledge"};
+                }];
+                [SCCourseCategory setupObjectClassInArray:^NSDictionary *{
+                    return @{@"willknow":@"SCWillLearn"};
+                }];
+        self.datasource=[SCIntroductionDataSource objectWithKeyValues:dic[@"data"]];
+        self.extendView=[[SCExtendView alloc]initWithString:Course.les_name AndDataSource:self.datasource];
+        
+        self.extendView.frame = CGRectMake(0, 0, 0.68*self.view.width, 0.6*self.view.height);
+        self.extendView.center = self.view.center;
+        self.extendView.delegate = self;
+        
+        [self.view addSubview:self.hubView];
+        [self.view addSubview:self.extendView];
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+    }];
+    
+    
+    //Course.les_name
+    //self.datasource.har_des
+    //self.datasource.knowledge
+    //self.datasource.willknow
+    
+    
+    
+    //SCExtendView *extendView=[[SCExtendView alloc]init];
+    //extendView.backgroundColor=[UIColor whiteColor];
+    
 
--(IBAction)imageClickWithUrl:(NSString *)url{
-    //加错了 加入的是简介 回来改
-    [self.view addSubview:self.hubView];
-    [self.view addSubview:self.itemView];
+    
 }
+
+
+
+
 -(void)startBtnDidClick{
+    // 检查学员是否登录，未登录的，转到登录界面；已登录的，开始学习
     
-    SCPlayerViewController *playVC = [[SCPlayerViewController alloc]init];
-    //这里要传递lessonID
-    [self.navigationController pushViewController:playVC animated:YES];
+    if ([ApplicationDelegate.userSession isEqualToString:UnLoginUserSession]) {
+        [self loginBtnClick]; // 去登录
+    }else{
+        [self startCourse]; // 开始学习
+    }
     
+}
+
+// 开始学习
+-(void)startCourse{
+    // 开始学习：
+    // 获得当前学员的最后一条播放记录
+    NSString *stu_id = ApplicationDelegate.userSession;
+    NSString *stu_pwd = ApplicationDelegate.userPsw;
+    if([ApplicationDelegate.userSession isEqualToString:UnLoginUserSession])
+    {
+        [self loginBtnClick];
+    }else{
+    
+        if (!stu_pwd) {
+            stu_pwd = @"";
+        }
+        stu_id = @"0000";
+        NSDictionary *para = @{@"method":@"GetStudentPlayLog",
+                               @"param":@{@"Data":@{@"stu_id":stu_id,
+                                                    @"stu_pwd":stu_pwd}}};
+    
+        [HttpTool postWithparams:para success:^(id responseObject) {
+        
+            NSData *data = [[NSData alloc] initWithData:responseObject];
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            NSLog(@"%@",dic);
+        
+//        [SCCourseCategory setupObjectClassInArray:^NSDictionary *{
+//            return @{@"willknow":@"SCWillLearn"};
+//        }];
+
+            SCCoursePlayLog *playLog = [SCCoursePlayLog objectWithKeyValues:dic[@"data"]];
+//        SCCoursePlayLog *playLog = [[SCCoursePlayLog alloc]init];
+//        playLog.lessonID = dic[@"data"][@""]
+            NSString *lessonId = playLog.studyles_id;
+            float startTime = playLog.oversty_time;
+            if (lessonId) {
+                if ([playLog.is_ready isEqualToString:@"是"]) {
+                    lessonId = [self getNextCourse:lessonId];
+                    startTime = 0;
+                }
+
+            }else{
+                //lessonId = [self getFirstCourse];                未完成！！！！！！！！
+            }
+        // 启动播放器
+            SCPlayerViewController *playVC = [[SCPlayerViewController alloc]init];
+            playVC.lessonId = playLog.studyles_id;
+        // 设置播放开始时间，未完成   playVC.
+            [self.navigationController pushViewController:playVC animated:YES];
+        
+//       self.datasource=[SCIntroductionDataSource objectWithKeyValues:dic[@"data"]];
+
+        } failure:^(NSError *error) {
+            NSLog(@"%@",error);
+        }];
+    }
+    
+}
+
+-(NSString *)getNextCourse:(NSString *)lessonId{
+    NSString *nextLessonID = lessonId;
+    if (self.allCourseView) {
+        nextLessonID = [self.allCourseView getNextLessonID:lessonId];
+    }
+    return nextLessonID;
 }
 
 //-(IBAction)contendFieldDidClick{
@@ -406,6 +562,8 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     self.itemView = nil;
     [self.webView removeFromSuperview];
     self.webView=nil;
+    [self.extendView removeFromSuperview];
+    self.extendView=nil;
     
 }
 
@@ -712,6 +870,19 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     }
     return _loginView;
 }
+//-(SCExtendView *)extendView{
+//    if (!_extendView){
+//        _extendView = [[NSBundle mainBundle]loadNibNamed:NSStringFromClass([SCExtendView class]) owner:nil options:nil].lastObject;
+//        _extendView.frame = CGRectMake(0, 0, 0.68*self.view.width, 0.6*self.view.height);
+//        NSLog(@"%f",_extendView.frame.size.width);
+//        NSLog(@"%f",_extendView.frame.size.height);
+//        _extendView.center = self.view.center;
+//        _extendView.delegate = self;
+//    }
+//    return _extendView;
+//}
+//
+
 
 -(UIView *)mainView{
     if (!_mainView){

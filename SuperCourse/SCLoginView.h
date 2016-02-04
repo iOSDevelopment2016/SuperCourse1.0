@@ -10,7 +10,8 @@
 @protocol SCLoginViewDelegate <NSObject>
 
 //-(void)regBtnDidClick:(UIButton *)sender;
-
+-(void)getuser:(NSString *)userphone;
+-(void)removeHub;
 @end
 
 @interface SCLoginView : UIView
