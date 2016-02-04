@@ -22,11 +22,11 @@
 {
     self = [super init];
     if (self) {
-        self.videoFileSize = fileSize;
+        self.les_size = fileSize;
         self.videoLinks = links;
         self.videoSubTitles = subTitles;
-        self.videoTitle = title;
-        self.videoUrl = url;
+        self.les_name = title;
+        self.les_url = url;
     }
     return self;
 }

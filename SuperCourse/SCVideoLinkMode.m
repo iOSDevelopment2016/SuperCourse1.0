@@ -21,11 +21,11 @@
 {
     self = [super init];
     if (self) {
-        self.title = title;
-        self.beginTime = beginTime;
-        self.targetType = targetType;
-        self.lessonId = lessonId;
-        self.webUrl = webUrl;
+        self.hot_title = title;
+        self.bg_time = beginTime;
+        self.target_type = targetType;
+        self.link_les_id = lessonId;
+        self.web_url = webUrl;
     }
     return self;
 }

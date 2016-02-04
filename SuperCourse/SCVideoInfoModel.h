@@ -11,10 +11,12 @@
 @interface SCVideoInfoModel : NSObject
 
 
-@property (nonatomic, strong) NSString *videoUrl;
-@property (nonatomic, strong) NSString *videoTitle;
-@property (nonatomic, strong) NSString *videoFileSize;
+@property (nonatomic, strong) NSString *les_url;
+@property (nonatomic, strong) NSString *les_name;
+@property (nonatomic, strong) NSString *les_size;
+@property (nonatomic, assign) float les_alltime;
 @property (nonatomic, strong) NSMutableArray *videoSubTitles;
+@property (nonatomic, strong) NSMutableArray *studentSubTitle;
 @property (nonatomic, strong) NSMutableArray *videoLinks;
 
 

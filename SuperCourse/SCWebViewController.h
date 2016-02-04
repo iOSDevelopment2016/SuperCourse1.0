@@ -9,5 +9,8 @@
 #import "SCBaseViewController.h"
 
 @interface SCWebViewController : SCBaseViewController
+@property (nonatomic, assign) float stopTime;
+
+-(void)getUrl:(NSString *)url;
 
 @end

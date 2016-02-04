@@ -10,9 +10,9 @@
 
 @interface SCVideoSubTitleMode : NSObject
 
-@property (nonatomic, strong)NSString *title;
+@property (nonatomic, strong)NSString *subtitle;
 @property (nonatomic, strong)NSString *letter;
-@property (nonatomic, assign)float beginTime;
+@property (nonatomic, assign)float bg_time;
 
 -(instancetype)initWithTitle:(NSString *)title AndBeginTime:(float)beginTime;
 

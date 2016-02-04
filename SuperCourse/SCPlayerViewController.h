@@ -16,5 +16,8 @@
 
 
 @property (nonatomic, strong) NSString *lessonId;
+@property (nonatomic, assign) NSTimeInterval beginTime;
+
+
 
 @end

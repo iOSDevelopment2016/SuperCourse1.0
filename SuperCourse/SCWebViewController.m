@@ -7,6 +7,8 @@
 //
 
 #import "SCWebViewController.h"
+#import "SCPlayerViewController.h"
+
 
 @interface SCWebViewController ()<UIGestureRecognizerDelegate>
 @property (nonatomic, strong) IBOutlet UIView *hubView;
@@ -15,6 +17,8 @@
 @property (nonatomic, strong) IBOutlet UIButton *backBtn;
 @property (nonatomic, strong) IBOutlet UIWebView *webView;
 @property (nonatomic, strong) UIPanGestureRecognizer *pan;
+@property (nonatomic, strong) IBOutlet UIButton *closeBtn;
+@property (nonatomic, strong) NSString *url;
 
 @end
 
@@ -25,12 +29,19 @@
     [self.view addSubview:self.hubView];
     [self.view addSubview:self.mainView];
     [self.view addSubview:self.topView];
+    [self.topView addSubview:self.closeBtn];
     [self.topView addSubview:self.backBtn];
     self.topView.backgroundColor = [UIColor whiteColor];
     [self.webView addGestureRecognizer:self.pan];
 
+
+
 }
 
+-(void)getUrl:(NSString *)url{
+
+    self.url = url;
+}
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
     
@@ -42,18 +53,15 @@
 #pragma mark - click
 
 
--(void)OnclikeWeb:(UITapGestureRecognizer *)tap
 
-{
-    
-    NSLog(@"------");
-    
-}
 
 -(void)backBtnClick{
 
-    [self.navigationController popViewControllerAnimated:YES];
-
+    [self.webView goBack];
+    if (![self.webView canGoBack]) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    
 }
 
 -(void)changeView:(CGFloat)topViewY{
@@ -69,6 +77,12 @@
         }];
     }
 }
+
+-(void)closeBtnClick{
+
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 
 -(void)hiddenTopView:(UIPanGestureRecognizer*) recognizer{
 
@@ -87,7 +101,7 @@
         [UIView animateWithDuration:0.4 animations:^{
             self.topView.transform = CGAffineTransformIdentity;
             self.mainView.frame = CGRectMake(0, 100*HeightScale, UIScreenWidth, UIScreenHeight-100*HeightScale);
-            self.webView.frame = self.mainView.frame;
+            self.webView.frame = CGRectMake(0, 0, UIScreenWidth, UIScreenHeight-100*HeightScale);
         }];
     }else if(moveDistance < 0){
         [UIView animateWithDuration:0.4 animations:^{
@@ -99,6 +113,7 @@
 
 }
 
+
 #pragma mark - getters
 
 -(UIView *)mainView{
@@ -106,9 +121,9 @@
     if (!_mainView) {
         _mainView = [[UIView alloc]initWithFrame:CGRectMake(0, 100*HeightScale, UIScreenWidth, UIScreenHeight-100*HeightScale)];
         [_mainView setBackgroundColor:[UIColor whiteColor]];
-        NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.baidu.com"]];
+        NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.url]];
         self.webView = [[UIWebView alloc]init];
-        self.webView.frame = _mainView.frame;
+        self.webView.frame = CGRectMake(0, 0, UIScreenWidth, UIScreenHeight-100*HeightScale);
         [_webView loadRequest:request];
         [_mainView addSubview:self.webView];
     }
@@ -153,12 +168,23 @@
     if (!_webView) {
         _webView = [[UIWebView alloc]init];
         _webView.scrollView.bounces = NO;
-        UITapGestureRecognizer* singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(OnclikeWeb:)];
-        singleTap.delegate = self;
-        singleTap.cancelsTouchesInView = NO;
-        [_webView addGestureRecognizer:singleTap];
+//        singleTap.delegate = self;
+//        singleTap.cancelsTouchesInView = NO;
+//        [_webView addGestureRecognizer:singleTap];
     }
     return _webView;
+}
+-(UIButton *)closeBtn{
+    
+    if (!_closeBtn) {
+        _closeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_closeBtn setTitle:@"关闭" forState:UIControlStateNormal];
+        [_closeBtn setTitleColor:UIThemeColor forState:UIControlStateNormal];
+        [_closeBtn.titleLabel setFont:[UIFont systemFontOfSize:45*HeightScale]];
+        [_closeBtn setFrame:CGRectMake(self.topView.width - 110*WidthScale, 38*HeightScale, 90*WidthScale, 44*HeightScale)];
+        [_closeBtn addTarget:self action:@selector(closeBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _closeBtn;
 }
 
 @end

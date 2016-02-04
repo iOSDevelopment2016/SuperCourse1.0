@@ -15,6 +15,9 @@
 #import "SCVideoLinkMode.h"
 #import "SCVideoSubTitleMode.h"
 #import "SCWebViewController.h"
+#import "HttpTool.h"
+#import "MJExtension.h"
+
 
 @interface SCPlayerViewController ()<SCPointViewDelegate, SCRightViewDelegate>{
     BOOL isAnimating; // 正在动画
@@ -22,7 +25,7 @@
     BOOL shouldPlaying;
 }
 
-@property (nonatomic ,strong) SCVIdeoInfo *currentVideoInfo;
+//@property (nonatomic ,strong) SCVIdeoInfo *currentVideoInfo;
 @property (nonatomic ,assign) NSTimeInterval lastPlayTime;
 
 
@@ -55,9 +58,16 @@
 @property (nonatomic, assign) CGFloat currentTime;
 @property (nonatomic, strong) UIPanGestureRecognizer *pan;
 @property (nonatomic, strong) IBOutlet UIButton *nextPlayerPlayBtn;
-@property (nonatomic, strong) SCVideoInfoModel *videoInfo;
+@property (nonatomic, strong) SCVideoInfoModel *videoInfo; // 播放视频的数据源
 @property (nonatomic, strong) NSString *nowPointString;
-@property (nonatomic, assign) CGFloat stopTime;
+@property (nonatomic, assign) CGFloat oversty_time;
+@property (nonatomic, strong) IBOutlet UIAlertView *alert;
+@property (nonatomic, strong) IBOutlet UITextField *textField;
+@property (nonatomic, assign) BOOL isNeedBack;
+@property (nonatomic, strong) UIActivityIndicatorView *indicatorView;
+@property (nonatomic, strong) IBOutlet UIView *indicatorShowView;
+@property (nonatomic, strong) NSArray *letterArr;
+
 
 @end
 
@@ -66,35 +76,132 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     isAnimating = NO; //防止重复的动画
-    [self loadDataStub]; //加载数据桩
+//    [self loadDataStub]; //加载数据桩
+    self.lessonId = @"0001";
     [self addAllControl]; //加载界面上的所有控件
-//    [self addAllControl]; //加载界面上的所有控件
     isFirstView = YES;
+    [self.view addSubview:self.indicatorShowView];
+//
+//    if (self.beginTime == 0) {
+//        self.beginTime = 100;
+//    }
     
     [self loadVideoInfo]; //从网络上下载视频文件的所有信息
-    
-    shouldPlaying = YES;
-    self.videoManager = [[SZYVideoManager alloc]init];
-    [self initVideoManager];
+    self.isNeedBack = NO;
 }
 
 // 从网络下载视频文件的所有信息
 -(void)loadVideoInfo{
+    NSString *userID = ApplicationDelegate.userSession; // 学员内码
+    NSString *userPassword = ApplicationDelegate.userPsw; // 登录密码
+    if (!userPassword) {
+        userPassword = @"0000";
+    }
     
+    NSString *lesson_id = self.lessonId;
+
+    
+    NSMutableDictionary *firstDic = [[NSMutableDictionary alloc]init];
+    [firstDic setValue:userID forKey:@"stu_id"];
+    [firstDic setValue:userPassword forKey:@"stu_pwd"];
+    [firstDic setValue:lesson_id forKey:@"lesson_id"];
+    
+    NSMutableDictionary *secondDic = [[NSMutableDictionary alloc]init];
+    [secondDic setValue:firstDic forKey:@"Data"];
+    
+    NSMutableDictionary *thirdDic = [[NSMutableDictionary alloc]init];
+    [thirdDic setValue:secondDic forKey:@"param"];
+    [thirdDic setValue:@"LoadVideoInfo" forKey:@"method"];
+    
+    [HttpTool postWithparams:thirdDic success:^(id responseObject) {
+        
+        NSData *data = [[NSData alloc] initWithData:responseObject];
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        
+
+        _videoInfo = [self getVideoInfo:dic];
+        // 开始播放
+        shouldPlaying = YES;
+        self.videoManager = [[SZYVideoManager alloc]init];
+        [self initVideoManager];
+        [self.view addSubview:self.rightView];
+
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+    }];
+    
+
 }
 
-- (void)viewWillAppear:(BOOL)animated{
+-(SCVideoInfoModel *)getVideoInfo:(NSDictionary *)dict{
+    SCVideoInfoModel *m = [[SCVideoInfoModel alloc]init];
+    NSMutableDictionary *dataDict = dict[@"data"];
+    NSArray *videoInfoDict = dataDict[@"videoInfo"];
+    m.les_name = videoInfoDict[0][@"les_name"];
+    m.les_alltime = [videoInfoDict[0][@"les_alltime"] floatValue];
+//    m.les_url = videoInfoDict[0][@"les_url"];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docDir = [paths objectAtIndex:0];
+    NSString *url=[docDir stringByAppendingPathComponent:@"load2.mp4"];
+    m.les_url = url;
+    m.les_size = videoInfoDict[0][@"les_size"];
+    NSMutableArray *videoLinks = [[NSMutableArray alloc]init];
+    NSArray *videoLinkArr = videoInfoDict[0][@"videoLinks"];
+    for (int i=0; i<videoLinkArr.count; i++) {
+        NSDictionary *linkDict = videoLinkArr[i];
+        SCVideoLinkMode *link = [[SCVideoLinkMode alloc]init];
+        link.link_les_id = linkDict[@"link_les_id"];
+        link.hot_title = linkDict[@"hot_title"];
+        link.bg_time = [linkDict[@"bg_time"] floatValue];
+        link.target_type = linkDict[@"target_type"];
+        link.web_url = linkDict[@"web_url"];
+        [videoLinks addObject:link];
+    }
+    m.videoLinks = videoLinks;
+    NSMutableArray *videoSubTitle = [[NSMutableArray alloc]init];
+    NSArray *videoSubTitleArr = videoInfoDict[0][@"videoSubTitles"];
+    for (int i=0; i<videoSubTitleArr.count; i++) {
+        NSDictionary *subTitleDict = videoSubTitleArr[i];
+        SCVideoSubTitleMode *subTitle = [[SCVideoSubTitleMode alloc]init];
+        subTitle.subtitle = subTitleDict[@"subtitle"];
+        subTitle.bg_time = [subTitleDict[@"bg_time"] floatValue];
+        [videoSubTitle addObject:subTitle];
+    }
+    m.videoSubTitles = videoSubTitle;
+    NSMutableArray *studentSubtitle = [[NSMutableArray alloc]init];
+    NSArray *studentSubTitleArr = videoInfoDict[0][@"studentSubTitle"];
+    for (int i=0; i<studentSubTitleArr.count; i++) {
+        NSDictionary *stuSubTitleData = studentSubTitleArr[i];
+        SCVideoSubTitleMode *stuSubTitle = [[SCVideoSubTitleMode alloc]init];
+        stuSubTitle.subtitle = stuSubTitleData[@"subtitle"];
+        stuSubTitle.bg_time = [stuSubTitleData[@"bg_time"] floatValue];
+        [studentSubtitle addObject:stuSubTitle];
+    }
+    m.studentSubTitle = studentSubtitle;
 
-//    [self initVideoManager]; //初始化视频播放器
+    
+    return m;
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+
+    self.isNeedBack = NO;
+    [self.videoManager moveToSecond:self.oversty_time];
+    [self.videoManager pause];
+
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
+    self.oversty_time = self.currentTime;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:VideoLoadDoneNotification object:nil];
+    [self.videoManager moveToSecond:self.oversty_time];
+    [self.videoManager pause];
+    self.isNeedBack = YES;
 }
 
 -(void)initVideoManager{
 
-    NSURL *murl=[NSURL fileURLWithPath:self.videoInfo.videoUrl];
+    NSURL *murl=[NSURL fileURLWithPath:self.videoInfo.les_url];
     [self.videoManager setUpRemoteVideoPlayerWithContentURL:murl view:self.container];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoLoadDone:) name:VideoLoadDoneNotification object:nil];
 
@@ -102,66 +209,70 @@
     [self.view addSubview:self.writeNoteView];
 }
 
-//加载数据桩
--(void)loadDataStub{
-    if (!_videoInfo) {
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *docDir = [paths objectAtIndex:0];
-        NSString *url=[docDir stringByAppendingPathComponent:@"load2.mp4"];
-        NSMutableArray *subTitleArr = [self getSubTitleData];
-        NSMutableArray *linkArr = [self getLinkData];
-        self.videoInfo = [[SCVideoInfoModel alloc]initWithVideoUrl:url AndTitle:@"这是一个测试数据的视频标题" AndFileSize:@"123M" AndSubTitles:subTitleArr AndLinks:linkArr];
-    }
-}
 
-//创建子标题数据桩
-
--(NSMutableArray *)getSubTitleData{
-    float a = 10.0 ,b=17.0 ,c=24.0, d=27.0;
-    NSNumber *arr = @(a);
-    NSNumber *brr = @(b);
-    NSNumber *crr = @(c);
-    NSNumber *drr = @(d);
-    NSArray *dataArr = @[@"iOS的历史来源和发展历程",@"iOS的系统特性",@"局域网和互联网",@"编程环境的搭建"];
-    NSArray *timeArr = @[arr,brr,crr,drr];
-
-    NSMutableArray *subTitleArr = [[NSMutableArray alloc]init];
-    SCVideoSubTitleMode *m0 = [[SCVideoSubTitleMode alloc] initWithTitle:dataArr[0] AndBeginTime:[timeArr[0] floatValue]];
-    [subTitleArr insertObject:m0 atIndex:0];
-    SCVideoSubTitleMode *m1 = [[SCVideoSubTitleMode alloc] initWithTitle:dataArr[1] AndBeginTime:[timeArr[1] floatValue]];
-    [subTitleArr insertObject:m1 atIndex:1];
-    SCVideoSubTitleMode *m2 = [[SCVideoSubTitleMode alloc] initWithTitle:dataArr[2] AndBeginTime:[timeArr[2] floatValue]];
-    [subTitleArr insertObject:m2 atIndex:2];
-    SCVideoSubTitleMode *m3 = [[SCVideoSubTitleMode alloc] initWithTitle:dataArr[3] AndBeginTime:[timeArr[3] floatValue]];
-    [subTitleArr insertObject:m3 atIndex:3];
-    
-    return subTitleArr;
-    
-}
-
--(NSMutableArray *)getLinkData{
-
-    float a = 35.0 , b = 42.0 , c = 47.0 , d = 58.0 ,e = 77.0, f = 88.0;
-    NSNumber *arr = @(a);
-    NSNumber *brr = @(b);
-    NSNumber *crr = @(c);
-    NSNumber *drr = @(d);
-    NSNumber *err = @(e);
-    NSNumber *frr = @(f);
-    NSArray *timeArr = @[arr,brr,crr,drr,err,frr];
-    NSArray *dataArr = @[@"软件编程",@"互联网和局域网",@"类的定义",@"xcode的使用",@"系统",@"视频"];
-    NSArray *typeArr = @[@"视频",@"网页",@"网页",@"视频",@"视频",@"网页"];
-    NSArray *videoIdArr = @[@"10",@"",@"",@"20",@"30",@""];
-    NSArray *webUrlArr = @[@"",@"url1",@"url2",@"",@"",@"url3"];
-    NSMutableArray *linkArr = [[NSMutableArray alloc]init];
-    for (int i = 0 ; i<dataArr.count; i++) {
-        SCVideoLinkMode *m = [[SCVideoLinkMode alloc]initWithTitle:dataArr[i] AndBeginTime:[timeArr[i] floatValue] AndTargetType:typeArr[i] AndLessonId:videoIdArr[i] AndWebUrl:webUrlArr[i]];
-        [linkArr insertObject:m atIndex:i];
-    }
-    
-    
-    return linkArr;
-}
+////加载数据桩
+//-(void)loadDataStub{
+//    if (!_videoInfo) {
+//        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//        NSString *docDir = [paths objectAtIndex:0];
+//        NSString *url=[docDir stringByAppendingPathComponent:@"load2.mp4"];
+//        NSMutableArray *subTitleArr = [self getSubTitleData];
+//        NSMutableArray *linkArr = [self getLinkData];
+//        self.videoInfo = [[SCVideoInfoModel alloc]initWithVideoUrl:url AndTitle:@"这是一个测试数据的视频标题" AndFileSize:@"123M" AndSubTitles:subTitleArr AndLinks:linkArr];
+//    }
+//    if(!_lessonId){
+//        self.lessonId = @"0001";
+//    }
+//}
+//
+////创建子标题数据桩
+//
+//-(NSMutableArray *)getSubTitleData{
+//    float a = 10.0 ,b=17.0 ,c=24.0, d=27.0;
+//    NSNumber *arr = @(a);
+//    NSNumber *brr = @(b);
+//    NSNumber *crr = @(c);
+//    NSNumber *drr = @(d);
+//    NSArray *dataArr = @[@"iOS的历史来源和发展历程",@"iOS的系统特性",@"局域网和互联网",@"编程环境的搭建"];
+//    NSArray *timeArr = @[arr,brr,crr,drr];
+//
+//    NSMutableArray *subTitleArr = [[NSMutableArray alloc]init];
+//    SCVideoSubTitleMode *m0 = [[SCVideoSubTitleMode alloc] initWithTitle:dataArr[0] AndBeginTime:[timeArr[0] floatValue]];
+//    [subTitleArr insertObject:m0 atIndex:0];
+//    SCVideoSubTitleMode *m1 = [[SCVideoSubTitleMode alloc] initWithTitle:dataArr[1] AndBeginTime:[timeArr[1] floatValue]];
+//    [subTitleArr insertObject:m1 atIndex:1];
+//    SCVideoSubTitleMode *m2 = [[SCVideoSubTitleMode alloc] initWithTitle:dataArr[2] AndBeginTime:[timeArr[2] floatValue]];
+//    [subTitleArr insertObject:m2 atIndex:2];
+//    SCVideoSubTitleMode *m3 = [[SCVideoSubTitleMode alloc] initWithTitle:dataArr[3] AndBeginTime:[timeArr[3] floatValue]];
+//    [subTitleArr insertObject:m3 atIndex:3];
+//    
+//    return subTitleArr;
+//    
+//}
+//
+//-(NSMutableArray *)getLinkData{
+//
+//    float a = 35.0 , b = 42.0 , c = 47.0 , d = 58.0 ,e = 77.0, f = 88.0;
+//    NSNumber *arr = @(a);
+//    NSNumber *brr = @(b);
+//    NSNumber *crr = @(c);
+//    NSNumber *drr = @(d);
+//    NSNumber *err = @(e);
+//    NSNumber *frr = @(f);
+//    NSArray *timeArr = @[arr,brr,crr,drr,err,frr];
+//    NSArray *dataArr = @[@"软件编程",@"互联网和局域网",@"类的定义",@"xcode的使用",@"系统",@"视频"];
+//    NSArray *typeArr = @[@"视频",@"网页",@"网页",@"视频",@"视频",@"网页"];
+//    NSArray *videoIdArr = @[@"10",@"",@"",@"20",@"30",@""];
+//    NSArray *webUrlArr = @[@"",@"url1",@"url2",@"",@"",@"url3"];
+//    NSMutableArray *linkArr = [[NSMutableArray alloc]init];
+//    for (int i = 0 ; i<dataArr.count; i++) {
+//        SCVideoLinkMode *m = [[SCVideoLinkMode alloc]initWithTitle:dataArr[i] AndBeginTime:[timeArr[i] floatValue] AndTargetType:typeArr[i] AndLessonId:videoIdArr[i] AndWebUrl:webUrlArr[i]];
+//        [linkArr insertObject:m atIndex:i];
+//    }
+//    
+//    
+//    return linkArr;
+//}
 
 
 -(void)addAllControl{
@@ -170,7 +281,7 @@
     [self.view addSubview:self.nowPoint];
     [self.view addSubview:self.isDownloadLabel];
     [self.view addSubview:self.container];
-    [self.view addSubview:self.rightView];
+
     [self.view addSubview:self.bottomView];
     [self.view addSubview:self.returnBtn];
     [self.bottomView addSubview:self.pauseBtn];
@@ -183,39 +294,103 @@
 
 
 }
-
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    
+    alertView = _alert;
+    if (buttonIndex == 0) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+}
 -(void)playerPlayFinished{
 
-
+    _alert = [[UIAlertView alloc]initWithTitle:@"提示"message:@"当前视频已播放完成,请添加您的备注"
+                         
+                                                 delegate:self
+                         
+                                        cancelButtonTitle:@"确定"
+                         
+                             otherButtonTitles:nil];
     
+    
+    [_alert show];
+    _alert.tag = 1;
 }
 
-
--(void)showCurrentTime:(NSTimeInterval)elapsedTime  AndplayableDuration:(NSTimeInterval)playableDuration{
+-(void)showCurrentTime:(NSTimeInterval)elapsedTime{
     
-    CGFloat currentTime = MIN(elapsedTime, playableDuration);
+    CGFloat currentTime = MIN(elapsedTime, self.videoInfo.les_alltime);
     
     int hour = (int)(currentTime/3600);
     int minute = (int)(currentTime - hour*3600)/60;
-    int second = currentTime - hour*3600 - minute*60;
-    int allHour = (int)(playableDuration/3600);
-    int allMinute = (int)(playableDuration - allHour*3600)/60;
-    int allSecond = playableDuration - allHour*3600 - allMinute*60;
+    int second = (int)currentTime - hour*3600 - minute*60;
+    int allHour = (int)(self.videoInfo.les_alltime/3600);
+    int allMinute = (int)(self.videoInfo.les_alltime - allHour*3600)/60;
+    int allSecond = (int)self.videoInfo.les_alltime - allHour*3600 - allMinute*60;
     NSString *time = [NSString stringWithFormat:@"%02d:%02d:%02d/%02d:%02d:%02d",hour,minute,second,allHour,allMinute,allSecond];
     self.timeLable.text = time;
-    int nowTime =hour*2600+minute*60+second;
-    int fullTime =allHour*3600+allMinute*60+allSecond;
-    if (nowTime == fullTime) {
-        [self playerPlayFinished];
+    int nowTime =hour*3600+minute*60+second;
+    if (nowTime == self.videoInfo.les_alltime && self.isNeedBack == NO) {
+        if (_alert.tag == 0) {
+            [self playerPlayFinished];
+        }
+        
     }
     
 }
 
 -(void)turnToTime:(UIButton *)sender{
     
+//    if (!isAnimating) {
+        [self.videoManager resume];
+        [self.playBtn removeFromSuperview];
+        [self.bottomView addSubview:self.pauseBtn];
+        self.startBtnView.hidden = YES;
+        [self transformRecover];
+        shouldPlaying = YES;
+//    }
     [self.videoManager moveToSecond:(NSTimeInterval)sender.superview.tag];
+
+    
 }
 
+-(void)getStopTime{
+
+    self.oversty_time = self.currentTime;
+    
+    NSMutableDictionary *methodParameter = [[NSMutableDictionary alloc]init];
+    NSString *userID = ApplicationDelegate.userSession; // 学员内码
+    NSString *userPassword = ApplicationDelegate.userPsw; // 登录密码
+    NSString *lesson_id = self.lessonId;
+    float oversty_time = self.oversty_time;
+    if (!userPassword) {
+        userPassword = @"0000";
+    }
+    [methodParameter setValue:userID forKey:@"stu_id"];
+    [methodParameter setValue:userPassword forKey:@"stu_pwd"];
+    [methodParameter setValue:lesson_id forKey:@"lesson_id"];
+    [methodParameter setValue:@(oversty_time) forKey:@"oversty_time"];
+
+    
+    NSMutableDictionary *dataParameter = [[NSMutableDictionary alloc]init];
+    [dataParameter setValue:methodParameter forKey:@"Data"];
+    
+    NSMutableDictionary *pageParameter = [[NSMutableDictionary alloc]init];
+    [pageParameter setValue:dataParameter forKey:@"param"];
+    [pageParameter setValue:@"AddStudentStopTime" forKey:@"method"];
+    
+    [HttpTool postWithparams:pageParameter success:^(id responseObject) {
+        
+        NSData *data = [[NSData alloc] initWithData:responseObject];
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        
+        
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+    }];
+    
+    
+    
+}
 
 #pragma mark - 点击事件
 
@@ -228,10 +403,10 @@
 
 -(void)videoLoadDone:(NSNotification *)noti{
     
-
-    [self.videoManager moveToSecond:self.stopTime];
+    [self.indicatorShowView removeFromSuperview];
+    [self.videoManager moveToSecond:self.beginTime];
     [self.videoManager startWithHandler:^(NSTimeInterval elapsedTime, NSTimeInterval timeRemaining, NSTimeInterval playableDuration, BOOL finished) {
-        [self showCurrentTime:elapsedTime AndplayableDuration:playableDuration];
+        [self showCurrentTime:elapsedTime];
         self.currentTime = elapsedTime;
         self.nowPointString = [self.rightView.pointView getCurrentSubTitle:elapsedTime];
         if (self.rightView.pointView) {
@@ -239,8 +414,9 @@
         }
         [self.rightView.tagList changeBtnLookingWithTime:elapsedTime];
         [self.nowPoint setTitle:self.nowPointString forState:UIControlStateNormal];
+
+
         
-        NSLog(@"-------%@",self);
     }];
     if (!shouldPlaying) {
         [self.videoManager pause];
@@ -252,6 +428,19 @@
     _slider.minimumValue = 0;
     _slider.maximumValue = [noti.object floatValue];
     [self.startBtnView addSubview:_slider];
+    [self.nowCourse setText:self.videoInfo.les_name];
+    [self.isDownloadLabel setText:self.videoInfo.les_size];
+
+
+}
+
+-(void)closeWriteNoteView{
+
+    self.writeNoteView.hidden = YES;
+    
+    self.textField.text = nil;
+    
+
 }
 
 -(void)nextPlayerPlayBtnClick:(UIButton *)sender{
@@ -279,6 +468,9 @@
     self.startBtnView.hidden = NO;
     [self transformAnimated];
     shouldPlaying = NO;
+    
+    
+    [self getStopTime];
 }
 
 
@@ -390,16 +582,113 @@
     self.startBtnView.hidden = YES;
     [self transformRecover];
     self.writeNoteView.hidden = NO;
+    [self.textField becomeFirstResponder];
+    if (self.rightViewBtn.selected ) {
+        self.rightViewBtn.selected = NO;
+        [UIView animateWithDuration:0.3 animations:^{
+            self.rightView.transform = CGAffineTransformIdentity;
+        }completion:^(BOOL finished) {
+            [self.rightViewBtn setImage:[UIImage imageNamed:@"边栏"] forState:UIControlStateSelected];
+        }];
+
+    }
+
     
 }
 
+//-(void)getCurrectOrder{
+//
+//    NSMutableArray *subTitleArr = [[NSMutableArray alloc]init];
+//    int shouldInsert;
+//    for (UIView *view in self.rightView.pointView.subviews) {
+//        [subTitleArr addObject:view];
+//    }
+//    
+//    for (int i=0; i<subTitleArr.count-1; i++) {
+//        int m = (int)subTitleArr.count-1;
+//        UIView *changeView = subTitleArr[m];
+//        UIView *nowView = subTitleArr[i];
+//        if (changeView.tag<nowView.tag) {
+//            changeView.y = nowView.y - 100*HeightScale;
+//            shouldInsert = i;
+//            break;
+//        }
+//    }
+//    for (shouldInsert; shouldInsert<subTitleArr.count; shouldInsert++) {
+//        UIView *nowView = subTitleArr[shouldInsert];
+//        nowView.y = nowView.y+100*HeightScale;
+//    }
+//    
+//
+//    
+//}
+
+
 -(void)addPoint{
     
-    self.writeNoteView.hidden = YES;
-    [self.videoManager resume];
-    shouldPlaying = YES;
-    [self.bottomView addSubview:self.pauseBtn];
-    [self.playBtn removeFromSuperview];
+    if (![self.textField.text isEqualToString:@""]) {
+        SCVideoSubTitleMode *subTitle = [[SCVideoSubTitleMode alloc]init];
+        NSTimeInterval time = self.currentTime;
+        subTitle.subtitle = self.textField.text;
+        subTitle.bg_time = time;
+        
+        // 写入网络数据库
+        NSMutableDictionary *methodParameter = [[NSMutableDictionary alloc]init];
+        NSString *userID = ApplicationDelegate.userSession; // 学员内码
+        NSString *userPassword = ApplicationDelegate.userPsw; // 登录密码
+        NSString *lesson_id = self.lessonId;
+        if (!userPassword) {
+            userPassword = @"0000";
+        }
+        [methodParameter setValue:userID forKey:@"stu_id"];
+        [methodParameter setValue:userPassword forKey:@"stu_pwd"];
+        [methodParameter setValue:lesson_id forKey:@"lesson_id"];
+        [methodParameter setValue:subTitle.subtitle forKey:@"subtitle"];
+        [methodParameter setValue:@(subTitle.bg_time) forKey:@"bg_time"];
+        
+        NSMutableDictionary *dataParameter = [[NSMutableDictionary alloc]init];
+        [dataParameter setValue:methodParameter forKey:@"Data"];
+        
+        NSMutableDictionary *pageParameter = [[NSMutableDictionary alloc]init];
+        [pageParameter setValue:dataParameter forKey:@"param"];
+        [pageParameter setValue:@"AddStudentSubtitle" forKey:@"method"];
+        
+        [HttpTool postWithparams:pageParameter success:^(id responseObject) {
+            
+            NSData *data = [[NSData alloc] initWithData:responseObject];
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            
+            [self.rightView.pointView addSubview:[self.rightView.pointView addCustomSubTitleWithData:subTitle]];
+            
+            self.writeNoteView.hidden = YES;
+            [self.videoManager resume];
+            shouldPlaying = YES;
+            [self.bottomView addSubview:self.pauseBtn];
+            [self.playBtn removeFromSuperview];
+            [self.rightView.pointView getCurrectOrder];
+            
+        } failure:^(NSError *error) {
+            NSLog(@"%@",error);
+            // 给出插入失败的提示
+            
+            
+            self.writeNoteView.hidden = YES;
+            [self.videoManager resume];
+            shouldPlaying = YES;
+            [self.bottomView addSubview:self.pauseBtn];
+            [self.playBtn removeFromSuperview];
+            
+        }];
+        
+        self.textField.text = nil;
+        [self.textField endEditing:YES];
+    }
+    
+    
+    
+
+
+    
 }
 
 - (void)tapBtn:(UIPanGestureRecognizer *) recognizer{
@@ -412,6 +701,7 @@
             self.startBtnView.hidden = NO;
             [self transformAnimated];
             [self.videoManager pause];
+            [self getStopTime];
             shouldPlaying = NO;
 //            [self.speedBtn setImage:[UIImage imageNamed:@"2X"] forState:UIControlStateNormal];
             [self.bottomView addSubview:self.playBtn];
@@ -521,9 +811,9 @@
     if (!_rightView) {
         _rightView = [[SCRightView alloc]initWithFrame:CGRectMake(UIScreenWidth, 0, 659*WidthScale, 1382*HeightScale)];
         _rightView.pointViewDelegate = self;
-        _rightView.subTitleArr = self.videoInfo.videoSubTitles;
-//        _rightView.linkArr = self.videoInfo.videoLinks;
-        [_rightView.tagList setTags:self.videoInfo.videoLinks];
+        _rightView.subTitleArr = _videoInfo.videoSubTitles;
+        _rightView.stuSubTitleArr = _videoInfo.studentSubTitle;
+        [_rightView.tagList setTags:_videoInfo.videoLinks];
         _rightView.delegate = self;
     }
     return _rightView;
@@ -635,7 +925,6 @@
     
     if (!_nowCourse) {
         _nowCourse = [[UILabel alloc]initWithFrame:CGRectMake(160*WidthScale, 10, 440*WidthScale, 90*HeightScale)];
-        [_nowCourse setText:self.videoInfo.videoTitle];
         _nowCourse.font = [UIFont systemFontOfSize:35*HeightScale];
         [_nowCourse setTextColor:[UIColor grayColor]];
         _nowCourse.alpha = 0.7;
@@ -737,6 +1026,7 @@
         [_writeNoteBtn setFrame:CGRectMake(932*WidthScale*2048/1614, 438*HeightScale/1212*1563, 234*WidthScale*2048/1614, 75*HeightScale/1212*1563)];
         [_writeNoteBtn addTarget:self action:@selector(writeNoteBtnClick) forControlEvents:UIControlEventTouchUpInside];
         _writeNoteBtn.alpha = 0;
+        
     }
     return _writeNoteBtn;
 }
@@ -779,41 +1069,61 @@
     return _lockView;
 }
 
+//-(void) touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+//    [self.writeNoteView resignFirstResponder];
+//}
 
 -(UIView *)writeNoteView{
 
     if (!_writeNoteView) {
         _writeNoteView = [[UIView alloc]initWithFrame:self.view.frame];
         _writeNoteView.backgroundColor = [UIColor clearColor];
-        UITextField *textField = [[UITextField alloc]initWithFrame:CGRectMake((self.view.width-1700*WidthScale)/2,361*HeightScale/1212*1563 , 1700*WidthScale, 200*HeightScale)];
-        textField.placeholder = @"请添加节点，不超过20字";
-        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        textField.keyboardType = UIKeyboardTypeDefault;
-        textField.secureTextEntry = NO;
-        textField.returnKeyType = UIReturnKeyDone;
-        textField.backgroundColor = UIBackgroundColor;
-        textField.textColor = UIThemeColor;
-        textField.font = [UIFont systemFontOfSize:70*HeightScale];
+
         
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         [btn setImage:[UIImage imageNamed:@"添加备注"] forState:UIControlStateNormal];
         btn.frame = CGRectMake(0, 0, 100*WidthScale, 100*HeightScale);
         [btn addTarget:self action:@selector(addPoint) forControlEvents:UIControlEventTouchUpInside];
-        textField.rightView = [[UIView alloc]initWithFrame:CGRectMake(1580*WidthScale, 50*HeightScale, 100*WidthScale, 100*HeightScale)];
-        textField.rightViewMode = UITextFieldViewModeAlways;
-        [textField.rightView addSubview:btn];
-        [_writeNoteView addSubview:textField];
+  
+        [self.textField.rightView addSubview:btn];
+        [_writeNoteView addSubview:self.textField];
         _writeNoteView.hidden = YES;
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(closeWriteNoteView)];
+        [_writeNoteView addGestureRecognizer:tap];
+        
         
     }
     return _writeNoteView;
+}
+
+-(UITextField *)textField{
+
+    if (!_textField) {
+        _textField = [[UITextField alloc]initWithFrame:CGRectMake((self.view.width-1700*WidthScale)/2,361*HeightScale/1212*1563 , 1700*WidthScale, 200*HeightScale)];
+        _textField.placeholder = @"请添加节点，不超过20字";
+        _textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        //        textField.keyboardType = UIKeyboardTypeDefault;
+        _textField.secureTextEntry = NO;
+        _textField.returnKeyType = UIReturnKeyDone;
+        _textField.backgroundColor = UIBackgroundColor;
+        _textField.textColor = UIThemeColor;
+        _textField.font = [UIFont systemFontOfSize:70*HeightScale];
+        _textField.rightView = [[UIView alloc]initWithFrame:CGRectMake(1580*WidthScale, 50*HeightScale, 100*WidthScale, 100*HeightScale)];
+        _textField.rightViewMode = UITextFieldViewModeAlways;
+    }
+    return _textField;
+}
+
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+
+    [self.textField resignFirstResponder];
 }
 
 -(UILabel *)isDownloadLabel{
 
     if (!_isDownloadLabel) {
         _isDownloadLabel = [[UILabel alloc]initWithFrame:CGRectMake(1743*WidthScale, 10, 305*WidthScale, 90*HeightScale)];
-        _isDownloadLabel.text = self.videoInfo.videoFileSize;
         _isDownloadLabel.font = [UIFont systemFontOfSize:35*HeightScale];
         [_isDownloadLabel setTextColor:[UIColor grayColor]];
         _isDownloadLabel.alpha = 0.7;
@@ -842,20 +1152,41 @@
 }
 
 -(void)openLink:(SCVideoLinkMode *)link{
+    
     SCPlayerViewController *playerVC = [[SCPlayerViewController alloc]init];
     SCWebViewController *webVC = [[SCWebViewController alloc]init];
-    if ([link.targetType isEqualToString:@"视频"]) {
-        self.stopTime = self.currentTime;
-        playerVC.lessonId = link.lessonId;
+    [webVC getUrl:link.web_url];
+    if ([link.target_type isEqualToString:@"视频"]) {
+        self.oversty_time = self.currentTime;
+        playerVC.lessonId = link.link_les_id;
         isFirstView = NO;
         [self pausePlayer];
         [self.navigationController pushViewController:playerVC animated:YES];
-    }else if ([link.targetType isEqualToString:@"网页"]){
+    }else if ([link.target_type isEqualToString:@"网页"]){
         [self pausePlayer];
         [self.navigationController pushViewController:webVC animated:YES ];
     }
 }
 
+-(UIActivityIndicatorView *)indicatorView{
+
+    if (!_indicatorView) {
+        _indicatorView = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake((self.container.width-200*WidthScale)/2, (self.container.height-200*HeightScale)/2, 200*WidthScale, 200*HeightScale)];
+        [_indicatorView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        _indicatorView.backgroundColor = [UIColor whiteColor];
+    }
+    return _indicatorView;
+}
+
+-(UIView *)indicatorShowView{
+
+    if (!_indicatorShowView) {
+        _indicatorShowView = [[UIView alloc]initWithFrame:CGRectMake(0, 100*HeightScale, self.view.width, self.view.height)];
+        _indicatorShowView.backgroundColor = [UIColor clearColor];
+        [_indicatorShowView addSubview:self.indicatorView];
+    }
+    return _indicatorShowView;
+}
 
 
 @end
