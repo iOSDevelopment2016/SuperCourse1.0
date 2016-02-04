@@ -20,5 +20,8 @@
 
 -(NSString *)monitorWebState;
 
+
+- (NSString *)getNetWorkStates;
+
 @end
 

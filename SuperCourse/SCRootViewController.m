@@ -192,14 +192,9 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     [self.view addSubview:self.hubView];
     self.webView = [[UIWebView alloc]initWithFrame:CGRectMake(100, 100, 1000, 800)];
     
-    
-    
+
     [self.view addSubview:self.webView];
-    
-    
-    
-    
-    
+
     NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
     //NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.baidu.com"]];
     
@@ -218,12 +213,36 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 //    [self.navigationController pushViewController:playVC animated:YES];
 //}
 
+
+
 -(void)videoPlayClickWithCourse:(SCCourse *)SCcourse{
+    
+    NSString *state = [ApplicationDelegate getNetWorkStates];
+    if ([state isEqualToString:@"无网络"]) {
+        [UIAlertController showAlertAtViewController:self withMessage:@"请检查您的网络连接" cancelTitle:@"取消" confirmTitle:@"我知道了" cancelHandler:^(UIAlertAction *action) {
+        } confirmHandler:^(UIAlertAction *action) {
+        }];
+    }
+    else if ([state isEqualToString:@"wifi"]){
+        
+        [self jumpToPlayerWithCourse:SCcourse];
+        
+    }else{
+        
+        [UIAlertController showAlertAtViewController:self withMessage:@"您当前正在使用3G/4G流量" cancelTitle:@"取消" confirmTitle:@"继续播放" cancelHandler:^(UIAlertAction *action) {
+            
+        } confirmHandler:^(UIAlertAction *action) {
+            [self jumpToPlayerWithCourse:SCcourse];
+        }];
+    }
+}
+
+-(void)jumpToPlayerWithCourse:(SCCourse *)course
+{
     SCPlayerViewController *playVC = [[SCPlayerViewController alloc]init];
-    NSString *courseId = SCcourse.les_id;
+    NSString *courseId = course.les_id;
     playVC.lessonId = courseId;
     [self.navigationController pushViewController:playVC animated:YES];
-
 }
 
 -(IBAction)imageClickWithCoutse:(SCCourse *)Course{
