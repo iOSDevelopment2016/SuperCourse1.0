@@ -17,11 +17,11 @@
 #import "AFDownloadRequestOperation.h"
 
 #import "MJExtension.h"
-
+#import "MBProgressHUD+MJ.h"
 
 #import "HttpTool.h"
 
-@interface SCAllCourseView ()<UITableViewDataSource, UITableViewDelegate,SCCourseTableViewDelegate>
+@interface SCAllCourseView ()<UITableViewDataSource, UITableViewDelegate,SCCourseTableViewDelegate,MBProgressHUDDelegate>
 
 
 
@@ -59,13 +59,14 @@
 @property(retain,nonatomic) UIActivityIndicatorView *activityIndicator;
 
 @property (nonatomic ,strong) AFDownloadRequestOperation *fileDownloader;
-
+@property (nonatomic ,strong) MBProgressHUD    *HUD;
 
 @end
 
 @implementation SCAllCourseView{
     NSMutableArray *courseCategoryArr;
-}
+    
+    }
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -73,7 +74,8 @@
     self = [super initWithFrame:frame];
     if (self) {
         //        [self initData];
-    
+        
+        
         self.backgroundColor = [UIColor whiteColor];
         [self addSubview:self.topImageView];
         [self.topImageView addSubview:self.startBtn];
@@ -83,13 +85,14 @@
         [self addSubview:self.rightBtn];
         [self addSubview:self.scrollView];
         //将Indicator添加到视图中
-        [self addSubview:self.activityIndicator];
+        //[self addSubview:self.activityIndicator];
         //开始转动
-        [self.activityIndicator startAnimating];
+        //[self.activityIndicator startAnimating];
 
         //[self addSubview:self.secondTableView];
        
         //        [self addSubview:self.firstTableView];
+        
         
         [self loadCourseListFromNetwork];
         
@@ -103,19 +106,15 @@
 //从网络请求课程列表
 -(void)loadCourseListFromNetwork{
     
-    
-    NSString *userSession = ApplicationDelegate.userSession;
-    
+
     NSDictionary *para = @{@"method":@"VideoList",
                            @"param":@{@"Data":@{@"stu_id":ApplicationDelegate.userSession}}};
-//    NSDictionary *para = @{@"method":@"Login",
-//                           @"param":@{@"Data":@{@"phone":@"111",@"password":@"111"}}};
     [HttpTool postWithparams:para success:^(id responseObject) {
         
+        
+        [self.HUD hide:YES];
         NSData *data = [[NSData alloc] initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-        
-        
         courseCategoryArr = [NSMutableArray array];
         for (NSDictionary *catDict in dic[@"data"][@"categoryArr"]) {
             SCCourseCategory *cat = [SCCourseCategory objectWithKeyValues:catDict];
@@ -130,9 +129,6 @@
             cat.sec_arr = secArr;
             [courseCategoryArr addObject:cat];
         }
-
-        
-
         
 //        [SCCourseGroup setupObjectClassInArray:^NSDictionary *{
 //            return @{@"lesarr":@"SCCourse"};
@@ -253,10 +249,18 @@
 }
 
 -(IBAction)imageBtnDidClickWithSectionIndex:(NSInteger)secIndex AndRowIndex:(NSInteger)rowIndex{
-    SCCourseGroup *courseGroup=self.firstCategory.sec_arr[secIndex];
-    SCCourse *selectedCourse = courseGroup.lesarr[rowIndex];
+    if(!self.rightBtn.selected){
+        SCCourseGroup *courseGroup=self.firstCategory.sec_arr[secIndex];
+        SCCourse *selectedCourse = courseGroup.lesarr[rowIndex];
+        [self.delegate imageClickWithCoutse:selectedCourse];
+
+    }else{
+        SCCourseGroup *courseGroup=self.secondCategory.sec_arr[secIndex];
+        SCCourse *selectedCourse = courseGroup.lesarr[rowIndex];
+        [self.delegate imageClickWithCoutse:selectedCourse];
+    }
     //NSString *url=selectedCourse.les_url;
-    [self.delegate imageClickWithCoutse:selectedCourse];
+    //[self.delegate imageClickWithCoutse:selectedCourse];
 }
 
 
@@ -349,6 +353,7 @@
         _firstTableView = [[UITableView alloc]init];
         _firstTableView.delegate = self;
         _firstTableView.dataSource = self;
+        _firstTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
     }
     return  _firstTableView;

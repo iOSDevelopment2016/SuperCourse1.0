@@ -36,20 +36,30 @@
         self = [[NSBundle mainBundle]loadNibNamed:NSStringFromClass([SCExtendView class]) owner:nil options:nil].lastObject;
         [self setTitleFont:self.headLabel];
         self.headLabel.text=[NSString stringWithFormat:@"       %@",title];;
-        NSString *firstText;
+        NSString *firstText=@"";
         for(int i=0; i<datasource.har_des.count;i++){
             SCIntroduction *introduct=datasource.har_des[i];
-           // firstText=[firstText stringByAppendingFormat:@"%@",introduct.les_intrdoc];
-            NSLog(@"%@",introduct.les_intrdoc);
-            NSString *temp = introduct.les_intrdoc;
-            NSLog(@"%@", temp);
-            firstText=(NSString *)introduct.les_intrdoc;
-
+            firstText=[firstText stringByAppendingFormat:@"%@\n",introduct.les_intrdoc];
         }
         self.firseLabelText.text=firstText;
         //datasource.har_des.count
         
         
+        
+        NSString *secondText=@"";
+        for(int i=0; i<datasource.knowledge.count;i++){
+            SCKnowledge *knoledge=datasource.knowledge[i];
+            secondText=[secondText stringByAppendingFormat:@"%@\n",knoledge.preknowledge_des];
+        }
+        self.secondLabelText.text=secondText;
+        
+        
+        NSString *thirdText=@"";
+        for(int i=0; i<datasource.willknow.count;i++){
+            SCWillLearn *willLearn=datasource.willknow[i];
+            thirdText=[thirdText stringByAppendingFormat:@"%@\n",willLearn.har_des];
+        }
+        self.thirdLabelText.text=thirdText;
         
         
         

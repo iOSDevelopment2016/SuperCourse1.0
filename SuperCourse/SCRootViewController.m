@@ -37,7 +37,8 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 };
 
 
-@interface SCRootViewController ()<SCLoginViewDelegate,SCAllCourseViewDelegate,UITextFieldDelegate,SCCourseTableViewDelegate,SCExtendViewDelegate,SCHistoryViewDelegate,SCSearchViewDelegate>
+@interface SCRootViewController ()<SCLoginViewDelegate,SCAllCourseViewDelegate,UITextFieldDelegate,SCCourseTableViewDelegate,SCExtendViewDelegate,SCHistoryViewDelegate,SCSearchViewDelegate,SCSettingViewControllerDelegate>
+
 
 @property (nonatomic ,strong) UIButton           *loginBtn;
 @property (nonatomic ,strong) UIButton           *loginBtnImage;
@@ -70,6 +71,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 @property (nonatomic ,strong) UIWebView          *webView;
 @property (nonatomic ,strong) SCExtendView       *extendView;
 
+@property (nonatomic ,strong) SCSettingViewController *setVC;
 
 @property (nonatomic ,strong)SCIntroductionDataSource *datasource;
 //@property (nonatomic ,strong)NSString           *title;
@@ -175,12 +177,17 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 -(void)getuser:(NSString *)userphone{
     [self.loginBtnImage removeFromSuperview];
     [self.loginBtn removeFromSuperview];
-    UILabel *userLabel=[[UILabel alloc]initWithFrame: CGRectMake(0, 0, 400*WidthScale, 200*HeightScale)];
+    UIView *leftTopView=[[UIView alloc]initWithFrame: CGRectMake(0, 0, 400*WidthScale, 200*HeightScale)];
+    leftTopView.backgroundColor=UIThemeColor;
+    UILabel *userLabel=[[UILabel alloc]initWithFrame: CGRectMake(40, 0, 400*WidthScale-40, 200*HeightScale)];
     userLabel.backgroundColor=UIThemeColor;
     userLabel.numberOfLines=0;
-    userLabel.text=[NSString stringWithFormat:@"  欢迎你，用户：%@",userphone];
+    userLabel.text=[NSString stringWithFormat:@"你好!\n%@",userphone];
+    [userLabel setTextColor:[UIColor whiteColor]];
     userLabel.font=[UIFont systemFontOfSize:30];
-    [self.view addSubview:userLabel];
+    [self.view addSubview:leftTopView];
+    [leftTopView addSubview:userLabel];
+    
 }
 
 #pragma mark - SCAllCourseViewDelegate
@@ -196,8 +203,8 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     
     
     
-    NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.baidu.com"]];
-    
+    NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
+    //NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.baidu.com"]];
     
     
     //运行一下，百度页面就出来了
@@ -235,15 +242,17 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         NSLog(@"%@",dic);
         
         
-                [SCIntroduction setupObjectClassInArray:^NSDictionary *{
-                    return @{@"har_des":@"SCIntroduction"};
-                }];
-                [SCCourseCategory setupObjectClassInArray:^NSDictionary *{
-                    return @{@"knowledge":@"SCKnowledge"};
-                }];
-                [SCCourseCategory setupObjectClassInArray:^NSDictionary *{
-                    return @{@"willknow":@"SCWillLearn"};
-                }];
+        [SCIntroductionDataSource setupObjectClassInArray:^NSDictionary *{
+            return @{@"har_des":@"SCIntroduction"};
+        }];
+        [SCIntroductionDataSource setupObjectClassInArray:^NSDictionary *{
+            return @{@"knowledge":@"SCKnowledge"};
+        }];
+        [SCIntroductionDataSource setupObjectClassInArray:^NSDictionary *{
+            return @{@"willknow":@"SCWillLearn"};
+        }];
+        
+        
         self.datasource=[SCIntroductionDataSource objectWithKeyValues:dic[@"data"]];
         self.extendView=[[SCExtendView alloc]initWithString:Course.les_name AndDataSource:self.datasource];
         
@@ -278,9 +287,12 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 -(void)startBtnDidClick{
     // 检查学员是否登录，未登录的，转到登录界面；已登录的，开始学习
     
+    NSLog(@"%@",ApplicationDelegate.userSession);
+    
     if ([ApplicationDelegate.userSession isEqualToString:UnLoginUserSession]) {
         [self loginBtnClick]; // 去登录
     }else{
+        
         [self startCourse]; // 开始学习
     }
     
@@ -318,7 +330,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
             SCCoursePlayLog *playLog = [SCCoursePlayLog objectWithKeyValues:dic[@"data"]];
 //        SCCoursePlayLog *playLog = [[SCCoursePlayLog alloc]init];
 //        playLog.lessonID = dic[@"data"][@""]
-            NSString *lessonId = playLog.studyles_id;
+            NSString *lessonId = playLog.les_id;
             float startTime = playLog.oversty_time;
             if (lessonId) {
                 if ([playLog.is_ready isEqualToString:@"是"]) {
@@ -610,8 +622,9 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     //    self.favouriteSettingBtn.selected=YES;
     //    self.favouriteSettingBtnImage.selected=YES;
     
-    SCSettingViewController *setVC = [[SCSettingViewController alloc]init];
-    [self.navigationController pushViewController:setVC animated:YES];
+    self.setVC = [[SCSettingViewController alloc]init];
+    self.setVC.delegate=self;
+    [self.navigationController pushViewController:self.setVC animated:YES];
 }
 
 -(void)searchBtnClick:(UIButton *)sender{
@@ -619,6 +632,14 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     self.searchView.keyWord = self.searchTextField.text;
     [self.mainView addSubview:self.searchView];
 }
+
+#pragma mark - SCSettingViewControllerDelegate
+
+-(void)unlogin{
+    [self.view addSubview:self.loginBtn];
+    [self.view addSubview:self.loginBtnImage];
+}
+
 
 
 #pragma mark - getters
