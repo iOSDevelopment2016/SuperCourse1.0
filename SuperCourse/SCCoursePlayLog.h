@@ -12,7 +12,11 @@
 
 
 @property (nonatomic, strong) NSString *studyles_id; // 课程内码
-@property (nonatomic, assign) float oversty_time; // 上次停止的时间
-@property (nonatomic, assign) NSString *is_ready; // 上次是否播放完毕
+@property (nonatomic, strong) NSString *is_ready; // 上次是否播放完毕
+@property (nonatomic, assign) CGFloat bgsty_time;
+@property (nonatomic, assign) CGFloat lastplay_time;
+@property (nonatomic, strong) NSString *les_id;
+@property (nonatomic, assign) CGFloat oversty_time;
+@property (nonatomic ,strong) NSString *num;
 
 @end

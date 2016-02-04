@@ -17,11 +17,11 @@
 #import "AFDownloadRequestOperation.h"
 
 #import "MJExtension.h"
-
+#import "MBProgressHUD+MJ.h"
 
 #import "HttpTool.h"
 
-@interface SCAllCourseView ()<UITableViewDataSource, UITableViewDelegate,SCCourseTableViewDelegate>
+@interface SCAllCourseView ()<UITableViewDataSource, UITableViewDelegate,SCCourseTableViewDelegate,MBProgressHUDDelegate>
 
 
 
@@ -59,13 +59,14 @@
 @property(retain,nonatomic) UIActivityIndicatorView *activityIndicator;
 
 @property (nonatomic ,strong) AFDownloadRequestOperation *fileDownloader;
-
+@property (nonatomic ,strong) MBProgressHUD    *HUD;
 
 @end
 
 @implementation SCAllCourseView{
     NSMutableArray *courseCategoryArr;
-}
+    
+    }
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -73,7 +74,8 @@
     self = [super initWithFrame:frame];
     if (self) {
         //        [self initData];
-    
+        
+        
         self.backgroundColor = [UIColor whiteColor];
         [self addSubview:self.topImageView];
         [self.topImageView addSubview:self.startBtn];
@@ -90,6 +92,7 @@
         //[self addSubview:self.secondTableView];
        
         //        [self addSubview:self.firstTableView];
+        
         
         [self loadCourseListFromNetwork];
         
@@ -108,10 +111,10 @@
                            @"param":@{@"Data":@{@"stu_id":ApplicationDelegate.userSession}}};
     [HttpTool postWithparams:para success:^(id responseObject) {
         
+        
+        [self.HUD hide:YES];
         NSData *data = [[NSData alloc] initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-        
-        
         courseCategoryArr = [NSMutableArray array];
         for (NSDictionary *catDict in dic[@"data"][@"categoryArr"]) {
             SCCourseCategory *cat = [SCCourseCategory objectWithKeyValues:catDict];

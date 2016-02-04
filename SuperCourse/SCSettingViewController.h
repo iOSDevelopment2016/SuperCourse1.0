@@ -8,6 +8,19 @@
 
 #import "SCBaseViewController.h"
 
+
+@protocol SCSettingViewControllerDelegate <NSObject>
+
+-(void)unlogin;
+
+@end
+
+
+
+
+
 @interface SCSettingViewController : SCBaseViewController
+
+@property (nonatomic, strong) id<SCSettingViewControllerDelegate> delegate;
 
 @end
