@@ -9,6 +9,8 @@
 #import "AppDelegate.h"
 #import "SCCustomNavigationController.h"
 #import "SCRootViewController.h"
+#import "AFNetworking.h"
+#import "UIKit+AFNetworking.h"
 
 @interface AppDelegate ()
 
@@ -33,6 +35,9 @@
     //初始化用户标示
     [self initUserSession];
     
+    //开启网络状态指示器
+    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+    
     return YES;
 }
 
@@ -54,6 +59,33 @@
     [defaultes synchronize];
 }
 
+
+
+//监测网络状态
+-(NSString *)monitorWebState
+{
+    __block NSString *state;
+    
+    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        switch (status) {
+            case AFNetworkReachabilityStatusReachableViaWWAN:
+                state = @"Wan";
+                break;
+            case AFNetworkReachabilityStatusReachableViaWiFi:
+            {
+                state = @"Wifi";
+                break;
+            }
+            case AFNetworkReachabilityStatusNotReachable:
+            default:
+                state = @"NoWeb";
+                break;
+        }
+    }];
+    
+    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+    return state;
+}
 
 
 - (void)applicationWillResignActive:(UIApplication *)application {
