@@ -76,7 +76,9 @@
 
 }
 -(void)exitBtnClick{
-
+    ApplicationDelegate.userSession=UnLoginUserSession;
+    [self.delegate unlogin];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 /*
 #pragma mark - Navigation

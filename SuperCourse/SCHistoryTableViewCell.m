@@ -40,10 +40,10 @@
 }
 #pragma  - mark click
 - (IBAction)historyBtnClick:(UIButton *)sender {
-    NSInteger tag = sender.tag;
-    NSInteger secIndex = tag / 1000;
-    NSInteger rowIndex = tag - secIndex * 1000;
-    [self.delegate historyBtnDidClickWithSectionIndex:secIndex AndRowIndex:rowIndex ];
+//    NSInteger tag = sender.tag;
+//    NSInteger secIndex = tag / 1000;
+//    NSInteger rowIndex = tag - secIndex * 1000;
+//    [self.delegate historyBtnDidClickWithSectionIndex:secIndex AndRowIndex:rowIndex ];
 }
 
 

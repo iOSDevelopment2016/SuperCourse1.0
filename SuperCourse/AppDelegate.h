@@ -18,7 +18,7 @@
 
 -(void)solidateUserSession:(NSString *)userSession;
 
-
+-(NSString *)monitorWebState;
 
 @end
 

@@ -18,9 +18,7 @@
 #import "SCCourseTableViewCell.h"
 #import "SCItemView.h"
 #import "SCVideoInfoModel.h"
-
-
-
+#import "MBProgressHUD.h"
 #import "MJExtension.h"
 #import "HttpTool.h"
 #import "SCIntroduction.h"
@@ -29,6 +27,7 @@
 #import "SCIntroductionDataSource.h"
 #import "SCCoursePlayLog.h"
 #import "SCExtendView.h"
+#import "MBProgressHUD.h"
 
 typedef NS_ENUM(NSInteger,SCShowViewType) {
     SCShowViewType_MyNotes = 0,
@@ -37,42 +36,36 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 };
 
 
-@interface SCRootViewController ()<SCLoginViewDelegate,SCAllCourseViewDelegate,UITextFieldDelegate,SCCourseTableViewDelegate,SCExtendViewDelegate>
-
-@property (nonatomic ,strong) UIButton           *loginBtn;
-@property (nonatomic ,strong) UIButton           *loginBtnImage;
-@property (nonatomic ,strong) UIView             *leftView;
-//@property (nonatomic ,strong) UIView             *searchView;
-@property (nonatomic ,strong) UITextField        *searchTextField;
-
-@property (nonatomic ,strong) UIButton           *allCourseBtn;
-@property (nonatomic ,strong) UIButton           *allCourseBtnImage;
-@property (nonatomic ,strong) UIButton           *videoHistoryBtn;
-@property (nonatomic ,strong) UIButton           *videoHistoryBtnImage;
-@property (nonatomic ,strong) UIButton           *myNotesBtn;
-@property (nonatomic ,strong) UIButton           *myNotesBtnImage;
-@property (nonatomic ,strong) UIButton           *favouriteSettingBtn;
-@property (nonatomic ,strong) UIButton           *favouriteSettingBtnImage;
-@property (nonatomic ,strong) UIView             *scroll;
+@interface SCRootViewController ()<SCLoginViewDelegate,SCAllCourseViewDelegate,UITextFieldDelegate,SCCourseTableViewDelegate,SCExtendViewDelegate,SCHistoryViewDelegate,SCSearchViewDelegate,SCSettingViewControllerDelegate,MBProgressHUDDelegate>
 
 
-@property (nonatomic ,strong) UIView             *hubView;
-@property (nonatomic ,strong) SCLoginView        *loginView;
-@property (nonatomic ,strong) SCItemView         *itemView;
-@property (nonatomic ,strong) SCAllCourseView    *allCourseView;
-@property (nonatomic ,strong) SCVideoHistoryView *videoHistoryView;
-@property (nonatomic ,strong) SCMyNotesView      *myNotesView;
-@property (nonatomic ,strong) SCSearchView       *searchView;
-@property (nonatomic ,strong) UIButton           *selectedBtn;
-
-@property (nonatomic ,strong) UIView             *mainView;
-
-@property (nonatomic ,strong) UIWebView          *webView;
-@property (nonatomic ,strong) SCExtendView       *extendView;
-
-
-@property (nonatomic ,strong)SCIntroductionDataSource *datasource;
-//@property (nonatomic ,strong)NSString           *title;
+@property (nonatomic ,strong) UIButton                 *loginBtn;
+@property (nonatomic ,strong) UIButton                 *loginBtnImage;
+@property (nonatomic ,strong) UIView                   *leftView;
+@property (nonatomic ,strong) UITextField              *searchTextField;
+@property (nonatomic ,strong) UIButton                 *allCourseBtn;
+@property (nonatomic ,strong) UIButton                 *allCourseBtnImage;
+@property (nonatomic ,strong) UIButton                 *videoHistoryBtn;
+@property (nonatomic ,strong) UIButton                 *videoHistoryBtnImage;
+@property (nonatomic ,strong) UIButton                 *myNotesBtn;
+@property (nonatomic ,strong) UIButton                 *myNotesBtnImage;
+@property (nonatomic ,strong) UIButton                 *favouriteSettingBtn;
+@property (nonatomic ,strong) UIButton                 *favouriteSettingBtnImage;
+@property (nonatomic ,strong) UIView                   *scroll;
+@property (nonatomic ,strong) UIView                   *hubView;
+@property (nonatomic ,strong) SCLoginView              *loginView;
+@property (nonatomic ,strong) SCItemView               *itemView;
+@property (nonatomic ,strong) SCAllCourseView          *allCourseView;
+@property (nonatomic ,strong) SCVideoHistoryView       *videoHistoryView;
+@property (nonatomic ,strong) SCMyNotesView            *myNotesView;
+@property (nonatomic ,strong) SCSearchView             *searchView;
+@property (nonatomic ,strong) UIButton                 *selectedBtn;
+@property (nonatomic ,strong) UIView                   *mainView;
+@property (nonatomic ,strong) UIWebView                *webView;
+@property (nonatomic ,strong) SCExtendView             *extendView;
+@property (nonatomic ,strong) SCSettingViewController  *setVC;
+@property (nonatomic ,strong) SCIntroductionDataSource *datasource;
+@property (nonatomic ,strong) MBProgressHUD *hud;
 
 @property CGFloat Variety;
 
@@ -106,21 +99,26 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     [self.leftView addSubview:self.favouriteSettingBtn];
     [self.leftView addSubview:self.favouriteSettingBtnImage];
     
-    //[self.view addSubview:self.searchView];
     [self.view addSubview:self.searchTextField];
     [self.view addSubview:self.mainView];
     
     [self.mainView addSubview:self.myNotesView];//0
     [self.mainView addSubview:self.videoHistoryView];//1
+    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    self.hud.delegate = self;
+    self.hud.dimBackground = YES;
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(webDataLoaddDone) name:@"WebDataHaveLoadDone" object:nil];
     [self.mainView addSubview:self.allCourseView];//2
-    
     
 //    SCIntroduction *intro= self.datasource.har_des[0];
 //    NSString *str=intro.les_intrdoc;
 //    NSLog(@"%@",str);
-    
-    
     self.selectedBtn = self.allCourseBtn;
+}
+
+-(void)webDataLoaddDone{
+    
+    [self.hud hide:YES];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -136,7 +134,6 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     self.myNotesBtnImage.frame=CGRectMake(51*WidthScale, 350*HeightScale+35*HeightScale, 64*WidthScale, 64*HeightScale);
     self.favouriteSettingBtn.frame = CGRectMake(0, self.leftView.height-150*HeightScale,400*WidthScale, 150*HeightScale);
     self.favouriteSettingBtnImage.frame = CGRectMake(51*WidthScale, self.leftView.height-150*HeightScale+35*HeightScale,64*WidthScale, 64*HeightScale);
-    //self.searchView.frame = CGRectMake(1224*WidthScale, 56*HeightScale, 718*WidthScale, 100*HeightScale);
     self.searchTextField.frame= CGRectMake(1234*WidthScale, 56*HeightScale, 708*WidthScale, 100*HeightScale);
     
     //中央视图尺寸
@@ -146,7 +143,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     self.allCourseView.frame = CGRectMake(0, 0, mainFrame.size.width, mainFrame.size.height);
     self.myNotesView.frame = self.allCourseView.frame;
     self.videoHistoryView.frame = self.allCourseView.frame;
-    self.searchView.frame = self.allCourseView.frame;
+//    self.searchView.frame = self.allCourseView.frame;
 }
 
 
@@ -177,12 +174,17 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 -(void)getuser:(NSString *)userphone{
     [self.loginBtnImage removeFromSuperview];
     [self.loginBtn removeFromSuperview];
-    UILabel *userLabel=[[UILabel alloc]initWithFrame: CGRectMake(0, 0, 400*WidthScale, 200*HeightScale)];
+    UIView *leftTopView=[[UIView alloc]initWithFrame: CGRectMake(0, 0, 400*WidthScale, 200*HeightScale)];
+    leftTopView.backgroundColor=UIThemeColor;
+    UILabel *userLabel=[[UILabel alloc]initWithFrame: CGRectMake(40, 0, 400*WidthScale-40, 200*HeightScale)];
     userLabel.backgroundColor=UIThemeColor;
     userLabel.numberOfLines=0;
-    userLabel.text=[NSString stringWithFormat:@"  欢迎你，用户：%@",userphone];
+    userLabel.text=[NSString stringWithFormat:@"你好!\n%@",userphone];
+    [userLabel setTextColor:[UIColor whiteColor]];
     userLabel.font=[UIFont systemFontOfSize:30];
-    [self.view addSubview:userLabel];
+    [self.view addSubview:leftTopView];
+    [leftTopView addSubview:userLabel];
+    
 }
 
 #pragma mark - SCAllCourseViewDelegate
@@ -198,8 +200,8 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     
     
     
-    NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.baidu.com"]];
-    
+    NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
+    //NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.baidu.com"]];
     
     
     //运行一下，百度页面就出来了
@@ -225,12 +227,16 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 }
 
 -(IBAction)imageClickWithCoutse:(SCCourse *)Course{
+
+    
    // 跳转到详情页面
     NSString *Id=@"0000";
     NSDictionary *para = @{@"method":@"Getintroduction",
                            @"param":@{@"Data":@{@"les_id":Id}}};
     
     [HttpTool postWithparams:para success:^(id responseObject) {
+        
+        
         
         NSData *data = [[NSData alloc] initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
@@ -325,7 +331,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
             SCCoursePlayLog *playLog = [SCCoursePlayLog objectWithKeyValues:dic[@"data"]];
 //        SCCoursePlayLog *playLog = [[SCCoursePlayLog alloc]init];
 //        playLog.lessonID = dic[@"data"][@""]
-            NSString *lessonId = playLog.studyles_id;
+            NSString *lessonId = playLog.les_id;
             float startTime = playLog.oversty_time;
             if (lessonId) {
                 if ([playLog.is_ready isEqualToString:@"是"]) {
@@ -371,6 +377,25 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 //    [self.navigationController pushViewController:playVC animated:YES];
 //
 //}
+
+
+#pragma mark - SCHistoryViewDelegate
+-(void)historyDidClick:(NSString *)les_id
+{
+    
+    SCPlayerViewController *playerVC = [[SCPlayerViewController alloc]init];
+    playerVC.lessonId = les_id;
+    [self.navigationController pushViewController:playerVC animated:YES];
+    
+}
+-(void)searchDidClick:(NSString *)les_id {
+    SCPlayerViewController *playerVC=[[SCPlayerViewController alloc]init];
+    playerVC.lessonId = les_id;
+//    playerVC.beginTime = b
+    [self.navigationController pushViewController:playerVC animated:YES];
+//
+}
+
 #pragma mark - 私有方法
 -(void)move{
     //CGFloat ScaleHeight=[self getScaleHeight];
@@ -598,16 +623,27 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     //    self.favouriteSettingBtn.selected=YES;
     //    self.favouriteSettingBtnImage.selected=YES;
     
-    SCSettingViewController *setVC = [[SCSettingViewController alloc]init];
-    [self.navigationController pushViewController:setVC animated:YES];
+    self.setVC = [[SCSettingViewController alloc]init];
+    self.setVC.delegate=self;
+    [self.navigationController pushViewController:self.setVC animated:YES];
 }
 
 -(void)searchBtnClick:(UIButton *)sender{
     
-    
-    [self.mainView addSubview:self.searchView];
     self.searchView.keyWord = self.searchTextField.text;
+
+    [self.mainView addSubview:self.searchView];
 }
+
+#pragma mark - SCSettingViewControllerDelegate
+
+-(void)unlogin{
+    [self.view addSubview:self.loginBtn];
+    [self.view addSubview:self.loginBtnImage];
+    [self.setVC removeFromParentViewController];
+
+}
+
 
 
 #pragma mark - getters
@@ -689,9 +725,9 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 //    }
 //    return _searchView;
 //}
--(void)clickToSearch:(NSString *)text{
-    [self.view addSubview:self.searchView];
-}
+//-(void)clickToSearch:(NSString *)text{
+//    [self.view addSubview:self.searchView];
+//}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     if(textField==self.searchTextField){
@@ -706,8 +742,9 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         [self.scroll setHidden:YES];
         [self.searchTextField resignFirstResponder];//放弃当前焦点
         
-        if(textField.text){
+        if([textField.text isEqualToString:@""]){
             [self.mainView addSubview:self.searchView];
+            self.searchView.keyWord = textField.text;
         }
     }
     return YES;
@@ -908,6 +945,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 -(SCVideoHistoryView *)videoHistoryView{
     if (!_videoHistoryView){
         _videoHistoryView = [[SCVideoHistoryView alloc]init];
+        _videoHistoryView.delegate = self;
     }
     return _videoHistoryView;
 }
@@ -921,8 +959,9 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 
 -(SCSearchView *)searchView{
     if(!_searchView){
-        _searchView=[[SCSearchView alloc]init];
+        _searchView=[[SCSearchView alloc]initWithFrame:CGRectMake(0, 0, mainFrame.size.width, mainFrame.size.height)];
         _searchView.backgroundColor=[UIColor whiteColor];
+        _searchView.delegate = self;
     }
     return _searchView;
 }

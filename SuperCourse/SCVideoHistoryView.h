@@ -10,7 +10,7 @@
 @protocol SCHistoryViewDelegate <NSObject>
 //contendFieldDidClickWithSectionIndex:(NSInteger)secIndex AndRowIndex:(NSInteger)rowIndex
 
--(IBAction)historyBtnClick:(NSInteger)secIndex AndRowIndex:(NSInteger)rouIndex;
+-(void)historyDidClick:(NSString *)les_id;
 
 @end
 
