@@ -81,7 +81,7 @@
     self.lessonId = @"0001";
     [self addAllControl]; //加载界面上的所有控件
     isFirstView = YES;
-    [self.view addSubview:self.indicatorShowView];
+//    [self.view addSubview:self.indicatorShowView];
 
     
     
@@ -117,7 +117,6 @@
 //        NSString *str = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         
-        NSString *str = dic[@"msg"];
         _videoInfo = [self getVideoInfo:dic];
         // 开始播放
         shouldPlaying = YES;
@@ -311,11 +310,20 @@
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     
-    alertView = _alert;
-    if (buttonIndex == 0) {
-        [self.navigationController popToRootViewControllerAnimated:YES];
+    if (alertView.tag == 1) {
+        if (buttonIndex == 0) {
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
+    }else if (alertView.tag == 2){
+//        
+//        if (buttonIndex == 0) {
+//            
+//        }
     }
 }
+
+
+
 -(void)playerPlayFinished{
 
     _alert = [[UIAlertView alloc]initWithTitle:@"提示"message:@"当前视频已播放完成,请添加您的备注"
@@ -368,39 +376,44 @@
 }
 
 -(void)getStopTime{
-
-    self.oversty_time = self.currentTime;
+//    ApplicationDelegate.userSession = UnLoginUserSession;
     
-    NSMutableDictionary *methodParameter = [[NSMutableDictionary alloc]init];
-    NSString *userID = ApplicationDelegate.userSession; // 学员内码
-    NSString *userPassword = ApplicationDelegate.userPsw; // 登录密码
-    NSString *lesson_id = self.lessonId;
-    float oversty_time = self.oversty_time;
-    if (!userPassword) {
-        userPassword = @"7213116e861ef185275fcfd6e5fab98b";
+    if (![ApplicationDelegate.userSession isEqualToString:UnLoginUserSession]) {
+        self.oversty_time = self.currentTime;
+        
+        NSMutableDictionary *methodParameter = [[NSMutableDictionary alloc]init];
+        NSString *userID = ApplicationDelegate.userSession; // 学员内码
+        NSString *userPassword = ApplicationDelegate.userPsw; // 登录密码
+        NSString *lesson_id = self.lessonId;
+        float oversty_time = self.oversty_time;
+        if (!userPassword) {
+            userPassword = @"7213116e861ef185275fcfd6e5fab98b";
+        }
+        [methodParameter setValue:userID forKey:@"stu_id"];
+        [methodParameter setValue:userPassword forKey:@"stu_pwd"];
+        [methodParameter setValue:lesson_id forKey:@"lesson_id"];
+        [methodParameter setValue:@(oversty_time) forKey:@"oversty_time"];
+        
+        
+        NSMutableDictionary *dataParameter = [[NSMutableDictionary alloc]init];
+        [dataParameter setValue:methodParameter forKey:@"Data"];
+        
+        NSMutableDictionary *pageParameter = [[NSMutableDictionary alloc]init];
+        [pageParameter setValue:dataParameter forKey:@"param"];
+        [pageParameter setValue:@"AddStudentStopTime" forKey:@"method"];
+        
+        [HttpTool postWithparams:pageParameter success:^(id responseObject) {
+            
+            NSData *data = [[NSData alloc] initWithData:responseObject];
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            
+            
+        } failure:^(NSError *error) {
+            NSLog(@"%@",error);
+        }];
+
     }
-    [methodParameter setValue:userID forKey:@"stu_id"];
-    [methodParameter setValue:userPassword forKey:@"stu_pwd"];
-    [methodParameter setValue:lesson_id forKey:@"lesson_id"];
-    [methodParameter setValue:@(oversty_time) forKey:@"oversty_time"];
-
     
-    NSMutableDictionary *dataParameter = [[NSMutableDictionary alloc]init];
-    [dataParameter setValue:methodParameter forKey:@"Data"];
-    
-    NSMutableDictionary *pageParameter = [[NSMutableDictionary alloc]init];
-    [pageParameter setValue:dataParameter forKey:@"param"];
-    [pageParameter setValue:@"AddStudentStopTime" forKey:@"method"];
-    
-    [HttpTool postWithparams:pageParameter success:^(id responseObject) {
-        
-        NSData *data = [[NSData alloc] initWithData:responseObject];
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-        
-        
-    } failure:^(NSError *error) {
-        NSLog(@"%@",error);
-    }];
     
     
     
@@ -417,7 +430,7 @@
 
 -(void)videoLoadDone:(NSNotification *)noti{
     
-    [self.indicatorShowView removeFromSuperview];
+//    [self.indicatorShowView removeFromSuperview];
     [self.videoManager moveToSecond:self.beginTime];
     self.slider.value = self.beginTime;
     [self.videoManager startWithHandler:^(NSTimeInterval elapsedTime, NSTimeInterval timeRemaining, NSTimeInterval playableDuration, BOOL finished) {
@@ -593,24 +606,39 @@
 }
 
 -(void)addPointBtnClick{
-
-    self.startBtnView.hidden = YES;
-    [self transformRecover];
-    self.writeNoteView.hidden = NO;
-    [self.textField becomeFirstResponder];
-    if (self.rightViewBtn.selected ) {
-        self.rightViewBtn.selected = NO;
-        [UIView animateWithDuration:0.3 animations:^{
-            self.rightView.transform = CGAffineTransformIdentity;
-        }completion:^(BOOL finished) {
-            [self.rightViewBtn setImage:[UIImage imageNamed:@"边栏"] forState:UIControlStateSelected];
-        }];
-
-    }
-
     
+    if (![self timeExist]) {
+        self.startBtnView.hidden = YES;
+        [self transformRecover];
+        self.writeNoteView.hidden = NO;
+        [self.textField becomeFirstResponder];
+        if (self.rightViewBtn.selected ) {
+            self.rightViewBtn.selected = NO;
+            [UIView animateWithDuration:0.3 animations:^{
+                self.rightView.transform = CGAffineTransformIdentity;
+            }completion:^(BOOL finished) {
+                [self.rightViewBtn setImage:[UIImage imageNamed:@"边栏"] forState:UIControlStateSelected];
+            }];
+        }
+    }else{
+        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"提示" message:@"当前时间已存在子标题" delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        [alertView show];
+    }
 }
 
+-(BOOL)timeExist{
+    BOOL exist = NO;
+    int time = (int)self.currentTime;
+    for (int i=0; i<self.videoInfo.videoSubTitles.count; i++) {
+        SCVideoSubTitleMode *m = self.videoInfo.videoSubTitles[i];
+        if (time== (int)m.bg_time) {
+            exist = YES;
+            break;
+        }else {
+        }
+    }
+    return exist;
+}
 //-(void)getCurrectOrder{
 //
 //    NSMutableArray *subTitleArr = [[NSMutableArray alloc]init];
@@ -672,16 +700,15 @@
             
             NSData *data = [[NSData alloc] initWithData:responseObject];
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-            UIView *subTitleView = [self.rightView.pointView addCustomSubTitleWithData:subTitle];
-            for (int i=0; i<self.videoInfo.videoSubTitles.count; i++) {
-                SCVideoSubTitleMode *m = self.videoInfo.videoSubTitles[i];
-                SCVideoSubTitleMode *stuM = self.videoInfo.studentSubTitle[i];
-                if (subTitleView.tag == (int)m.bg_time) {
+//            for (int i=0; i<self.videoInfo.videoSubTitles.count; i++) {
+//                SCVideoSubTitleMode *m = self.videoInfo.videoSubTitles[i];
+//                if ((int)subTitle.bg_time== (int)m.bg_time) {
                     UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"提示" message:@"当前时间已存在节点" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
-
-                }else if (subTitleView.tag == (int)stuM.bg_time){
-                    UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"提示" message:@"当前时间已存在节点" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
-                }else{
+                    
+            
+                    
+            
+                    UIView *subTitleView = [self.rightView.pointView addCustomSubTitleWithData:subTitle];
                     [self.rightView.pointView addSubview:subTitleView];
                     self.writeNoteView.hidden = YES;
                     [self.videoManager resume];
@@ -693,13 +720,11 @@
                         if (view.tag>subTitle.bg_time) {
                             view.y = view.y+110*HeightScale;
                             subTitleView.y = subTitleView.y-110*HeightScale;
-                        }
-                    }
+                        
+                    
                 }
             }
-            
-            
-            
+        
             
             
             
@@ -722,6 +747,11 @@
     
 
 }
+
+
+
+
+
 
 - (void)tapBtn:(UIPanGestureRecognizer *) recognizer{
 
@@ -1186,22 +1216,75 @@
     }
 }
 
--(void)openLink:(SCVideoLinkMode *)link{
-    
-    SCPlayerViewController *playerVC = [[SCPlayerViewController alloc]init];
+// 显示网页
+- (void)showWeb:(SCVideoLinkMode *)link {
+    [self pausePlayer];
     SCWebViewController *webVC = [[SCWebViewController alloc]init];
     [webVC getUrl:link.web_url];
+    [self.navigationController pushViewController:webVC animated:YES ];
+}
+
+// 显示播放器
+- (void)showPlayer:(SCVideoLinkMode *)link {
+    // 写入网络数据库
+    NSMutableDictionary *methodParameter = [[NSMutableDictionary alloc]init];
+//    NSString *userID = ApplicationDelegate.userSession; // 学员内码
+    NSString *userID = UnLoginUserSession;
+    NSString *userPassword = ApplicationDelegate.userPsw; // 登录密码
+    NSString *lesson_id = link.link_les_id;
+    if (!userPassword) {
+        userPassword = @"7213116e861ef185275fcfd6e5fab98b";
+    }
+    [methodParameter setValue:userID forKey:@"stu_id"];
+    [methodParameter setValue:userPassword forKey:@"stu_pwd"];
+    [methodParameter setValue:lesson_id forKey:@"lesson_id"];
+    
+    NSMutableDictionary *dataParameter = [[NSMutableDictionary alloc]init];
+    [dataParameter setValue:methodParameter forKey:@"Data"];
+    
+    NSMutableDictionary *pageParameter = [[NSMutableDictionary alloc]init];
+    [pageParameter setValue:dataParameter forKey:@"param"];
+    [pageParameter setValue:@"CheckPermission" forKey:@"method"];
+    
+    [HttpTool postWithparams:pageParameter success:^(id responseObject) {
+        
+        NSData *data = [[NSData alloc] initWithData:responseObject];
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        NSString *permission = dic[@"data"];
+        if ([permission isEqualToString:@"是"]) {
+            //    BOOL isFirstView;
+            SCPlayerViewController *playerVC = [[SCPlayerViewController alloc]init];
+            playerVC.lessonId = link.link_les_id;
+            //    isFirstView = NO;
+            [self pausePlayer];
+            [self.navigationController pushViewController:playerVC animated:YES];
+        }else{
+            UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"提示" message:@"当前视频无权限" delegate:self cancelButtonTitle:@"是" otherButtonTitles: nil];
+            [view show];
+        }
+        
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+        // 给出插入失败的提示，未完成
+    }];
+}
+
+// 打开链接
+-(void)openLink:(SCVideoLinkMode *)link{
+    
     if ([link.target_type isEqualToString:@"视频"]) {
         self.oversty_time = self.currentTime;
-        playerVC.lessonId = link.link_les_id;
-        isFirstView = NO;
-        [self pausePlayer];
-        [self.navigationController pushViewController:playerVC animated:YES];
+        [self showPlayer:link];
     }else if ([link.target_type isEqualToString:@"网页"]){
-        [self pausePlayer];
-        [self.navigationController pushViewController:webVC animated:YES ];
+        [self showWeb:link];
     }
+    
 }
+
+// 检查链接的权限（当前学员是否可以观看链接视频）
+
+
+
 
 -(UIActivityIndicatorView *)indicatorView{
 
