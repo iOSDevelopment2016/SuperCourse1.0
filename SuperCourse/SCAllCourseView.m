@@ -44,6 +44,9 @@
 @property (nonatomic ,strong) AFDownloadRequestOperation *fileDownloader;
 @property (nonatomic ,strong) MBProgressHUD              *HUD;
 
+
+@property (nonatomic ,strong) UIView        *headView;
+
 @end
 
 @implementation SCAllCourseView{
@@ -57,13 +60,14 @@
     if (self) {
 
         self.backgroundColor = [UIColor whiteColor];
-        [self addSubview:self.topImageView];
+        [self addSubview:self.headView];
+        [self.headView addSubview:self.topImageView];
         [self.topImageView addSubview:self.startBtn];
         [self.topImageView addSubview:self.characterImageView];
         [self.topImageView addSubview:self.headImageView];
-        [self addSubview:self.leftBtn];
-        [self addSubview:self.rightBtn];
-        [self addSubview:self.scrollView];
+        [self.headView addSubview:self.leftBtn];
+        [self.headView addSubview:self.rightBtn];
+        [self.headView addSubview:self.scrollView];
         [self.HUD show:YES];
         [self loadCourseListFromNetwork];
         
@@ -177,6 +181,7 @@
 -(void)layoutSubviews{
     [super layoutSubviews];
     self.leftBtn.selected = YES;
+    self.headView.frame= CGRectMake(0, 0, self.width, 800*HeightScale);
     self.topImageView.frame = CGRectMake(0, 0, self.width, 670*HeightScale);
     self.startBtn.frame = CGRectMake((self.topImageView.width-225)/2, self.topImageView.height-100, 225, 60);
     self.headImageView.frame=CGRectMake(744*WidthScale,65*HeightScale, 158*WidthScale, 158*HeightScale);
@@ -338,6 +343,12 @@
     return _headImageView;
     
 }
+-(UIView *)headView{
+    if(!_headView){
+        _headView=[[UIView alloc]init];
+    }
+    return _headView;
+}
 
 -(UIImageView *)characterImageView{
     if(!_characterImageView){
@@ -483,6 +494,10 @@
             cell.downloadBtn.hidden=YES;
         }
         cell.courseLabel.text=temp_.les_size;
+        
+        
+        
+        
         
         
     }
