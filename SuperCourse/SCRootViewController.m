@@ -257,7 +257,8 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 -(IBAction)imageClickWithCoutse:(SCCourse *)Course{
 
     
-   // 跳转到详情页面
+   // 跳转到详情页面                 当前只有第一项有数据 暂且只读第一项    ！！！！！！！！后期修改
+    
     NSString *Id=@"0000";
     NSDictionary *para = @{@"method":@"Getintroduction",
                            @"param":@{@"Data":@{@"les_id":Id}}};
@@ -281,16 +282,23 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
             return @{@"willknow":@"SCWillLearn"};
         }];
         
-        
         self.datasource=[SCIntroductionDataSource objectWithKeyValues:dic[@"data"]];
-        self.extendView=[[SCExtendView alloc]initWithString:Course.les_name AndDataSource:self.datasource];
-        
-        self.extendView.frame = CGRectMake(0, 0, 0.68*self.view.width, 0.6*self.view.height);
-        self.extendView.center = self.view.center;
-        self.extendView.delegate = self;
-        
-        [self.view addSubview:self.hubView];
-        [self.view addSubview:self.extendView];
+        //SCIntroduction *introduction=self.datasource.har_des[0];
+        //if(introduction.les_intrdoc){
+            self.extendView=[[SCExtendView alloc]initWithString:Course.les_name AndDataSource:self.datasource];
+            
+            self.extendView.frame = CGRectMake(0, 0, 0.68*self.view.width, 0.6*self.view.height);
+            self.extendView.center = self.view.center;
+            self.extendView.delegate = self;
+            
+            [self.view addSubview:self.hubView];
+            [self.view addSubview:self.extendView];
+//        }else{
+//            [UIAlertController showAlertAtViewController:self withMessage:@"暂无介绍信息" cancelTitle:@"取消" confirmTitle:@"我知道了" cancelHandler:^(UIAlertAction *action) {
+//            } confirmHandler:^(UIAlertAction *action) {
+//            }];
+
+       // }
     } failure:^(NSError *error) {
         NSLog(@"%@",error);
     }];
@@ -359,6 +367,9 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 //        }];
 
             self.playLog = [SCCoursePlayLog objectWithKeyValues:dic[@"data"]];
+            if (!self.playLog) {
+                self.playLog = @"";
+            }
 //        SCCoursePlayLog *playLog = [[SCCoursePlayLog alloc]init];
 //        playLog.lessonID = dic[@"data"][@""]
             NSString *lessonId = self.playLog.les_id;
