@@ -54,6 +54,10 @@
 #define FONT_28 IS_IPAD ? [UIFont systemFontOfSize:28] : IS_IPHONE_6P ? [UIFont systemFontOfSize:21] : IS_IPHONE_6 ? [UIFont systemFontOfSize:20] : [UIFont systemFontOfSize:19]
 #define FONT_29 IS_IPAD ? [UIFont systemFontOfSize:29] : IS_IPHONE_6P ? [UIFont systemFontOfSize:22] : IS_IPHONE_6 ? [UIFont systemFontOfSize:21] : [UIFont systemFontOfSize:20]
 #define FONT_30 IS_IPAD ? [UIFont systemFontOfSize:30] : IS_IPHONE_6P ? [UIFont systemFontOfSize:23] : IS_IPHONE_6 ? [UIFont systemFontOfSize:22] : [UIFont systemFontOfSize:21]
+#define FONT_35 IS_IPAD ? [UIFont systemFontOfSize:35] : IS_IPHONE_6P ? [UIFont systemFontOfSize:23] : IS_IPHONE_6 ? [UIFont systemFontOfSize:25] : [UIFont systemFontOfSize:24]
+
+
+
 
 //用户身份标示
 #define UserSessionKey @"UserSession"

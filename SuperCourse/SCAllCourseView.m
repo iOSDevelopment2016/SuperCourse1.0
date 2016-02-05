@@ -632,7 +632,9 @@
         _leftBtn=[UIButton buttonWithType:UIButtonTypeCustom];
         //[_leftBtn setBackgroundColor:[UIColor greenColor]];
         [_leftBtn setTitle:@"大纲" forState:UIControlStateNormal];
-        [_leftBtn setFont:[UIFont systemFontOfSize:35]];
+        
+        _leftBtn.titleLabel.font = FONT_35;
+        
         [_leftBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_leftBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateSelected];
         [_leftBtn addTarget:self action:@selector(leftBtnClick) forControlEvents:UIControlEventTouchUpInside];
