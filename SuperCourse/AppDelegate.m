@@ -47,6 +47,7 @@
         self.userSession = userSession;
         self.userPsw = [[NSUserDefaults standardUserDefaults] objectForKey:UserPswKey];
         self.userPhone = [[NSUserDefaults standardUserDefaults] objectForKey:UserPhoneKey];
+        self.playLog =  [[NSUserDefaults standardUserDefaults] objectForKey:PlayLogKey];
     }else{
         self.userSession = UnLoginUserSession;
     }
