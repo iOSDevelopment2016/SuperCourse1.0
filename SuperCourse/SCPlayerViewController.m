@@ -140,11 +140,11 @@
     m.les_alltime = [videoInfoDict[0][@"les_alltime"] floatValue];
 //    m.ovesity_time = [videoInfoDict[0][@"ovesity_time"] floatValue];
 //    self.beginTime = m.ovesity_time;
-//    m.les_url = videoInfoDict[0][@"les_url"];
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *docDir = [paths objectAtIndex:0];
-    NSString *url=[docDir stringByAppendingPathComponent:@"load2.mp4"];
-    m.les_url = url;
+    m.les_url = videoInfoDict[0][@"les_url"];
+//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//    NSString *docDir = [paths objectAtIndex:0];
+//    NSString *url=[docDir stringByAppendingPathComponent:@"load2.mp4"];
+//    m.les_url = url;
     m.les_size = videoInfoDict[0][@"les_size"];
     NSMutableArray *videoLinks = [[NSMutableArray alloc]init];
     NSArray *videoLinkArr = videoInfoDict[0][@"videoLinks"];
@@ -215,7 +215,9 @@
 
 -(void)initVideoManager{
 
-    NSURL *murl=[NSURL fileURLWithPath:self.videoInfo.les_url];
+//    NSURL *murl=[NSURL fileURLWithPath:self.videoInfo.les_url];
+    
+    NSURL *murl = [NSURL URLWithString:self.videoInfo.les_url];
     [self.videoManager setUpRemoteVideoPlayerWithContentURL:murl view:self.container];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoLoadDone:) name:VideoLoadDoneNotification object:nil];
 
@@ -1228,8 +1230,7 @@
 - (void)showPlayer:(SCVideoLinkMode *)link {
     // 写入网络数据库
     NSMutableDictionary *methodParameter = [[NSMutableDictionary alloc]init];
-//    NSString *userID = ApplicationDelegate.userSession; // 学员内码
-    NSString *userID = UnLoginUserSession;
+    NSString *userID = ApplicationDelegate.userSession; // 学员内码
     NSString *userPassword = ApplicationDelegate.userPsw; // 登录密码
     NSString *lesson_id = link.link_les_id;
     if (!userPassword) {

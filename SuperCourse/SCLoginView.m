@@ -128,6 +128,11 @@
 }
 
 - (IBAction)loginClick:(id)sender {
+    
+    if ([self.phone.text isEqualToString:@""] || [self.password.text isEqualToString:@""]) {
+        return;
+    }
+    
     NSString * phone = self.phone.text;
     NSString * password = self.password.text;
     NSString * fnum=@"IOSSC";
@@ -170,11 +175,12 @@
         }else{
             [self shakeAnimationForView:self];
         }
+        
+        [self.delegate removeHub];
     } failure:^(NSError *error) {
         NSLog(@"%@",error);
     }];
-    
-    [self.delegate removeHub];
+
     
 }
 
