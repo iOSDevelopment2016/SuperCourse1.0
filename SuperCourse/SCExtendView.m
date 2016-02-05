@@ -78,7 +78,8 @@
 
 -(void)awakeFromNib{
 
-    [self setBoarder:self.secondLabel];
+    //[self setBoarder:self.secondLabel];
+    //[self setBoarder:self.thirdLabel];
     _backBtn.layer.masksToBounds = YES;
     _backBtn.layer.cornerRadius = 31;
     _backBtn.backgroundColor=UIColorFromRGB(0x6fccdb);

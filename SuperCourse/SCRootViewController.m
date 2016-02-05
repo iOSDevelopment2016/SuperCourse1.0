@@ -181,7 +181,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     userLabel.numberOfLines=0;
     userLabel.text=[NSString stringWithFormat:@"你好!\n%@",userphone];
     [userLabel setTextColor:[UIColor whiteColor]];
-    userLabel.font=[UIFont systemFontOfSize:30];
+    userLabel.font=[UIFont systemFontOfSize:45*WidthScale];
     [self.view addSubview:leftTopView];
     [leftTopView addSubview:userLabel];
     
