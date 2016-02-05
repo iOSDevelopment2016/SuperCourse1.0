@@ -146,11 +146,11 @@
     m.les_alltime = [videoInfoDict[0][@"les_alltime"] floatValue];
 //    m.ovesity_time = [videoInfoDict[0][@"ovesity_time"] floatValue];
 //    self.beginTime = m.ovesity_time;
-//    m.les_url = videoInfoDict[0][@"les_url"];
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *docDir = [paths objectAtIndex:0];
-    NSString *url=[docDir stringByAppendingPathComponent:@"load2.mp4"];
-    m.les_url = url;
+    m.les_url = videoInfoDict[0][@"les_url"];
+//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//    NSString *docDir = [paths objectAtIndex:0];
+//    NSString *url=[docDir stringByAppendingPathComponent:@"load2.mp4"];
+//    m.les_url = url;
     m.les_size = videoInfoDict[0][@"les_size"];
     NSMutableArray *videoLinks = [[NSMutableArray alloc]init];
     NSArray *videoLinkArr = videoInfoDict[0][@"videoLinks"];
@@ -167,9 +167,14 @@
     m.videoLinks = videoLinks;
     
     NSArray *oversty_time = videoInfoDict[0][@"oversty_time"];
-    
-    NSDictionary *timeDict = oversty_time[0];
-    self.beginTime = [timeDict[@"oversty_time"] floatValue];
+    if (!oversty_time || oversty_time.count == 0) {
+        self.beginTime = 0;
+    }
+    else{
+        NSDictionary *timeDict = oversty_time[0];
+        self.beginTime = [timeDict[@"oversty_time"] floatValue];
+    }
+
     
     NSMutableArray *videoSubTitle = [[NSMutableArray alloc]init];
     NSArray *videoSubTitleArr = videoInfoDict[0][@"videoSubTitles"];
