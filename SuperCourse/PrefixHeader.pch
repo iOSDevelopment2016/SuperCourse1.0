@@ -43,6 +43,7 @@
 
 //字体适配
 #define FONT_18 IS_IPAD ? [UIFont systemFontOfSize:18] : IS_IPHONE_6P ? [UIFont systemFontOfSize:11] : IS_IPHONE_6 ? [UIFont systemFontOfSize:10] : [UIFont systemFontOfSize:9]
+
 #define FONT_20 IS_IPAD ? [UIFont systemFontOfSize:20] : IS_IPHONE_6P ? [UIFont systemFontOfSize:13] : IS_IPHONE_6 ? [UIFont systemFontOfSize:12] : [UIFont systemFontOfSize:11]
 #define FONT_21 IS_IPAD ? [UIFont systemFontOfSize:21] : IS_IPHONE_6P ? [UIFont systemFontOfSize:14] : IS_IPHONE_6 ? [UIFont systemFontOfSize:13] : [UIFont systemFontOfSize:12]
 #define FONT_22 IS_IPAD ? [UIFont systemFontOfSize:22] : IS_IPHONE_6P ? [UIFont systemFontOfSize:15] : IS_IPHONE_6 ? [UIFont systemFontOfSize:14] : [UIFont systemFontOfSize:13]
