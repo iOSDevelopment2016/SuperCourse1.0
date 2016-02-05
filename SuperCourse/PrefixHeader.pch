@@ -25,9 +25,27 @@
 #define HeightScale [UIScreen mainScreen].bounds.size.height/1536
 #define kyd [UIScreen mainScreen].bounds.size.height/1536*1000
 
-
-
 #define ApplicationDelegate ((AppDelegate *)[UIApplication sharedApplication].delegate)
+
+//判断机型
+#define IS_IPAD (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+#define IS_IPHONE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+#define IS_RETINA ([[UIScreen mainScreen] scale] >= 2.0)
+//判断iPhone机型
+#define IS_IPHONE_6 (IS_IPHONE && SCREEN_MAX_LENGTH == 667.0)
+#define IS_IPHONE_6P (IS_IPHONE && SCREEN_MAX_LENGTH == 736.0)
+
+#define SCREEN_WIDTH ([[UIScreen mainScreen] bounds].size.width)
+#define SCREEN_HEIGHT ([[UIScreen mainScreen] bounds].size.height)
+#define SCREEN_MAX_LENGTH (MAX(SCREEN_WIDTH, SCREEN_HEIGHT))
+#define SCREEN_MIN_LENGTH (MIN(SCREEN_WIDTH, SCREEN_HEIGHT))
+
+
+//字体适配
+#define FONT_20 IS_IPAD ? [UIFont systemFontOfSize:20] IS_IPHONE_6P ? [UIFont systemFontOfSize:13] : IS_IPHONE_6 ? [UIFont systemFontOfSize:12] : [UIFont systemFontOfSize:11]
+#define FONT_21 IS_IPAD ? [UIFont systemFontOfSize:21] IS_IPHONE_6P ? [UIFont systemFontOfSize:14] : IS_IPHONE_6 ? [UIFont systemFontOfSize:13] : [UIFont systemFontOfSize:12]
+
+
 
 
 //用户身份标示
@@ -36,9 +54,6 @@
 #define UserPhoneKey @"UserPhoneKey"
 //用户密码
 #define UserPswKey @"UserPswKey"
-
-
-
 //未登录学员标示
 #define UnLoginUserSession @"UnLoginUserSession"
 
