@@ -134,7 +134,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     self.myNotesBtnImage.frame=CGRectMake(51*WidthScale, 350*HeightScale+35*HeightScale, 64*WidthScale, 64*HeightScale);
     self.favouriteSettingBtn.frame = CGRectMake(0, self.leftView.height-150*HeightScale,400*WidthScale, 150*HeightScale);
     self.favouriteSettingBtnImage.frame = CGRectMake(51*WidthScale, self.leftView.height-150*HeightScale+35*HeightScale,64*WidthScale, 64*HeightScale);
-    self.searchTextField.frame= CGRectMake(1234*WidthScale, 56*HeightScale, 708*WidthScale, 100*HeightScale);
+    self.searchTextField.frame= CGRectMake(1234*WidthScale, 56*HeightScale, self.view.width/3, 100*HeightScale);
     
     //中央视图尺寸
     mainFrame = CGRectMake(self.leftView.right, self.leftView.top, self.view.width-self.leftView.width, self.leftView.height);
@@ -181,7 +181,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     userLabel.numberOfLines=0;
     userLabel.text=[NSString stringWithFormat:@"你好!\n%@",userphone];
     [userLabel setTextColor:[UIColor whiteColor]];
-    userLabel.font=[UIFont systemFontOfSize:30];
+    userLabel.font=[UIFont systemFontOfSize:45*WidthScale];
     [self.view addSubview:leftTopView];
     [leftTopView addSubview:userLabel];
     
@@ -199,9 +199,6 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     //NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.baidu.com"]];
     
     
-    //运行一下，百度页面就出来了
-    
-    
     
     [self.webView loadRequest:request];
     
@@ -216,24 +213,30 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 
 
 -(void)videoPlayClickWithCourse:(SCCourse *)SCcourse{
-    
-    NSString *state = [ApplicationDelegate getNetWorkStates];
-    if ([state isEqualToString:@"无网络"]) {
-        [UIAlertController showAlertAtViewController:self withMessage:@"请检查您的网络连接" cancelTitle:@"取消" confirmTitle:@"我知道了" cancelHandler:^(UIAlertAction *action) {
-        } confirmHandler:^(UIAlertAction *action) {
-        }];
-    }
-    else if ([state isEqualToString:@"wifi"]){
-        
-        [self jumpToPlayerWithCourse:SCcourse];
-        
-    }else{
-        
-        [UIAlertController showAlertAtViewController:self withMessage:@"您当前正在使用3G/4G流量" cancelTitle:@"取消" confirmTitle:@"继续播放" cancelHandler:^(UIAlertAction *action) {
+    if([SCcourse.permission isEqualToString:@"是"]){
+        NSString *state = [ApplicationDelegate getNetWorkStates];
+        if ([state isEqualToString:@"无网络"]) {
+            [UIAlertController showAlertAtViewController:self withMessage:@"请检查您的网络连接" cancelTitle:@"取消" confirmTitle:@"我知道了" cancelHandler:^(UIAlertAction *action) {
+            } confirmHandler:^(UIAlertAction *action) {
+            }];
+        }
+        else if ([state isEqualToString:@"wifi"]){
             
-        } confirmHandler:^(UIAlertAction *action) {
             [self jumpToPlayerWithCourse:SCcourse];
+            
+        }else{
+            
+            [UIAlertController showAlertAtViewController:self withMessage:@"您当前正在使用3G/4G流量" cancelTitle:@"取消" confirmTitle:@"继续播放" cancelHandler:^(UIAlertAction *action) {
+                
+            } confirmHandler:^(UIAlertAction *action) {
+                [self jumpToPlayerWithCourse:SCcourse];
+            }];
+        }
+    }else{
+        [UIAlertController showAlertAtViewController:self withMessage:@"未登陆下受限" cancelTitle:@"取消" confirmTitle:@"我知道了" cancelHandler:^(UIAlertAction *action) {
+        } confirmHandler:^(UIAlertAction *action) {
         }];
+
     }
 }
 
@@ -440,7 +443,8 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     if(self.searchView){
         [self.searchView removeFromSuperview];
     }
-    
+    [self.searchTextField setHidden:NO];
+    self.searchTextField.text=nil;
     self.allCourseBtn.selected=YES;
     self.allCourseBtnImage.selected=YES;
     self.videoHistoryBtn.selected=NO;
@@ -484,7 +488,8 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     if(self.searchView){
         [self.searchView removeFromSuperview];
     }
-    
+    [self.searchTextField setHidden:YES];
+    self.searchTextField.text=nil;
     self.allCourseBtn.selected=NO;
     self.allCourseBtnImage.selected=NO;
     self.videoHistoryBtn.selected=YES;
@@ -527,7 +532,8 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     if(self.searchView){
         [self.searchView removeFromSuperview];
     }
-    
+    [self.searchTextField setHidden:YES];
+    self.searchTextField.text=nil;
     self.allCourseBtn.selected=NO;
     self.allCourseBtnImage.selected=NO;
     self.videoHistoryBtn.selected=NO;
@@ -652,10 +658,41 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 }
 
 -(void)searchBtnClick{
-    
+    self.allCourseBtn.selected=NO;
+    self.allCourseBtnImage.selected=NO;
+    self.videoHistoryBtn.selected=NO;
+    self.videoHistoryBtnImage.selected=NO;
+    self.myNotesBtn.selected=NO;
+    self.myNotesBtnImage.selected=NO;
+    self.favouriteSettingBtn.selected=NO;
+    self.favouriteSettingBtnImage.selected=NO;
+    [self.scroll setHidden:YES];
     self.searchView.keyWord = self.searchTextField.text;
     [self.searchTextField resignFirstResponder];
-    [self.mainView addSubview:self.searchView];
+    
+    if ([self.searchTextField.text isEqualToString:@""]) {
+        [UIAlertController showAlertAtViewController:self withMessage:@"请输入关键词搜索" cancelTitle:@"取消" confirmTitle:@"我知道了" cancelHandler:^(UIAlertAction *action) {
+            
+        } confirmHandler:^(UIAlertAction *action) {
+            [self.searchTextField becomeFirstResponder];
+        }];
+    }
+    else{
+        
+        BOOL notOn = YES;
+        for (UIView *subView in self.mainView.subviews) {
+            if (subView == self.searchView) {
+                notOn = NO;
+            }
+        }
+        if (!notOn) {
+            [self.searchView loadCourseListFromNetwork];
+        }
+        else{
+            [self.mainView addSubview:self.searchView];
+        }
+        
+    }
 }
 
 #pragma mark - SCSettingViewControllerDelegate
@@ -766,9 +803,18 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         [self.scroll setHidden:YES];
         [self.searchTextField resignFirstResponder];//放弃当前焦点
         [self searchBtnClick];
-        if([textField.text isEqualToString:@""]){
-            [self.mainView addSubview:self.searchView];
+        
+        
+        if ([self.searchTextField.text isEqualToString:@""]) {
+            [UIAlertController showAlertAtViewController:self withMessage:@"请输入关键词搜索" cancelTitle:@"取消" confirmTitle:@"我知道了" cancelHandler:^(UIAlertAction *action) {
+                
+            } confirmHandler:^(UIAlertAction *action) {
+                [self.searchTextField becomeFirstResponder];
+            }];
+        }
+        else{
             self.searchView.keyWord = textField.text;
+            [self.mainView addSubview:self.searchView];
         }
     }
     return YES;
@@ -786,14 +832,14 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         _searchTextField.returnKeyType=UIReturnKeyDone;
         _searchTextField.font = [UIFont systemFontOfSize:45*WidthScale];
         _searchTextField.layer.masksToBounds = YES;
-        _searchTextField.layer.cornerRadius = 35;
+        _searchTextField.layer.cornerRadius = 50*WidthScale;
         _searchTextField.textAlignment = UITextAlignmentCenter;
-        _searchTextField.rightView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 125, 100)];
+        _searchTextField.rightView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 170*WidthScale, 150*HeightScale)];
         _searchTextField.rightView.backgroundColor=UIColorFromRGB(0x6fccdb);
         _searchTextField.rightViewMode=UITextFieldViewModeAlways;
         UIButton *searchBtn=[[UIButton alloc]init];
         [searchBtn setImage:[UIImage imageNamed:@"搜索白色"] forState:UIControlStateNormal];
-        searchBtn.frame=CGRectMake(68*WidthScale, 45*HeightScale, 64*WidthScale, 64*HeightScale);
+        searchBtn.frame=CGRectMake(45*WidthScale, 45*HeightScale, 64*WidthScale, 64*HeightScale);
         [searchBtn addTarget:self action:@selector(searchBtnClick) forControlEvents:UIControlEventTouchUpInside];
         [_searchTextField.rightView addSubview:searchBtn];
         _searchTextField.delegate=self;
@@ -970,6 +1016,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     if (!_videoHistoryView){
         _videoHistoryView = [[SCVideoHistoryView alloc]init];
         _videoHistoryView.delegate = self;
+        _videoHistoryView.viewController = self;
     }
     return _videoHistoryView;
 }
@@ -986,6 +1033,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         _searchView=[[SCSearchView alloc]initWithFrame:CGRectMake(0, 0, mainFrame.size.width, mainFrame.size.height)];
         _searchView.backgroundColor=[UIColor whiteColor];
         _searchView.delegate = self;
+        _searchView.viewController =self;
     }
     return _searchView;
 }

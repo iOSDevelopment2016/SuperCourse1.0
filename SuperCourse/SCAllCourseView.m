@@ -111,10 +111,10 @@
     
 
     NSDictionary *para = @{@"method":@"VideoList",
-                           @"param":@{@"Data":@{@"stu_id":ApplicationDelegate.userSession}}};
+                           @"param":@{@"Data":@{@"stuid":ApplicationDelegate.userSession}}};
     [HttpTool postWithparams:para success:^(id responseObject) {
         
-        
+        NSLog(@"%@",ApplicationDelegate.userSession);
         [[NSNotificationCenter defaultCenter]postNotificationName:@"WebDataHaveLoadDone" object:nil];
         NSData *data = [[NSData alloc] initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
@@ -446,7 +446,7 @@
     
     headerLabel.highlightedTextColor = [UIColor whiteColor];
     
-    headerLabel.font = [UIFont italicSystemFontOfSize:35*HeightScale];
+    headerLabel.font = [UIFont italicSystemFontOfSize:45*HeightScale];
     
     headerLabel.frame = CGRectMake(40.0, 10.0, 300.0, 44.0);
     
@@ -461,13 +461,6 @@
     return customView;
     
 }
-
-
-
-
-
-
-
 
 
 
@@ -535,10 +528,13 @@
             cell.downloadBtn.hidden=YES;
         }
         cell.courseLabel.text=temp_.les_size;
+        cell.courseLabel.font=[UIFont systemFontOfSize:35*HeightScale];
+////        if([temp_.permission isEqualToString:@"否"]){
+//        
+//            cell.selected=NO;
+//        //}
         
-        
-        
-        
+        cell.width=self.width;
         
         
     }

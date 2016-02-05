@@ -67,7 +67,7 @@
     NSInteger tag = sender.tag;
     NSInteger secIndex = tag / 1000;
     NSInteger rowIndex = tag - secIndex * 1000;
-    [self.delegate downloadClickWithWithSectionIndex:secIndex AndRowIndex:rowIndex];
+    //[self.delegate downloadClickWithWithSectionIndex:secIndex AndRowIndex:rowIndex];
     
 }
 @end
