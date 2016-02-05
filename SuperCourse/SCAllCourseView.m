@@ -133,7 +133,7 @@
     
 
     NSDictionary *para = @{@"method":@"VideoList",
-                           @"param":@{@"Data":@{@"stu_id":ApplicationDelegate.userSession}}};
+                           @"param":@{@"Data":@{@"stuid":ApplicationDelegate.userSession}}};
     [HttpTool postWithparams:para success:^(id responseObject) {
         
         NSLog(@"%@",ApplicationDelegate.userSession);
@@ -439,13 +439,6 @@
     return customView;
     
 }
-
-
-
-
-
-
-
 
 
 

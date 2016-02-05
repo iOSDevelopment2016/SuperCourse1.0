@@ -134,7 +134,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     self.myNotesBtnImage.frame=CGRectMake(51*WidthScale, 350*HeightScale+35*HeightScale, 64*WidthScale, 64*HeightScale);
     self.favouriteSettingBtn.frame = CGRectMake(0, self.leftView.height-150*HeightScale,400*WidthScale, 150*HeightScale);
     self.favouriteSettingBtnImage.frame = CGRectMake(51*WidthScale, self.leftView.height-150*HeightScale+35*HeightScale,64*WidthScale, 64*HeightScale);
-    self.searchTextField.frame= CGRectMake(1234*WidthScale, 56*HeightScale, 708*WidthScale, 100*HeightScale);
+    self.searchTextField.frame= CGRectMake(1234*WidthScale, 56*HeightScale, self.view.width/3, 100*HeightScale);
     
     //中央视图尺寸
     mainFrame = CGRectMake(self.leftView.right, self.leftView.top, self.view.width-self.leftView.width, self.leftView.height);
@@ -821,14 +821,14 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         _searchTextField.returnKeyType=UIReturnKeyDone;
         _searchTextField.font = [UIFont systemFontOfSize:45*WidthScale];
         _searchTextField.layer.masksToBounds = YES;
-        _searchTextField.layer.cornerRadius = 35;
+        _searchTextField.layer.cornerRadius = 50*WidthScale;
         _searchTextField.textAlignment = UITextAlignmentCenter;
-        _searchTextField.rightView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 125, 100)];
+        _searchTextField.rightView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 170*WidthScale, 150*HeightScale)];
         _searchTextField.rightView.backgroundColor=UIColorFromRGB(0x6fccdb);
         _searchTextField.rightViewMode=UITextFieldViewModeAlways;
         UIButton *searchBtn=[[UIButton alloc]init];
         [searchBtn setImage:[UIImage imageNamed:@"搜索白色"] forState:UIControlStateNormal];
-        searchBtn.frame=CGRectMake(68*WidthScale, 45*HeightScale, 64*WidthScale, 64*HeightScale);
+        searchBtn.frame=CGRectMake(45*WidthScale, 45*HeightScale, 64*WidthScale, 64*HeightScale);
         [searchBtn addTarget:self action:@selector(searchBtnClick) forControlEvents:UIControlEventTouchUpInside];
         [_searchTextField.rightView addSubview:searchBtn];
         _searchTextField.delegate=self;
