@@ -147,6 +147,7 @@
             NSString *stu_id = dic[@"data"][@"stu_id"];
             
             //更新用户标示
+
             ApplicationDelegate.userSession = stu_id;
             ApplicationDelegate.userPsw = md5password;
             ApplicationDelegate.userPhone = self.phone.text;
