@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface SCMyNotesView : UIView
-
+//
+@property (nonatomic ,strong)UIViewController *viewContrller;
 @end
