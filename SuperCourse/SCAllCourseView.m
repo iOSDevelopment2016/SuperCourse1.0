@@ -424,7 +424,7 @@
     
     headerLabel.highlightedTextColor = [UIColor whiteColor];
     
-    headerLabel.font = [UIFont italicSystemFontOfSize:35*HeightScale];
+    headerLabel.font = [UIFont italicSystemFontOfSize:45*HeightScale];
     
     headerLabel.frame = CGRectMake(40.0, 10.0, 300.0, 44.0);
     
@@ -506,7 +506,7 @@
             cell.downloadBtn.hidden=YES;
         }
         cell.courseLabel.text=temp_.les_size;
-        
+        cell.courseLabel.font=[UIFont systemFontOfSize:35*HeightScale];
 ////        if([temp_.permission isEqualToString:@"否"]){
 //        
 //            cell.selected=NO;
