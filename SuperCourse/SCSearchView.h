@@ -20,6 +20,8 @@
 
 @property (nonatomic ,weak) id<SCSearchViewDelegate> delegate;
 @property (nonatomic,strong)NSString *keyWord;
+@property (nonatomic,strong)UIViewController *viewController;
 
+-(void)loadCourseListFromNetwork;
 
 @end

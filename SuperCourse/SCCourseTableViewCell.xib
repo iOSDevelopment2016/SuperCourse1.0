@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="14F1605" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -14,47 +15,89 @@
                 <rect key="frame" x="0.0" y="0.0" width="1094" height="59"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="小圆" translatesAutoresizingMaskIntoConstraints="NO" id="h4e-3m-cjY">
-                        <rect key="frame" x="21" y="20" width="16" height="17"/>
-                    </imageView>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AGu-dy-GbD">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AGu-dy-GbD">
                         <rect key="frame" x="78" y="14" width="537" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="537" id="llK-dy-QeG"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="23.450000762939453"/>
                         <state key="normal" title="no data">
                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         </state>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="llK-dy-QeG"/>
+                            </mask>
+                        </variation>
                         <connections>
                             <action selector="contendFieldClick:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="ZGJ-DQ-mZu"/>
                         </connections>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CaA-L6-GNf">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CaA-L6-GNf">
                         <rect key="frame" x="1016" y="13" width="31" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="31" id="Ina-Eg-aJ2"/>
+                        </constraints>
                         <state key="normal" title="Button" image="SC_info"/>
                         <connections>
-                            <action selector="imageBtnClick:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="pYo-bh-nHr"/>
+                            <action selector="imageBtnClick:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Fze-cF-yPU"/>
                         </connections>
                     </button>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="no data" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PZ3-6O-1aN">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="no data" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PZ3-6O-1aN">
                         <rect key="frame" x="698" y="12" width="129" height="36"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="129" id="eyS-En-Byu"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="23.5"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wd2-Ql-u3Q">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wd2-Ql-u3Q">
                         <rect key="frame" x="881" y="12" width="40" height="32"/>
                         <state key="normal" title="Button" image="download"/>
                         <connections>
                             <action selector="downloadBtnClick:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="LPN-Tf-1Nb"/>
                         </connections>
                     </button>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="小圆" translatesAutoresizingMaskIntoConstraints="NO" id="h4e-3m-cjY">
+                        <rect key="frame" x="21" y="20" width="16" height="17"/>
+                    </imageView>
                 </subviews>
                 <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
+                <constraints>
+                    <constraint firstItem="AGu-dy-GbD" firstAttribute="centerY" secondItem="CaA-L6-GNf" secondAttribute="centerY" id="0dN-Be-BAh"/>
+                    <constraint firstItem="CaA-L6-GNf" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="5" id="328-b5-xqg"/>
+                    <constraint firstItem="Wd2-Ql-u3Q" firstAttribute="leading" secondItem="PZ3-6O-1aN" secondAttribute="trailing" constant="54" id="6d0-MR-0oh"/>
+                    <constraint firstItem="PZ3-6O-1aN" firstAttribute="leading" secondItem="AGu-dy-GbD" secondAttribute="trailing" constant="83" id="Fa1-Sq-yxm"/>
+                    <constraint firstItem="h4e-3m-cjY" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="12" id="InH-1H-8xL"/>
+                    <constraint firstItem="AGu-dy-GbD" firstAttribute="leading" secondItem="h4e-3m-cjY" secondAttribute="trailing" constant="41" id="M1Z-3V-sHU"/>
+                    <constraint firstItem="PZ3-6O-1aN" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Rnk-Ut-aCe"/>
+                    <constraint firstItem="AGu-dy-GbD" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="78" id="TOV-ol-iOj"/>
+                    <constraint firstItem="CaA-L6-GNf" firstAttribute="leading" secondItem="Wd2-Ql-u3Q" secondAttribute="trailing" constant="95" id="Woa-4U-Xwj"/>
+                    <constraint firstItem="PZ3-6O-1aN" firstAttribute="top" secondItem="Wd2-Ql-u3Q" secondAttribute="top" id="X2J-yv-uqX"/>
+                    <constraint firstItem="h4e-3m-cjY" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="13" id="ZIF-eG-jk9"/>
+                    <constraint firstItem="AGu-dy-GbD" firstAttribute="centerY" secondItem="h4e-3m-cjY" secondAttribute="centerY" id="ZnX-qV-Pum"/>
+                    <constraint firstItem="AGu-dy-GbD" firstAttribute="leading" secondItem="h4e-3m-cjY" secondAttribute="trailing" constant="41" id="amC-Xb-VzS"/>
+                    <constraint firstItem="PZ3-6O-1aN" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="4" id="eAE-NU-Ksp"/>
+                    <constraint firstItem="AGu-dy-GbD" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="6" id="gCU-Wg-Sgq"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="CaA-L6-GNf" secondAttribute="trailing" constant="39" id="god-D8-tZj"/>
+                    <constraint firstItem="AGu-dy-GbD" firstAttribute="centerX" secondItem="h4e-3m-cjY" secondAttribute="centerX" id="oOZ-xM-Lg2"/>
+                    <constraint firstAttribute="trailing" secondItem="PZ3-6O-1aN" secondAttribute="trailing" constant="267" id="pPw-d1-wEv"/>
+                    <constraint firstItem="AGu-dy-GbD" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="rho-or-2sB"/>
+                    <constraint firstItem="AGu-dy-GbD" firstAttribute="bottom" secondItem="Wd2-Ql-u3Q" secondAttribute="bottom" id="xk5-Zh-qA2"/>
+                </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="amC-Xb-VzS"/>
+                        <exclude reference="oOZ-xM-Lg2"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
             <connections>
                 <outlet property="contentField" destination="AGu-dy-GbD" id="WwS-Yh-SBY"/>
                 <outlet property="courseLabel" destination="PZ3-6O-1aN" id="Ytl-51-TVr"/>
                 <outlet property="downloadBtn" destination="Wd2-Ql-u3Q" id="Vw5-qN-PeL"/>
-                <outlet property="imageBtn" destination="CaA-L6-GNf" id="jdD-hG-Ddx"/>
+                <outlet property="imageBtn" destination="CaA-L6-GNf" id="Lww-yJ-AfI"/>
             </connections>
             <point key="canvasLocation" x="71" y="308"/>
         </tableViewCell>

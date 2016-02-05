@@ -16,4 +16,5 @@
 
 @interface SCVideoHistoryView : UIView
 @property (nonatomic ,weak) id<SCHistoryViewDelegate> delegate;
+@property (nonatomic ,strong) UIViewController *viewController;
 @end

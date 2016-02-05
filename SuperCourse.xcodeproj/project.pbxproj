@@ -65,8 +65,6 @@
 		FE5835701C58FC01004DFA97 /* UIProgressView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = FE58355B1C58FC01004DFA97 /* UIProgressView+AFNetworking.m */; };
 		FE5835711C58FC01004DFA97 /* UIRefreshControl+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = FE58355D1C58FC01004DFA97 /* UIRefreshControl+AFNetworking.m */; };
 		FE5835721C58FC01004DFA97 /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = FE58355F1C58FC01004DFA97 /* UIWebView+AFNetworking.m */; };
-		FE60E6751C5783360005F9F3 /* SCItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE60E6741C5783360005F9F3 /* SCItemView.m */; };
-		FE60E6771C5783870005F9F3 /* SCItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE60E6761C5783870005F9F3 /* SCItemView.xib */; };
 		FE677E181C5F51D1006A441D /* SCIntroduction.m in Sources */ = {isa = PBXBuildFile; fileRef = FE677E171C5F51D1006A441D /* SCIntroduction.m */; };
 		FE677E1B1C5F52DB006A441D /* SCKnowledge.m in Sources */ = {isa = PBXBuildFile; fileRef = FE677E1A1C5F52DB006A441D /* SCKnowledge.m */; };
 		FE677E1E1C5F5397006A441D /* SCWillLearn.m in Sources */ = {isa = PBXBuildFile; fileRef = FE677E1D1C5F5397006A441D /* SCWillLearn.m */; };
@@ -249,9 +247,6 @@
 		FE58355D1C58FC01004DFA97 /* UIRefreshControl+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIRefreshControl+AFNetworking.m"; sourceTree = "<group>"; };
 		FE58355E1C58FC01004DFA97 /* UIWebView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWebView+AFNetworking.h"; sourceTree = "<group>"; };
 		FE58355F1C58FC01004DFA97 /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+AFNetworking.m"; sourceTree = "<group>"; };
-		FE60E6731C5783360005F9F3 /* SCItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCItemView.h; sourceTree = "<group>"; };
-		FE60E6741C5783360005F9F3 /* SCItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCItemView.m; sourceTree = "<group>"; };
-		FE60E6761C5783870005F9F3 /* SCItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCItemView.xib; sourceTree = "<group>"; };
 		FE677E161C5F51D1006A441D /* SCIntroduction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCIntroduction.h; sourceTree = "<group>"; };
 		FE677E171C5F51D1006A441D /* SCIntroduction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCIntroduction.m; sourceTree = "<group>"; };
 		FE677E191C5F52DB006A441D /* SCKnowledge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCKnowledge.h; sourceTree = "<group>"; };
@@ -554,9 +549,6 @@
 				FE005B9A1C56190300920EFB /* SCCourseTableViewCell.h */,
 				FE005B9B1C56190300920EFB /* SCCourseTableViewCell.m */,
 				FE005B9C1C56190300920EFB /* SCCourseTableViewCell.xib */,
-				FE60E6731C5783360005F9F3 /* SCItemView.h */,
-				FE60E6741C5783360005F9F3 /* SCItemView.m */,
-				FE60E6761C5783870005F9F3 /* SCItemView.xib */,
 				DAE2880A1C59EA3A00426DDD /* SCLoginView.h */,
 				DAE2880B1C59EA3A00426DDD /* SCLoginView.m */,
 				DAE2880C1C59EA3A00426DDD /* SCLoginView.xib */,
@@ -952,7 +944,6 @@
 				FE44D5721C60901C00354DF6 /* SCExtendView.xib in Resources */,
 				FE92DA841C6357B600737B17 /* MBProgressHUD.bundle in Resources */,
 				DAE2880E1C59EA3A00426DDD /* SCLoginView.xib in Resources */,
-				FE60E6771C5783870005F9F3 /* SCItemView.xib in Resources */,
 				FE7F65101C5DA9AF009C7F21 /* SCHistoryTableViewCell.xib in Resources */,
 				FE7057361C62E5270079C614 /* SCDownloadConditionViewController.xib in Resources */,
 				FE70573B1C62EE810079C614 /* SCDownloadTableViewCell.xib in Resources */,
@@ -989,7 +980,6 @@
 				FE7F65141C5DA9AF009C7F21 /* SCSearchView.m in Sources */,
 				FE92DAAD1C635BC200737B17 /* SDWebImageCompat.m in Sources */,
 				FE5835721C58FC01004DFA97 /* UIWebView+AFNetworking.m in Sources */,
-				FE60E6751C5783360005F9F3 /* SCItemView.m in Sources */,
 				FE58356B1C58FC01004DFA97 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				C9E4E6471C53BAF30052030E /* AppDelegate.m in Sources */,
 				B99897541C5F2AD4001DCA7D /* SClesson_list.m in Sources */,
@@ -1213,6 +1203,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sunzhongyuan.SuperCourse;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -1227,6 +1218,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sunzhongyuan.SuperCourse;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

@@ -43,7 +43,7 @@
         }
         self.firseLabelText.text=firstText;
         //datasource.har_des.count
-        
+        self.firseLabelText.font=[UIFont systemFontOfSize:35*HeightScale];
         
         
         NSString *secondText=@"";
@@ -52,7 +52,8 @@
             secondText=[secondText stringByAppendingFormat:@"%@\n",knoledge.preknowledge_des];
         }
         self.secondLabelText.text=secondText;
-        
+        self.secondLabelText.font=[UIFont systemFontOfSize:35*HeightScale];
+
         
         NSString *thirdText=@"";
         for(int i=0; i<datasource.willknow.count;i++){
@@ -60,9 +61,15 @@
             thirdText=[thirdText stringByAppendingFormat:@"%@\n",willLearn.har_des];
         }
         self.thirdLabelText.text=thirdText;
-        
-        
-        
+        self.thirdLabelText.font=[UIFont systemFontOfSize:35*HeightScale];
+
+        self.headLabel.font=[UIFont systemFontOfSize:55*HeightScale];
+        self.firseLabel.font=[UIFont systemFontOfSize:25*HeightScale];
+        self.secondLabel.font=[UIFont systemFontOfSize:25*HeightScale];
+        self.thirdLabel.font=[UIFont systemFontOfSize:25*HeightScale];
+        self.backBtn.font=[UIFont systemFontOfSize:50*HeightScale];
+
+
     }
     return self;
 }
@@ -71,7 +78,8 @@
 
 -(void)awakeFromNib{
 
-    [self setBoarder:self.secondLabel];
+    //[self setBoarder:self.secondLabel];
+    //[self setBoarder:self.thirdLabel];
     _backBtn.layer.masksToBounds = YES;
     _backBtn.layer.cornerRadius = 31;
     _backBtn.backgroundColor=UIColorFromRGB(0x6fccdb);

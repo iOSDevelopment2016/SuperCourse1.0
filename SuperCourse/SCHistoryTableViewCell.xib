@@ -15,7 +15,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5zC-lU-YCZ">
-                        <rect key="frame" x="49" y="19" width="300" height="30.5"/>
+                        <rect key="frame" x="49" y="19" width="300" height="31"/>
                         <fontDescription key="fontDescription" type="system" pointSize="27"/>
                         <state key="normal" title="Button"/>
                         <connections>
@@ -27,7 +27,7 @@
                         <rect key="frame" x="21" y="25" width="20" height="19"/>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MJr-CK-Nx6">
-                        <rect key="frame" x="498" y="25" width="154" height="20"/>
+                        <rect key="frame" x="586" y="24" width="154" height="20"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>

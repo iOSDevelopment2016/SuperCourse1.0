@@ -16,6 +16,7 @@
 @property (nonatomic, strong) UIView *scrollView;
 //@property (nonatomic,strong) UIButton *saveBtn;
 @property (nonatomic,strong) UIButton *operationBtn;
+@property (nonatomic,strong) UIView  *bottomView;
 
 
 @property (nonatomic, assign) BOOL allowEdit;
@@ -45,6 +46,9 @@
     if (self) {
         self.allowEdit = NO;
         self.backgroundColor = UIBackgroundColor;
+        
+        [self addSubview:self.bottomView];
+        
         [self addSubview:self.notesTextView];
         [self addSubview:self.scrollView];
 //        [self addSubview:self.createBtn];
@@ -57,7 +61,7 @@
 
 -(void)loadData{
 //    NSString *student_id = ApplicationDelegate.userSession;
-    NSString *student_id = @"0000";
+    NSString *student_id = ApplicationDelegate.userSession;
     NSString *student_password = ApplicationDelegate.userPsw;
     if (!student_password) {
         student_password = @"";
@@ -103,10 +107,13 @@
 
 -(void)layoutSubviews{
     [super layoutSubviews];
-    self.notesTextView.frame = CGRectMake(0, 100, self.width, 1217*HeightScale);
+    self.bottomView.frame = CGRectMake(0, 100, self.width, 1217*HeightScale);
+
+    self.notesTextView.frame = CGRectMake(20, 120, self.width-40, 1217*HeightScale-40);
     self.backgroundColor = UIBackgroundColor;
     self.scrollView.frame = CGRectMake(0, 0, self.width, 100*HeightScale);
-    self.operationBtn.frame = CGRectMake(850, 0, 0.127*self.width, 100*HeightScale);
+    self.operationBtn.frame = CGRectMake(0.873*self.width-45, 0, 0.127*self.width, 100*HeightScale);
+    
 //    self.saveBtn.frame = CGRectMake(850-0.127*self.width, 0, 0.127*self.width, 100*HeightScale);
     
 //    //注册通知,监听键盘弹出事件
@@ -117,12 +124,14 @@
 }
 -(UIButton *)operationBtn{
     if(!_operationBtn){
-        _operationBtn=[[UIButton alloc]initWithFrame:CGRectMake(300, 0, 0.127*self.width, 100*HeightScale)];
+        _operationBtn=[[UIButton alloc]initWithFrame:CGRectMake(850, 0, 0.127*self.width, 100*HeightScale)];
         
         [_operationBtn setTitle:@"编辑" forState:UIControlStateNormal];
-        [_operationBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+        [_operationBtn setTitleColor:UIThemeColor forState:UIControlStateNormal];
+        _operationBtn.titleLabel.font = [UIFont systemFontOfSize:30];
+
         [_operationBtn setTitle:@"保存" forState:UIControlStateSelected];
-        [_operationBtn setTitleColor:[UIColor blueColor] forState:UIControlStateSelected];
+        [_operationBtn setTitleColor:UIThemeColor forState:UIControlStateSelected];
         [_operationBtn addTarget:self action:@selector(btnClicked) forControlEvents:UIControlEventTouchUpInside];
     }
     return _operationBtn;
@@ -147,6 +156,15 @@
 //
 //}
 
+-(UIView *)bottomView{
+    if (!_bottomView) {
+        _bottomView = [[UIView alloc]init];
+        _bottomView.backgroundColor = [UIColor whiteColor];
+    }
+    return _bottomView;
+}
+
+
 -(UITextView *)notesTextView{
     if (!_notesTextView) {
         _notesTextView=[[UITextView alloc]init];
@@ -154,14 +172,16 @@
         _notesTextView.font = [UIFont systemFontOfSize:25];
         _notesTextView.contentInset = UIEdgeInsetsMake(-11, -6, 0, 0);
         _notesTextView.scrollEnabled = NO;
-//        [_notesTextView becomeFirstResponder];
         //返回键的类型
         _notesTextView.returnKeyType = UIReturnKeyDefault;
-      
         //键盘类型
         _notesTextView.keyboardType = UIKeyboardTypeDefault;
-     
         _notesTextView.delegate=self;
+        [_notesTextView setContentInset:UIEdgeInsetsMake(200, 200, 200, 200)];
+        _notesTextView.layer.masksToBounds = YES;
+        _notesTextView.layer.borderColor = [UIBackgroundColor CGColor];
+        _notesTextView.layer.borderWidth = 1.5f;
+        _notesTextView.layer.cornerRadius = 8.0;
         
     }
     return _notesTextView;

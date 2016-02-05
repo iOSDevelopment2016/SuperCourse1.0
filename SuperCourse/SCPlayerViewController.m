@@ -135,8 +135,6 @@
 
 }
 
-
-
 -(SCVideoInfoModel *)getVideoInfo:(NSDictionary *)dict{
    
     SCVideoInfoModel *m = [[SCVideoInfoModel alloc]init];
