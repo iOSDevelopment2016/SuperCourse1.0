@@ -18,6 +18,7 @@
 #import "HttpTool.h"
 #import "MJExtension.h"
 #import "SClesson_list.h"
+#import "UIAlertController+SZYKit.h"
 @interface SCSearchView ()<UITableViewDataSource, UITableViewDelegate,SCSearchTableViewDelegate>
 @property (nonatomic ,strong) UITableView *firstSearchTableView;
 @property (nonatomic ,strong) UITableView *secondSearchTableView;
@@ -81,9 +82,9 @@
     self.leftBtn.frame=CGRectMake(350, 100*HeightScale+7 , 0.127*self.width, 100*HeightScale);
     self.rightBtn.frame=CGRectMake(560, 100*HeightScale+7 , 0.127*self.width, 100*HeightScale);
     self.stateView.frame = CGRectMake(0, 0, self.width, 100*HeightScale);
-    self.state.frame= CGRectMake(500, 0, 0.5*self.width, 100*HeightScale);
-    self.label.frame= CGRectMake(0, 0, self.width, 100*HeightScale);
-         [self addSubview:self.firstSearchTableView];
+    self.state.frame= CGRectMake(650, 0, 0.5*self.width, 100*HeightScale);
+    self.label.frame= CGRectMake(40, 0, self.width, 100*HeightScale);
+//         [self addSubview:self.firstSearchTableView];
     
 }
 
@@ -94,7 +95,11 @@
 
 
 -(void)loadCourseListFromNetwork{
+
     
+    if ([self.keyWord isEqualToString:@""] || !self.keyWord) {
+        return;
+    }
     
     NSDictionary *para = @{@"method":@"Search",
                            @"param":@{@"Data":@{@"searchinfo":self.keyWord,@"stuid":ApplicationDelegate.userSession}}};
@@ -103,7 +108,6 @@
         
         NSData *data = [[NSData alloc] initWithData:responseObject];
         
-        NSString *str = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         firstLessonArr = [NSMutableArray array];
@@ -119,18 +123,8 @@
             SClesson_list *list =  [SClesson_list objectWithKeyValues:tempDict];
             [secondLessonArr addObject:list];
         }
-//        currentSource=firstLessonArr;
-        [self addSubview:self.firstSearchTableView];
-        SClesson_list *l =firstLessonArr[0];
-        if (!l.les_name) {
-            _state.text= [NSString stringWithFormat:@"搜索%@共找到0个视频课程",_keyWord];
-        }else{
-            _state.text=[NSString stringWithFormat:@"搜索%@共找到%lu个视频课程",_keyWord,(unsigned long)firstLessonArr.count];
-        }
        
-        currentSource = firstLessonArr;
-        [self.firstSearchTableView reloadData];
-        //[self.leftBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateSelected];
+        [self leftBtnClick];
 
     } failure:^(NSError *error) {
         NSLog(@"%@",error);
@@ -157,11 +151,12 @@
         _state.font=[UIFont systemFontOfSize:25];
         _state.textColor=[UIColor grayColor];
         SClesson_list *l =[[SClesson_list alloc]init];
-        if (!l.les_name) {
-            _state.text= [NSString stringWithFormat:@"搜索%@共找到0个视频课程",_keyWord];
-        }else{
-        _state.text=[NSString stringWithFormat:@"搜索%@共找到%lu个视频课程",_keyWord,(unsigned long)currentSource.count];
-        }}
+//        if (!l.les_name) {
+//            _state.text= [NSString stringWithFormat:@"搜索%@共找到0个视频课程",_keyWord];
+//        }else{
+//        _state.text=[NSString stringWithFormat:@"搜索%@共找到%lu个视频课程",_keyWord,(unsigned long)currentSource.count];
+//        }
+    }
     return _state;
 }
 -(UILabel *)label{
@@ -305,29 +300,24 @@
     currentSource = firstLessonArr;
     [self.firstSearchTableView reloadData];
     [self.leftBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateSelected];
-//    [self addSubview:self.firstSearchTableView];
-    //[self move:-1];
-    if (!currentSource) {
-        _state.text= [NSString stringWithFormat:@"搜索%@共找到0个视频课程",_keyWord];
+    if (!currentSource || currentSource.count == 0) {
+        _state.text= [NSString stringWithFormat:@"搜索“%@”共找到0个视频课程",_keyWord];
     }else{
-        _state.text=[NSString stringWithFormat:@"搜索%@共找到%lu个视频课程",_keyWord,(unsigned long)currentSource.count];
+        _state.text=[NSString stringWithFormat:@"搜索“%@”共找到%lu个视频课程",_keyWord,(unsigned long)currentSource.count];
     }
-
-    
 }
 -(void)rightBtnClick{
     self.leftBtn.selected=NO;
     self.rightBtn.selected=YES;
     currentSource = secondLessonArr;
     [self.firstSearchTableView reloadData];
-    //CGFloat variety=self.rightBtn.frame.origin.x-self.scrollSearchView.frame.origin.x;
     [self.leftBtn setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
     
     
-    if (!currentSource) {
-        _state.text= [NSString stringWithFormat:@"搜索%@共找到0个视频课程",_keyWord];
+    if (!currentSource || currentSource.count == 0) {
+        _state.text= [NSString stringWithFormat:@"搜索“%@”共找到0个视频课程",_keyWord];
     }else{
-        _state.text=[NSString stringWithFormat:@"搜索%@共找到%lu个视频课程",_keyWord,(unsigned long)currentSource.count];
+        _state.text=[NSString stringWithFormat:@"搜索“%@”共找到%lu个视频课程",_keyWord,(unsigned long)currentSource.count];
     }
 
     
@@ -349,8 +339,31 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SClesson_list *currentSearch = currentSource[indexPath.row];
-    [self.delegate searchDidClick:currentSearch.les_id ];
+    NSString *state = [ApplicationDelegate getNetWorkStates];
+    if ([state isEqualToString:@"无网络"]) {
+        [UIAlertController showAlertAtViewController:self.viewController withMessage:@"请检查您的网络" cancelTitle:@"取消" confirmTitle:@"我知道了" cancelHandler:^(UIAlertAction *action) {
+            
+        } confirmHandler:^(UIAlertAction *action) {
+            
+        }];
+    }
+    else if ([state isEqualToString:@"wifi"]){
+        SClesson_list *currentSearch = currentSource[indexPath.row];
+        [self.delegate searchDidClick:currentSearch.les_id ];
+
+    }
+    else{
+        [UIAlertController showAlertAtViewController:self.viewController withMessage:@"您正在使用3G/4G流量" cancelTitle:@"取消" confirmTitle:@"继续播放" cancelHandler:^(UIAlertAction *action) {
+            
+        } confirmHandler:^(UIAlertAction *action) {
+            SClesson_list *currentSearch = currentSource[indexPath.row];
+            [self.delegate searchDidClick:currentSearch.les_id ];
+            
+        }];
+    }
+//
+//    SClesson_list *currentSearch = currentSource[indexPath.row];
+//    [self.delegate searchDidClick:currentSearch.les_id ];
     
 //    [self.delegate searchDidClick:currentSearch.les_id beginTime:currentSearch.bgsty_time];
 }
