@@ -16,7 +16,7 @@
 @property (strong ,nonatomic) NSString *userPsw;
 @property (strong ,nonatomic) NSString *userPhone;
 
-
+@property (strong ,nonatomic) NSString *playLog;
 
 -(NSString *)monitorWebState;
 

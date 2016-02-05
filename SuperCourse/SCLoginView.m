@@ -79,6 +79,7 @@
 }
 
 -(void)awakeFromNib{
+    self.phone.font=FONT_20;
     self.phone.delegate = self;
     [self.phone addTarget:self action:@selector(textValueDidChange:) forControlEvents:UIControlEventAllEvents];
     [self regNotifacation];
@@ -154,7 +155,10 @@
             [defaultes setObject:ApplicationDelegate.userPsw forKey:UserPswKey];
             [defaultes setObject:ApplicationDelegate.userPhone forKey:UserPhoneKey];
             [defaultes synchronize];
-            
+            if(ApplicationDelegate.playLog){
+                [self.delegate changeImage];
+            }
+
             [[NSNotificationCenter defaultCenter]postNotificationName:@"ImageShouldChange" object:nil];
             [self removeFromSuperview];
         }else{

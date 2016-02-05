@@ -18,5 +18,6 @@
 @property (nonatomic, strong) NSString *les_id;
 @property (nonatomic, assign) CGFloat oversty_time;
 @property (nonatomic ,strong) NSString *num;
+@property (nonatomic, strong) NSString *stu_id;
 
 @end
