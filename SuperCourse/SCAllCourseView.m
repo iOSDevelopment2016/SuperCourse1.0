@@ -23,50 +23,32 @@
 
 @interface SCAllCourseView ()<UITableViewDataSource, UITableViewDelegate,SCCourseTableViewDelegate,MBProgressHUDDelegate,SCLoginViewDelegate>
 
-
-
-@property (weak, nonatomic) IBOutlet UITextField *phone;
-@property (weak, nonatomic) IBOutlet UITextField *password;
-@property (weak, nonatomic) IBOutlet UIButton *sendPsw;
-@property (weak, nonatomic) IBOutlet UIButton *login;
-@property (weak, nonatomic) IBOutlet UIButton *usertext;
-
-
-
-
-
-
-
-@property (nonatomic ,strong) UIImageView *topImageView;
-@property (nonatomic ,strong) UIImageView *headImageView;
-@property (nonatomic ,strong) UIImageView *characterImageView;
-
-
-@property (nonatomic ,strong) UITableView *firstTableView;
-//@property (nonatomic ,strong) UITableView *secondTableView;
-
-@property (nonatomic ,strong) UIButton     *leftBtn;
-@property (nonatomic ,strong) UIButton     *rightBtn;
-
-@property (nonatomic ,strong) UIView       *scrollView;
-@property (nonatomic ,strong) UIView       *leftView;
-@property (nonatomic ,strong) UIView       *rightView;
-
-@property (nonatomic, strong) SCCourseCategory *firstCategory;
-@property (nonatomic, strong) SCCourseCategory *secondCategory;
-@property (nonatomic, strong) SCCourseCategory *currentSource;
-
-@property(retain,nonatomic) UIActivityIndicatorView *activityIndicator;
-
+@property (weak, nonatomic  ) IBOutlet UITextField                *phone;
+@property (weak, nonatomic  ) IBOutlet UITextField                *password;
+@property (weak, nonatomic  ) IBOutlet UIButton                   *sendPsw;
+@property (weak, nonatomic  ) IBOutlet UIButton                   *login;
+@property (weak, nonatomic  ) IBOutlet UIButton                   *usertext;
+@property (nonatomic ,strong) UIImageView                *topImageView;
+@property (nonatomic ,strong) UIImageView                *headImageView;
+@property (nonatomic ,strong) UIImageView                *characterImageView;
+@property (nonatomic ,strong) UITableView                *firstTableView;
+@property (nonatomic ,strong) UIButton                   *leftBtn;
+@property (nonatomic ,strong) UIButton                   *rightBtn;
+@property (nonatomic ,strong) UIView                     *scrollView;
+@property (nonatomic ,strong) UIView                     *leftView;
+@property (nonatomic ,strong) UIView                     *rightView;
+@property (nonatomic, strong) SCCourseCategory           *firstCategory;
+@property (nonatomic, strong) SCCourseCategory           *secondCategory;
+@property (nonatomic, strong) SCCourseCategory           *currentSource;
+@property (retain,nonatomic ) UIActivityIndicatorView    *activityIndicator;
 @property (nonatomic ,strong) AFDownloadRequestOperation *fileDownloader;
-@property (nonatomic ,strong) MBProgressHUD    *HUD;
+@property (nonatomic ,strong) MBProgressHUD              *HUD;
 
 @end
 
 @implementation SCAllCourseView{
     NSMutableArray *courseCategoryArr;
-    
-    }
+}
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -86,7 +68,6 @@
         [self loadCourseListFromNetwork];
         
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(imageShouldChange) name:@"ImageShouldChange" object:nil];
-
     }
     return self;
 }
@@ -587,6 +568,7 @@
         [_leftBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_leftBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateSelected];
         [_leftBtn addTarget:self action:@selector(leftBtnClick) forControlEvents:UIControlEventTouchUpInside];
+//        _leftBtn.backgroundColor = [UIColor orangeColor];
     }
     
     return _leftBtn;
