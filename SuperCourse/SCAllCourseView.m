@@ -544,7 +544,8 @@
             cell.downloadBtn.hidden=YES;
         }
         cell.courseLabel.text=temp_.les_size;
-        cell.courseLabel.font=[UIFont systemFontOfSize:35*HeightScale];
+//        cell.courseLabel.font=FONT_18;
+//        cell.courseLabel.font=[UIFont systemFontOfSize:35*HeightScale];
 ////        if([temp_.permission isEqualToString:@"否"]){
 //        
 //            cell.selected=NO;
@@ -648,7 +649,8 @@
         _rightBtn=[UIButton buttonWithType:UIButtonTypeCustom];
         [_rightBtn setTitle:@"拓展" forState:UIControlStateNormal];
         [_rightBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [_rightBtn setFont:[UIFont systemFontOfSize:35]];
+        _rightBtn.titleLabel.font = FONT_35;
+        //[_rightBtn setFont:[UIFont systemFontOfSize:35]];
         [_rightBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateSelected];
         //[_rightBtn setFont:[UIFont systemFontOfSize:<#(CGFloat)#>]];
         [_rightBtn addTarget:self action:@selector(rightBtnClick) forControlEvents:UIControlEventTouchUpInside];
