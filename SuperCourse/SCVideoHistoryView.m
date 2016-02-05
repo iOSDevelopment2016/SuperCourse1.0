@@ -26,9 +26,6 @@
 @end
 
 
-
-
-
 @implementation SCVideoHistoryView{
     NSMutableArray *historyArr;
 }
@@ -42,18 +39,14 @@
 //        [self addSubview:self.historyTableView];
         [self loadCourseListFromNetwork];
        
-        
-
     }
     return self;
 }
 -(void)loadCourseListFromNetwork{
     
-    NSString *stuid = @"0000";
+    NSString *stuid = ApplicationDelegate.userSession;
     NSDictionary *para = @{@"method":@"History",
                            @"param":@{@"Data":@{@"stuid":stuid}}};
-    //    NSDictionary *para = @{@"method":@"Login",
-    //                           @"param":@{@"Data":@{@"phone":@"111",@"password":@"111"}}};
     [HttpTool postWithparams:para success:^(id responseObject) {
         
         NSData *data = [[NSData alloc] initWithData:responseObject];
@@ -64,7 +57,6 @@
             [historyArr addObject:tempHistory];
         }
 
-        
         [self addSubview:self.historyTableView];
 
     } failure:^(NSError *error) {

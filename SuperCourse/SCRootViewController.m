@@ -443,7 +443,8 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     if(self.searchView){
         [self.searchView removeFromSuperview];
     }
-    
+    [self.searchTextField setHidden:NO];
+    self.searchTextField.text=nil;
     self.allCourseBtn.selected=YES;
     self.allCourseBtnImage.selected=YES;
     self.videoHistoryBtn.selected=NO;
@@ -487,7 +488,8 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     if(self.searchView){
         [self.searchView removeFromSuperview];
     }
-    
+    [self.searchTextField setHidden:YES];
+    self.searchTextField.text=nil;
     self.allCourseBtn.selected=NO;
     self.allCourseBtnImage.selected=NO;
     self.videoHistoryBtn.selected=YES;
@@ -530,7 +532,8 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     if(self.searchView){
         [self.searchView removeFromSuperview];
     }
-    
+    [self.searchTextField setHidden:YES];
+    self.searchTextField.text=nil;
     self.allCourseBtn.selected=NO;
     self.allCourseBtnImage.selected=NO;
     self.videoHistoryBtn.selected=NO;
@@ -655,7 +658,15 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 }
 
 -(void)searchBtnClick{
-    
+    self.allCourseBtn.selected=NO;
+    self.allCourseBtnImage.selected=NO;
+    self.videoHistoryBtn.selected=NO;
+    self.videoHistoryBtnImage.selected=NO;
+    self.myNotesBtn.selected=NO;
+    self.myNotesBtnImage.selected=NO;
+    self.favouriteSettingBtn.selected=NO;
+    self.favouriteSettingBtnImage.selected=NO;
+    [self.scroll setHidden:YES];
     self.searchView.keyWord = self.searchTextField.text;
     [self.searchTextField resignFirstResponder];
     
