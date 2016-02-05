@@ -76,6 +76,7 @@
     return self;
 }
 
+
 -(void)imageShouldChange{
     
     
@@ -363,11 +364,23 @@
 -(SCCustomButton *)startBtn{
     if (!_startBtn){
         _startBtn = [SCCustomButton buttonWithType:UIButtonTypeCustom];
-        [_startBtn setImage:[UIImage imageNamed:@"SC_start"] forState:UIControlStateNormal];
+        if(ApplicationDelegate.playLog){
+            [_startBtn setImage:[UIImage imageNamed:@"SC_continue"] forState:UIControlStateNormal];
+        }else{
+            [_startBtn setImage:[UIImage imageNamed:@"SC_start"] forState:UIControlStateNormal];
+        }
         [_startBtn addTarget:self action:@selector(startBtnClick) forControlEvents:UIControlEventTouchUpInside];
     }
     return _startBtn;
 }
+
+//-(void)changeLearn{
+//    if(ApplicationDelegate.playLog){
+//        [_startBtn setImage:[UIImage imageNamed:@"SC_continue"] forState:UIControlStateNormal];
+//    }else{
+//        [_startBtn setImage:[UIImage imageNamed:@"SC_start"] forState:UIControlStateNormal];
+//    }
+//}
 
 
 -(UIImageView *)headImageView{

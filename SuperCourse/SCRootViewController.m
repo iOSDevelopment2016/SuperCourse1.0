@@ -16,7 +16,6 @@
 #import "SCSettingViewController.h"
 #import "SCPlayerViewController.h"
 #import "SCCourseTableViewCell.h"
-#import "SCItemView.h"
 #import "SCVideoInfoModel.h"
 #import "MBProgressHUD.h"
 #import "MJExtension.h"
@@ -54,7 +53,6 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 @property (nonatomic ,strong) UIView                   *scroll;
 @property (nonatomic ,strong) UIView                   *hubView;
 @property (nonatomic ,strong) SCLoginView              *loginView;
-@property (nonatomic ,strong) SCItemView               *itemView;
 @property (nonatomic ,strong) SCAllCourseView          *allCourseView;
 @property (nonatomic ,strong) SCVideoHistoryView       *videoHistoryView;
 @property (nonatomic ,strong) SCMyNotesView            *myNotesView;
@@ -66,6 +64,9 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 @property (nonatomic ,strong) SCSettingViewController  *setVC;
 @property (nonatomic ,strong) SCIntroductionDataSource *datasource;
 @property (nonatomic ,strong) MBProgressHUD            *hud;
+@property (nonatomic ,strong) SCCoursePlayLog          *playLog;
+
+
 
 @property CGFloat Variety;
 
@@ -357,23 +358,26 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 //            return @{@"willknow":@"SCWillLearn"};
 //        }];
 
-            SCCoursePlayLog *playLog = [SCCoursePlayLog objectWithKeyValues:dic[@"data"]];
+            self.playLog = [SCCoursePlayLog objectWithKeyValues:dic[@"data"]];
 //        SCCoursePlayLog *playLog = [[SCCoursePlayLog alloc]init];
 //        playLog.lessonID = dic[@"data"][@""]
-            NSString *lessonId = playLog.les_id;
-            float startTime = playLog.oversty_time;
+            NSString *lessonId = self.playLog.les_id;
+            float startTime = self.playLog.oversty_time;
             if (lessonId) {
-                if ([playLog.is_ready isEqualToString:@"是"]) {
+                if ([self.playLog.is_ready isEqualToString:@"是"]) {
                     lessonId = [self getNextCourse:lessonId];
                     startTime = 0;
                 }
 
             }else{
                 //lessonId = [self getFirstCourse];                未完成！！！！！！！！
+                lessonId = @"0001";
+                startTime = 0;
+
             }
         // 启动播放器
             SCPlayerViewController *playVC = [[SCPlayerViewController alloc]init];
-            playVC.lessonId = playLog.studyles_id;
+            playVC.lessonId = self.playLog.studyles_id;
         // 设置播放开始时间，未完成   playVC.
             [self.navigationController pushViewController:playVC animated:YES];
         
@@ -622,8 +626,6 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     self.loginView = nil;
     [self.hubView removeFromSuperview];
     self.hubView = nil;
-    [self.itemView removeFromSuperview];
-    self.itemView = nil;
     [self.webView removeFromSuperview];
     self.webView=nil;
     [self.extendView removeFromSuperview];
@@ -968,16 +970,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     }
     return _hubView;
 }
--(SCItemView *)itemView{
-    if (!_itemView){
-        _itemView = [[SCItemView alloc]init];
-        _itemView.backgroundColor=[UIColor whiteColor];
-        _itemView.frame = CGRectMake(0, 0, 320, 240);
-        _itemView.center = self.view.center;
-        //_loginView.delegate = self;
-    }
-    return _itemView;
-}
+
 -(SCLoginView *)loginView{
     if (!_loginView){
         _loginView = [[NSBundle mainBundle]loadNibNamed:NSStringFromClass([SCLoginView class]) owner:nil options:nil].lastObject;

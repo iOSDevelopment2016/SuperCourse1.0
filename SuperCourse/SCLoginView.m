@@ -16,7 +16,67 @@
 @end
 
 @implementation SCLoginView
-
+-(void)layoutSubviews{
+    [super layoutSubviews];
+    CGFloat telwidthCheck=self.bounds.size.width*0.787;
+    CGFloat telheightCheck=self.bounds.size.height*0.154;
+    CGFloat teltopCheck=self.bounds.size.height*0.154;
+    CGFloat keywidthCheck=self.bounds.size.width*0.787;
+    CGFloat keyheightCheck=self.bounds.size.height*0.154;
+    CGFloat keyteldic=self.bounds.size.height*0.085;
+    CGFloat loginwidthCheck=self.bounds.size.width*0.787;
+    CGFloat loginheightCheck=self.bounds.size.height*0.154;
+    CGFloat loginkeydic=self.bounds.size.height*0.122;
+    CGFloat texttelWidth=self.bounds.size.width*0.337;
+    CGFloat texttelHeight=self.bounds.size.height*0.154;
+    CGFloat texttelleftdic=self.bounds.size.width*0.259;
+    CGFloat textteltop=self.bounds.size.height*0.154;
+    CGFloat sendpswWidth=self.bounds.size.width*0.247;
+    CGFloat sendpswHeight=self.bounds.size.height*0.154;
+    CGFloat sendpswrightdic=self.bounds.size.width*0.120;
+    CGFloat sendpswtop=self.bounds.size.height*0.154;
+    CGFloat pswWidth=self.bounds.size.width*0.627;
+    CGFloat pswHeight=self.bounds.size.height*0.154;
+    CGFloat pswleftdic=self.bounds.size.width*0.259;
+    CGFloat pswtop=self.bounds.size.height*0.085;
+    CGFloat labelloginWidth=self.bounds.size.width*0.430;
+    CGFloat labelloginHeight=self.bounds.size.height*0.032;
+    CGFloat labelloginleftdic=self.bounds.size.width*0.182;
+    CGFloat labelloginbottom=self.bounds.size.height*0.086;
+    CGFloat sctextWidth=self.bounds.size.width*0.330;
+    CGFloat sctextHeight=self.bounds.size.height*0.032;
+    CGFloat sctextrightdic=self.bounds.size.width*0.175;
+    CGFloat sctextbottom=self.bounds.size.height*0.086;
+    self.telWidth.constant=telwidthCheck;
+    self.telHeight.constant=telheightCheck;
+    self.telTop.constant=teltopCheck;
+    self.keyWidth.constant=keywidthCheck;
+    self.keyHeight.constant=keyheightCheck;
+    self.keyteldic.constant=keyteldic;
+    self.loginWidth.constant=loginwidthCheck;
+    self.loginHeight.constant=loginheightCheck;
+    self.loginkeydic.constant=loginkeydic;
+    self.texttelWidth.constant=texttelWidth;
+    self.texttelHeight.constant=texttelHeight;
+    self.texttelleftdic.constant=texttelleftdic;
+    self.textteltop.constant=textteltop;
+    self.sendpswWidth.constant=sendpswWidth;
+    self.sendpswHeight.constant=sendpswHeight;
+    self.sendpswTop.constant=sendpswtop;
+    self.sendpswrightdic.constant=sendpswrightdic;
+    self.pswWidth.constant=pswWidth;
+    self.pswHeight.constant=pswHeight;
+    self.pswleftdic.constant=pswleftdic;
+    self.pswtextphonedic.constant=pswtop;
+    self.labelloginWidth.constant=labelloginWidth;
+    self.labelloginHeight.constant=labelloginHeight;
+    self.labelleftdic.constant=labelloginleftdic;
+    self.labelbottom.constant=labelloginbottom;
+    self.sclabelWidth.constant=sctextWidth;
+    self.sclabelHeight.constant=sctextHeight;
+    self.sclabelrightdic.constant=sctextrightdic;
+    self.sclabelbottom.constant=sctextbottom;
+}
 
 -(void)awakeFromNib{
     self.phone.delegate = self;
@@ -134,7 +194,7 @@
         CGFloat h=self.frame.size.height;
         CGFloat w=self.frame.size.width;
         [UIView animateWithDuration:duration animations:^{
-            self.frame = CGRectMake(579*WidthScale, 241*HeightScale, w, h);
+            self.frame = CGRectMake(579*WidthScale, 200*HeightScale, w, h);
         }];
     }
 }
