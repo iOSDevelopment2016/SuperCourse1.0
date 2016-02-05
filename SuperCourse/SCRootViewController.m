@@ -64,6 +64,9 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 @property (nonatomic ,strong) SCSettingViewController  *setVC;
 @property (nonatomic ,strong) SCIntroductionDataSource *datasource;
 @property (nonatomic ,strong) MBProgressHUD            *hud;
+@property (nonatomic ,strong) SCCoursePlayLog          *playLog;
+
+
 
 @property CGFloat Variety;
 
@@ -84,8 +87,13 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     //隐藏导航栏
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     
-    [self.view addSubview:self.loginBtn];
-    [self.view addSubview:self.loginBtnImage];
+    if([ApplicationDelegate.userSession isEqualToString:@"UnLoginUserSession"]){
+    
+        [self.view addSubview:self.loginBtn];
+        [self.view addSubview:self.loginBtnImage];
+    }else{
+        [self getuser:ApplicationDelegate.userPhone];
+    }
     [self.view addSubview:self.leftView];
     
     [self.leftView addSubview:self.allCourseBtn];
@@ -335,7 +343,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         if (!stu_pwd) {
             stu_pwd = @"";
         }
-        stu_id = @"0000";
+        stu_id = ApplicationDelegate.userSession;
         NSDictionary *para = @{@"method":@"GetStudentPlayLog",
                                @"param":@{@"Data":@{@"stu_id":stu_id,
                                                     @"stu_pwd":stu_pwd}}};
@@ -350,23 +358,26 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 //            return @{@"willknow":@"SCWillLearn"};
 //        }];
 
-            SCCoursePlayLog *playLog = [SCCoursePlayLog objectWithKeyValues:dic[@"data"]];
+            self.playLog = [SCCoursePlayLog objectWithKeyValues:dic[@"data"]];
 //        SCCoursePlayLog *playLog = [[SCCoursePlayLog alloc]init];
 //        playLog.lessonID = dic[@"data"][@""]
-            NSString *lessonId = playLog.les_id;
-            float startTime = playLog.oversty_time;
+            NSString *lessonId = self.playLog.les_id;
+            float startTime = self.playLog.oversty_time;
             if (lessonId) {
-                if ([playLog.is_ready isEqualToString:@"是"]) {
+                if ([self.playLog.is_ready isEqualToString:@"是"]) {
                     lessonId = [self getNextCourse:lessonId];
                     startTime = 0;
                 }
 
             }else{
                 //lessonId = [self getFirstCourse];                未完成！！！！！！！！
+                lessonId = @"0001";
+                startTime = 0;
+
             }
         // 启动播放器
             SCPlayerViewController *playVC = [[SCPlayerViewController alloc]init];
-            playVC.lessonId = playLog.studyles_id;
+            playVC.lessonId = self.playLog.studyles_id;
         // 设置播放开始时间，未完成   playVC.
             [self.navigationController pushViewController:playVC animated:YES];
         

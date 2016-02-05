@@ -77,8 +77,20 @@
 }
 -(void)exitBtnClick{
     ApplicationDelegate.userSession=UnLoginUserSession;
-    [self.delegate unlogin];
+    
+    //ApplicationDelegate.userSession = ApplicationDelegat;
+    ApplicationDelegate.userPsw = nil;
+    ApplicationDelegate.userPhone =nil;
+    NSUserDefaults *defaultes = [NSUserDefaults standardUserDefaults];
+    [defaultes removeObjectForKey:UserSessionKey];
+    [defaultes removeObjectForKey:UserPswKey];
+    [defaultes removeObjectForKey:UserPhoneKey];
+    [defaultes synchronize];
+
+    
     [self.navigationController popViewControllerAnimated:YES];
+    [self.delegate unlogin];
+    //[self.navigationController popViewControllerAnimated:YES];
 }
 /*
 #pragma mark - Navigation
