@@ -655,7 +655,30 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     
     self.searchView.keyWord = self.searchTextField.text;
     [self.searchTextField resignFirstResponder];
-    [self.mainView addSubview:self.searchView];
+    
+    if ([self.searchTextField.text isEqualToString:@""]) {
+        [UIAlertController showAlertAtViewController:self withMessage:@"请输入关键词搜索" cancelTitle:@"取消" confirmTitle:@"我知道了" cancelHandler:^(UIAlertAction *action) {
+            
+        } confirmHandler:^(UIAlertAction *action) {
+            [self.searchTextField becomeFirstResponder];
+        }];
+    }
+    else{
+        
+        BOOL notOn = YES;
+        for (UIView *subView in self.mainView.subviews) {
+            if (subView == self.searchView) {
+                notOn = NO;
+            }
+        }
+        if (!notOn) {
+            [self.searchView loadCourseListFromNetwork];
+        }
+        else{
+            [self.mainView addSubview:self.searchView];
+        }
+        
+    }
 }
 
 #pragma mark - SCSettingViewControllerDelegate
@@ -766,9 +789,18 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         [self.scroll setHidden:YES];
         [self.searchTextField resignFirstResponder];//放弃当前焦点
         [self searchBtnClick];
-        if([textField.text isEqualToString:@""]){
-            [self.mainView addSubview:self.searchView];
+        
+        
+        if ([self.searchTextField.text isEqualToString:@""]) {
+            [UIAlertController showAlertAtViewController:self withMessage:@"请输入关键词搜索" cancelTitle:@"取消" confirmTitle:@"我知道了" cancelHandler:^(UIAlertAction *action) {
+                
+            } confirmHandler:^(UIAlertAction *action) {
+                [self.searchTextField becomeFirstResponder];
+            }];
+        }
+        else{
             self.searchView.keyWord = textField.text;
+            [self.mainView addSubview:self.searchView];
         }
     }
     return YES;
@@ -970,6 +1002,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     if (!_videoHistoryView){
         _videoHistoryView = [[SCVideoHistoryView alloc]init];
         _videoHistoryView.delegate = self;
+        _videoHistoryView.viewController = self;
     }
     return _videoHistoryView;
 }
@@ -986,6 +1019,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         _searchView=[[SCSearchView alloc]initWithFrame:CGRectMake(0, 0, mainFrame.size.width, mainFrame.size.height)];
         _searchView.backgroundColor=[UIColor whiteColor];
         _searchView.delegate = self;
+        _searchView.viewController =self;
     }
     return _searchView;
 }

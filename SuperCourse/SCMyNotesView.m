@@ -120,6 +120,8 @@
         _operationBtn=[[UIButton alloc]initWithFrame:CGRectMake(300, 0, 0.127*self.width, 100*HeightScale)];
         
         [_operationBtn setTitle:@"编辑" forState:UIControlStateNormal];
+        [_operationBtn setFont:[UIFont systemFontOfSize:30]];
+
         [_operationBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
         [_operationBtn setTitle:@"保存" forState:UIControlStateSelected];
         [_operationBtn setTitleColor:[UIColor blueColor] forState:UIControlStateSelected];

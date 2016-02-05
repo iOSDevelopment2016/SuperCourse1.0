@@ -18,6 +18,7 @@
 #import "HttpTool.h"
 #import "MJExtension.h"
 #import "SCHistory.h"
+#import "UIAlertController+SZYKit.h"
 @interface SCVideoHistoryView ()<UITableViewDataSource, UITableViewDelegate,SCHistoryTableViewDelegate>
 @property (nonatomic ,strong) UITableView *historyTableView;
 @property (nonatomic ,strong) UIView             *hubView;
@@ -135,9 +136,27 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SCHistory *currentHis = historyArr[indexPath.row];
-    
-    [self.delegate historyDidClick:currentHis.les_id];
+    NSString *state = [ApplicationDelegate getNetWorkStates];
+    if ([state isEqualToString:@"无网络"]) {
+        [UIAlertController showAlertAtViewController:self.viewController withMessage:@"请检查您的网络" cancelTitle:@"取消" confirmTitle:@"我知道了" cancelHandler:^(UIAlertAction *action) {
+            
+        } confirmHandler:^(UIAlertAction *action) {
+            
+        }];
+    }
+    else if ([state isEqualToString:@"wifi"]){
+        SCHistory *currentHis = historyArr[indexPath.row];
+        [self.delegate historyDidClick:currentHis.les_id];
+    }
+    else{
+        [UIAlertController showAlertAtViewController:self.viewController withMessage:@"您正在使用3G/4G流量" cancelTitle:@"取消" confirmTitle:@"继续播放" cancelHandler:^(UIAlertAction *action) {
+            
+        } confirmHandler:^(UIAlertAction *action) {
+            SCHistory *currentHis = historyArr[indexPath.row];
+            [self.delegate historyDidClick:currentHis.les_id];
+
+        }];
+    }
 }
 
 
