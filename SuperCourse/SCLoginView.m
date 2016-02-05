@@ -80,6 +80,11 @@
 
 -(void)awakeFromNib{
     self.phone.font=FONT_20;
+    self.sendPsw.font=FONT_20;
+    self.password.font=FONT_20;
+    self.login.font=FONT_20;
+    self.textlogin.font=FONT_18;
+    self.usertext.font=FONT_18;
     self.phone.delegate = self;
     [self.phone addTarget:self action:@selector(textValueDidChange:) forControlEvents:UIControlEventAllEvents];
     [self regNotifacation];

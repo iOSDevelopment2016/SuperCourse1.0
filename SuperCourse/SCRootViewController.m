@@ -1033,6 +1033,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 -(SCMyNotesView *)myNotesView{
     if (!_myNotesView){
         _myNotesView = [[SCMyNotesView alloc]init];
+        _myNotesView.viewContrller = self;
     }
     return _myNotesView;
 }

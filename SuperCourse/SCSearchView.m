@@ -47,7 +47,13 @@
     // Drawing code
 }
 */
-
+-(void)awakeFromNib{
+    self.leftBtn.font=FONT_30;
+    self.rightBtn.font=FONT_30;
+    self.state.font=FONT_25;
+    self.label.font=FONT_25;
+    
+}
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -208,16 +214,11 @@
     SCSearchTableViewCell *cell = (SCSearchTableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 
         if(cell == nil){
-//        cell = [[[NSBundle mainBundle]loadNibNamed:NSStringFromClass:@"SCSearchTableViewCell"owner:nil options:nil] lastObject];
-            cell= [[[NSBundle mainBundle]loadNibNamed:@"SCSearchTableViewCell"owner:nil options:nil] firstObject];
-         
+        cell= [[[NSBundle mainBundle]loadNibNamed:@"SCSearchTableViewCell"owner:nil options:nil] firstObject];
         [cell.layer setBorderWidth:1];//设置边界的宽度
         [cell.layer setBorderColor:UIColorFromRGB(0xeeeeee).CGColor];
         cell.delegate=self;
-     
             SClesson_list *temp= currentSource[indexPath.row];
-//            SClesson_list *op =op.les_name;
-        //cell.textLabel.text=temp_.courseTitle;
         [cell.searchBtn setTitle:temp.les_name forState:UIControlStateNormal];
         [cell.searchBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateHighlighted];
         cell.searchBtn.tag =indexPath.section * 1000 + indexPath.row;
@@ -238,6 +239,8 @@
         [_leftBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_leftBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateSelected];
         [_leftBtn addTarget:self action:@selector(leftBtnClick) forControlEvents:UIControlEventTouchUpInside];
+     
+
     }
     
     return _leftBtn;
@@ -304,6 +307,10 @@
     [self.leftBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateSelected];
     if (!currentSource || currentSource.count == 0) {
         _state.text= [NSString stringWithFormat:@"搜索“%@”共找到0个视频课程",_keyWord];
+        
+        
+        
+         //[str addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(0, 3)];
     }else{
         _state.text=[NSString stringWithFormat:@"搜索“%@”共找到%lu个视频课程",_keyWord,(unsigned long)currentSource.count];
     }
@@ -314,16 +321,11 @@
     currentSource = secondLessonArr;
     [self.firstSearchTableView reloadData];
     [self.leftBtn setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
-    
-    
     if (!currentSource || currentSource.count == 0) {
         _state.text= [NSString stringWithFormat:@"搜索“%@”共找到0个视频课程",_keyWord];
     }else{
         _state.text=[NSString stringWithFormat:@"搜索“%@”共找到%lu个视频课程",_keyWord,(unsigned long)currentSource.count];
     }
-
-    
-    //[self move:variety];
 }
 
 
