@@ -24,4 +24,6 @@
 @property (strong, nonatomic) IBOutlet UILabel *courseLabel;
 
 @property (nonatomic ,weak) id<SCCourseTableViewDelegate> delegate;
+
+
 @end

@@ -21,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *sendPsw;
 @property (weak, nonatomic) IBOutlet UIButton *login;
 @property (weak, nonatomic) IBOutlet UIButton *usertext;
+@property (weak, nonatomic) IBOutlet UILabel *textlogin;
 - (IBAction)sendPswClick:(id)sender;
 - (IBAction)loginClick:(id)sender;
 - (IBAction)usertextClick:(id)sender;

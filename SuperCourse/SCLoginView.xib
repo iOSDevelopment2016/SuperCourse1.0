@@ -25,16 +25,6 @@
                         <constraint firstAttribute="width" constant="437" id="YEE-X4-Wy3"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*登录即表示你同意" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y9Q-od-Dbe">
-                    <rect key="frame" x="162" y="375" width="158" height="21"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="158" id="L8S-c2-wQr"/>
-                        <constraint firstAttribute="height" constant="21" id="v2x-ex-fmI"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="手机号码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Lcl-UH-iW3">
                     <rect key="frame" x="149" y="66" width="231" height="67"/>
                     <constraints>
@@ -69,6 +59,18 @@
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xDD-RK-m6G">
+                    <rect key="frame" x="294" y="375" width="169" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="AMi-x2-WlK"/>
+                        <constraint firstAttribute="width" constant="169" id="wsF-on-C8n"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                    <state key="normal" title="《超课用户协议》"/>
+                    <connections>
+                        <action selector="usertextClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="znb-h8-MuR"/>
+                    </connections>
+                </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dUb-fO-ltL">
                     <rect key="frame" x="358" y="66" width="125" height="67"/>
                     <constraints>
@@ -89,18 +91,16 @@
                         <action selector="sendPswClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="yat-HT-of9"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xDD-RK-m6G">
-                    <rect key="frame" x="294" y="375" width="169" height="21"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*登录即表示你同意" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y9Q-od-Dbe">
+                    <rect key="frame" x="162" y="375" width="158" height="21"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="21" id="AMi-x2-WlK"/>
-                        <constraint firstAttribute="width" constant="169" id="wsF-on-C8n"/>
+                        <constraint firstAttribute="width" constant="158" id="L8S-c2-wQr"/>
+                        <constraint firstAttribute="height" constant="21" id="v2x-ex-fmI"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                    <state key="normal" title="《超课用户协议》"/>
-                    <connections>
-                        <action selector="usertextClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="znb-h8-MuR"/>
-                    </connections>
-                </button>
+                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
@@ -163,6 +163,7 @@
                 <outlet property="telHeight" destination="0uC-HK-V5C" id="j2q-PR-34i"/>
                 <outlet property="telTop" destination="nnM-Af-SJe" id="lNL-tM-bVL"/>
                 <outlet property="telWidth" destination="SiV-2u-QwF" id="buj-X0-5L9"/>
+                <outlet property="textlogin" destination="y9Q-od-Dbe" id="ygx-fX-I13"/>
                 <outlet property="texttelHeight" destination="kM9-WK-zMp" id="fZD-OC-Cdl"/>
                 <outlet property="texttelWidth" destination="GBM-jW-yJH" id="UbG-q0-3XX"/>
                 <outlet property="texttelleftdic" destination="DK6-ZV-Gdf" id="2kW-ry-MH8"/>

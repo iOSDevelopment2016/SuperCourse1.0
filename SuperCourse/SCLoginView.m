@@ -80,6 +80,11 @@
 
 -(void)awakeFromNib{
     self.phone.font=FONT_20;
+    self.sendPsw.font=FONT_20;
+    self.password.font=FONT_20;
+    self.login.font=FONT_20;
+    self.textlogin.font=FONT_18;
+    self.usertext.font=FONT_18;
     self.phone.delegate = self;
     [self.phone addTarget:self action:@selector(textValueDidChange:) forControlEvents:UIControlEventAllEvents];
     [self regNotifacation];
@@ -147,6 +152,7 @@
             NSString *stu_id = dic[@"data"][@"stu_id"];
             
             //更新用户标示
+
             ApplicationDelegate.userSession = stu_id;
             ApplicationDelegate.userPsw = md5password;
             ApplicationDelegate.userPhone = self.phone.text;
@@ -155,7 +161,10 @@
             [defaultes setObject:ApplicationDelegate.userPsw forKey:UserPswKey];
             [defaultes setObject:ApplicationDelegate.userPhone forKey:UserPhoneKey];
             [defaultes synchronize];
-            
+            if(ApplicationDelegate.playLog){
+                [self.delegate changeImage];
+            }
+
             [[NSNotificationCenter defaultCenter]postNotificationName:@"ImageShouldChange" object:nil];
             [self removeFromSuperview];
         }else{

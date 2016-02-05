@@ -21,7 +21,7 @@
                             <constraint firstAttribute="width" constant="537" id="llK-dy-QeG"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="23.450000762939453"/>
-                        <state key="normal" title="no data">
+                        <state key="normal">
                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         </state>
                         <variation key="default">
@@ -43,7 +43,7 @@
                             <action selector="imageBtnClick:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Fze-cF-yPU"/>
                         </connections>
                     </button>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="no data" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PZ3-6O-1aN">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PZ3-6O-1aN">
                         <rect key="frame" x="698" y="12" width="129" height="36"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="129" id="eyS-En-Byu"/>

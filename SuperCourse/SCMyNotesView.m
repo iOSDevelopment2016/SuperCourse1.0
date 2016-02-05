@@ -8,7 +8,7 @@
 
 #import "SCMyNotesView.h"
 #import "HttpTool.h"
-
+#import "UIAlertController+SZYKit.h"
 
 @interface SCMyNotesView ()<UITextViewDelegate>
 @property (nonatomic ,strong) UITextView *notesTextView;
@@ -128,7 +128,7 @@
         
         [_operationBtn setTitle:@"编辑" forState:UIControlStateNormal];
         [_operationBtn setTitleColor:UIThemeColor forState:UIControlStateNormal];
-        _operationBtn.titleLabel.font = [UIFont systemFontOfSize:30];
+        _operationBtn.titleLabel.font = [UIFont systemFontOfSize:25];
 
         [_operationBtn setTitle:@"保存" forState:UIControlStateSelected];
         [_operationBtn setTitleColor:UIThemeColor forState:UIControlStateSelected];
@@ -229,14 +229,30 @@
 -(void)btnClicked{
     if (!self.operationBtn.selected) {
         // 进入编辑状态
-        self.allowEdit = YES;
-        [self.notesTextView becomeFirstResponder];
-    }else{
+        
+        if ([ApplicationDelegate.userSession isEqualToString:UnLoginUserSession]) {
+          [UIAlertController showAlertAtViewController:self.viewContrller withMessage:@"您还没有登录哦" cancelTitle:@"取消"confirmTitle:@"我知道了" cancelHandler:^(UIAlertAction *action) {
+              return ;
+          } confirmHandler:^(UIAlertAction *action) {
+              return ;
+          }];
+        }else{
+         
+            self.allowEdit = YES;
+            [self.notesTextView becomeFirstResponder];
+       
+             self.operationBtn.selected = !self.operationBtn.selected;
+
+//        self.allowEdit = YES;
+//        [self.notesTextView becomeFirstResponder];
+        }}else{
         // 保存
         [self saveNote];
         [self loadDataSave];
+            self.operationBtn.selected = !self.operationBtn.selected;
+
     }
-    self.operationBtn.selected = !self.operationBtn.selected;
+//    self.operationBtn.selected = !self.operationBtn.selected;
 }
 
 // 保存备注
