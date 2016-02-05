@@ -86,8 +86,13 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     //隐藏导航栏
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     
-    [self.view addSubview:self.loginBtn];
-    [self.view addSubview:self.loginBtnImage];
+    if([ApplicationDelegate.userSession isEqualToString:@"UnLoginUserSession"]){
+    
+        [self.view addSubview:self.loginBtn];
+        [self.view addSubview:self.loginBtnImage];
+    }else{
+        [self getuser:ApplicationDelegate.userPhone];
+    }
     [self.view addSubview:self.leftView];
     
     [self.leftView addSubview:self.allCourseBtn];
@@ -337,7 +342,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         if (!stu_pwd) {
             stu_pwd = @"";
         }
-        stu_id = @"0000";
+        stu_id = ApplicationDelegate.userSession;
         NSDictionary *para = @{@"method":@"GetStudentPlayLog",
                                @"param":@{@"Data":@{@"stu_id":stu_id,
                                                     @"stu_pwd":stu_pwd}}};

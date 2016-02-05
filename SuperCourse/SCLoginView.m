@@ -91,7 +91,7 @@
             ApplicationDelegate.userPhone = self.phone.text;
             NSUserDefaults *defaultes = [NSUserDefaults standardUserDefaults];
             [defaultes setObject:ApplicationDelegate.userSession forKey:UserSessionKey];
-            [defaultes setObject:ApplicationDelegate.userPsw forKey:UserPsw];
+            [defaultes setObject:ApplicationDelegate.userPsw forKey:UserPswKey];
             [defaultes setObject:ApplicationDelegate.userPhone forKey:UserPhoneKey];
             [defaultes synchronize];
             
