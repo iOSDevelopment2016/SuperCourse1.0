@@ -79,11 +79,11 @@
     self.firstSearchTableView.backgroundColor=[UIColor whiteColor];
     self.stateView.backgroundColor=[UIColor whiteColor];
     self.backgroundColor=UIBackgroundColor;
-    self.leftBtn.frame=CGRectMake(350, 100*HeightScale+7 , 0.127*self.width, 100*HeightScale);
-    self.rightBtn.frame=CGRectMake(560, 100*HeightScale+7 , 0.127*self.width, 100*HeightScale);
+    self.leftBtn.frame=CGRectMake(0.312*self.width, 100*HeightScale+7 , 0.127*self.width, 100*HeightScale);
+    self.rightBtn.frame=CGRectMake(0.562*self.width, 100*HeightScale+7 , 0.127*self.width, 100*HeightScale);
     self.stateView.frame = CGRectMake(0, 0, self.width, 100*HeightScale);
-    self.state.frame= CGRectMake(650, 0, 0.5*self.width, 100*HeightScale);
-    self.label.frame= CGRectMake(40, 0, self.width, 100*HeightScale);
+    self.state.frame= CGRectMake(0.631*self.width, 0, 0.351*self.width, 100*HeightScale);
+    self.label.frame= CGRectMake(0.027*self.width, 0, 0.103*self.width, 100*HeightScale);
 //         [self addSubview:self.firstSearchTableView];
     
 }
@@ -150,7 +150,8 @@
         _state=[[UILabel alloc]init];
         _state.font=[UIFont systemFontOfSize:25];
         _state.textColor=[UIColor grayColor];
-        SClesson_list *l =[[SClesson_list alloc]init];
+//        SClesson_list *l =[[SClesson_list alloc]init];
+          _state.adjustsFontSizeToFitWidth = YES;
 //        if (!l.les_name) {
 //            _state.text= [NSString stringWithFormat:@"搜索%@共找到0个视频课程",_keyWord];
 //        }else{
@@ -165,6 +166,7 @@
         _label.font=[UIFont systemFontOfSize:25];
         _label.textColor=[UIColor grayColor];
         _label.text=@"搜索结果";
+        _label.adjustsFontSizeToFitWidth = YES;
         
     }
     return _label;
