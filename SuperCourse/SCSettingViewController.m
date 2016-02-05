@@ -81,10 +81,12 @@
     //ApplicationDelegate.userSession = ApplicationDelegat;
     ApplicationDelegate.userPsw = nil;
     ApplicationDelegate.userPhone =nil;
+    ApplicationDelegate.playLog=@"";
     NSUserDefaults *defaultes = [NSUserDefaults standardUserDefaults];
     [defaultes removeObjectForKey:UserSessionKey];
     [defaultes removeObjectForKey:UserPswKey];
     [defaultes removeObjectForKey:UserPhoneKey];
+    [defaultes removeObjectForKey:PlayLogKey];
     [defaultes synchronize];
 
     

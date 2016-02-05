@@ -152,6 +152,7 @@
             NSString *stu_id = dic[@"data"][@"stu_id"];
             
             //更新用户标示
+
             ApplicationDelegate.userSession = stu_id;
             ApplicationDelegate.userPsw = md5password;
             ApplicationDelegate.userPhone = self.phone.text;
@@ -160,7 +161,10 @@
             [defaultes setObject:ApplicationDelegate.userPsw forKey:UserPswKey];
             [defaultes setObject:ApplicationDelegate.userPhone forKey:UserPhoneKey];
             [defaultes synchronize];
-            
+            if(ApplicationDelegate.playLog){
+                [self.delegate changeImage];
+            }
+
             [[NSNotificationCenter defaultCenter]postNotificationName:@"ImageShouldChange" object:nil];
             [self removeFromSuperview];
         }else{

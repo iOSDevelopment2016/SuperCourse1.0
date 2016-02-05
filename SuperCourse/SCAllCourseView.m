@@ -72,9 +72,12 @@
         [self loadCourseListFromNetwork];
         
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(imageShouldChange) name:@"ImageShouldChange" object:nil];
+        
+        
     }
     return self;
 }
+
 
 
 -(void)imageShouldChange{
@@ -364,15 +367,18 @@
 -(SCCustomButton *)startBtn{
     if (!_startBtn){
         _startBtn = [SCCustomButton buttonWithType:UIButtonTypeCustom];
-        if(ApplicationDelegate.playLog){
-            [_startBtn setImage:[UIImage imageNamed:@"SC_continue"] forState:UIControlStateNormal];
-        }else{
-            [_startBtn setImage:[UIImage imageNamed:@"SC_start"] forState:UIControlStateNormal];
-        }
+//        if(ApplicationDelegate.playLog){
+//            [_startBtn setImage:[UIImage imageNamed:@"SC_continue"] forState:UIControlStateNormal];
+//        }else{
+        [_startBtn setImage:[UIImage imageNamed:@"SC_start"] forState:UIControlStateNormal];
+//        }
         [_startBtn addTarget:self action:@selector(startBtnClick) forControlEvents:UIControlEventTouchUpInside];
+        
     }
     return _startBtn;
 }
+
+
 
 //-(void)changeLearn{
 //    if(ApplicationDelegate.playLog){
@@ -538,7 +544,8 @@
             cell.downloadBtn.hidden=YES;
         }
         cell.courseLabel.text=temp_.les_size;
-        cell.courseLabel.font=[UIFont systemFontOfSize:35*HeightScale];
+//        cell.courseLabel.font=FONT_18;
+//        cell.courseLabel.font=[UIFont systemFontOfSize:35*HeightScale];
 ////        if([temp_.permission isEqualToString:@"否"]){
 //        
 //            cell.selected=NO;
@@ -626,7 +633,9 @@
         _leftBtn=[UIButton buttonWithType:UIButtonTypeCustom];
         //[_leftBtn setBackgroundColor:[UIColor greenColor]];
         [_leftBtn setTitle:@"大纲" forState:UIControlStateNormal];
-        [_leftBtn setFont:[UIFont systemFontOfSize:35]];
+        
+        _leftBtn.titleLabel.font = FONT_35;
+        
         [_leftBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_leftBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateSelected];
         [_leftBtn addTarget:self action:@selector(leftBtnClick) forControlEvents:UIControlEventTouchUpInside];
@@ -640,7 +649,8 @@
         _rightBtn=[UIButton buttonWithType:UIButtonTypeCustom];
         [_rightBtn setTitle:@"拓展" forState:UIControlStateNormal];
         [_rightBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [_rightBtn setFont:[UIFont systemFontOfSize:35]];
+        _rightBtn.titleLabel.font = FONT_35;
+        //[_rightBtn setFont:[UIFont systemFontOfSize:35]];
         [_rightBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateSelected];
         //[_rightBtn setFont:[UIFont systemFontOfSize:<#(CGFloat)#>]];
         [_rightBtn addTarget:self action:@selector(rightBtnClick) forControlEvents:UIControlEventTouchUpInside];
