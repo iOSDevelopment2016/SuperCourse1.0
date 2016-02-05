@@ -13,8 +13,6 @@
 
 @interface SCLoginView ()<UITextFieldDelegate>
 
-
-
 @end
 
 @implementation SCLoginView
@@ -88,8 +86,15 @@
             NSString *stu_id = dic[@"data"][@"stu_id"];
             
             //更新用户标示
-            [ApplicationDelegate solidateUserSession:stu_id];
-            ApplicationDelegate.userPsw = self.password.text;
+            ApplicationDelegate.userSession = stu_id;
+            ApplicationDelegate.userPsw = md5password;
+            ApplicationDelegate.userPhone = self.phone.text;
+            NSUserDefaults *defaultes = [NSUserDefaults standardUserDefaults];
+            [defaultes setObject:ApplicationDelegate.userSession forKey:UserSessionKey];
+            [defaultes setObject:ApplicationDelegate.userPsw forKey:UserPsw];
+            [defaultes setObject:ApplicationDelegate.userPhone forKey:UserPhoneKey];
+            [defaultes synchronize];
+            
             [[NSNotificationCenter defaultCenter]postNotificationName:@"ImageShouldChange" object:nil];
             [self removeFromSuperview];
         }else{

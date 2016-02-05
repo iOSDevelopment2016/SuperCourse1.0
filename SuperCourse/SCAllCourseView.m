@@ -191,44 +191,41 @@
 
 #pragma mark - 动画
 
--(void)willMoveToSuperview:(UIView *)newSuperview
-{
-    //监测滚动视图的滚动距离
-    [self.firstTableView addObserver:self forKeyPath:@"contentOffset" options:(NSKeyValueObservingOptionNew) context:Nil];
-    self.firstTableView.contentInset = UIEdgeInsetsMake(self.headView.height, 0 ,0, 0);
-}
-
--(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    //获取content滚动的距离
-    CGPoint newOffset = [change[@"new"] CGPointValue];
-    //    NSLog(@"%f,%f",newOffset.x,newOffset.y);
-    [self updateSubViewsWithScrollOffset:newOffset];
-}
-
--(void)updateSubViewsWithScrollOffset:(CGPoint)newOffset
-{
-    float destinaOffset = -60;
-    float startChangeOffset = -self.firstTableView.contentInset.top;
-    
-    newOffset = CGPointMake(newOffset.x, newOffset.y<startChangeOffset?startChangeOffset:(newOffset.y>destinaOffset?destinaOffset:newOffset.y));
-    
-    float titleDestinateOffset = self.headView.frame.size.height-50;
-    float newY = -newOffset.y-self.firstTableView.contentInset.top;
-    float d = destinaOffset-startChangeOffset;
-    float alpha = 1-(newOffset.y-startChangeOffset)/d;
-    //副标题渐变消失
-    self.characterImageView.alpha = alpha;
-    self.headView.frame = CGRectMake(0, newY, self.headView.frame.size.width, self.headView.frame.size.height);
-    self.topImageView.frame = CGRectMake(0, -0.5*self.headView.frame.size.height+(1.5*self.headView.frame.size.height-60)*(1-alpha), self.topImageView.frame.size.width, self.topImageView.frame.size.height);
-    self.startBtn.frame = CGRectMake(0, 0.4*self.headView.frame.size.height+(titleDestinateOffset-0.4*self.headView.frame.size.height)*(1-alpha), self.startBtn.frame.size.width, self.startBtn.frame.size.height);
-    //缩小主标题
-//    self.titleLabel.font = [UIFont boldSystemFontOfSize:16+(alpha)*4];
-    
-}
-
-
-
+//-(void)willMoveToSuperview:(UIView *)newSuperview
+//{
+//    //监测滚动视图的滚动距离
+//    [self.firstTableView addObserver:self forKeyPath:@"contentOffset" options:(NSKeyValueObservingOptionNew) context:Nil];
+//    self.firstTableView.contentInset = UIEdgeInsetsMake(self.headView.height, 0 ,0, 0);
+//}
+//
+//-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+//{
+//    //获取content滚动的距离
+//    CGPoint newOffset = [change[@"new"] CGPointValue];
+//    //    NSLog(@"%f,%f",newOffset.x,newOffset.y);
+//    [self updateSubViewsWithScrollOffset:newOffset];
+//}
+//
+//-(void)updateSubViewsWithScrollOffset:(CGPoint)newOffset
+//{
+//    float destinaOffset = -60;
+//    float startChangeOffset = -self.firstTableView.contentInset.top;
+//    
+//    newOffset = CGPointMake(newOffset.x, newOffset.y<startChangeOffset?startChangeOffset:(newOffset.y>destinaOffset?destinaOffset:newOffset.y));
+//    
+//    float titleDestinateOffset = self.headView.frame.size.height-50;
+//    float newY = -newOffset.y-self.firstTableView.contentInset.top;
+//    float d = destinaOffset-startChangeOffset;
+//    float alpha = 1-(newOffset.y-startChangeOffset)/d;
+//    //副标题渐变消失
+//    self.characterImageView.alpha = alpha;
+//    self.headView.frame = CGRectMake(0, newY, self.headView.frame.size.width, self.headView.frame.size.height);
+//    self.topImageView.frame = CGRectMake(0, -0.5*self.headView.frame.size.height+(1.5*self.headView.frame.size.height-60)*(1-alpha), self.topImageView.frame.size.width, self.topImageView.frame.size.height);
+//    self.startBtn.frame = CGRectMake(0, 0.4*self.headView.frame.size.height+(titleDestinateOffset-0.4*self.headView.frame.size.height)*(1-alpha), self.startBtn.frame.size.width, self.startBtn.frame.size.height);
+//    //缩小主标题
+////    self.titleLabel.font = [UIFont boldSystemFontOfSize:16+(alpha)*4];
+//    
+//}
 
 
 #pragma mark - delegate
@@ -386,7 +383,7 @@
     if(!_headView){
         _headView=[[UIView alloc]init];
         _headView.clipsToBounds = YES;
-        _headView.backgroundColor = [UIColor orangeColor];
+//        _headView.backgroundColor = [UIColor orangeColor];
     }
     return _headView;
 }

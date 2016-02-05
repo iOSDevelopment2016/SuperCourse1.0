@@ -14,12 +14,11 @@
 
 @property (strong, nonatomic) NSString *userSession;
 @property (strong ,nonatomic) NSString *userPsw;
+@property (strong ,nonatomic) NSString *userPhone;
 
 
--(void)solidateUserSession:(NSString *)userSession;
 
 -(NSString *)monitorWebState;
-
 
 - (NSString *)getNetWorkStates;
 
