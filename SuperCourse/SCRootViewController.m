@@ -199,9 +199,6 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     //NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.baidu.com"]];
     
     
-    //运行一下，百度页面就出来了
-    
-    
     
     [self.webView loadRequest:request];
     
@@ -216,24 +213,30 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 
 
 -(void)videoPlayClickWithCourse:(SCCourse *)SCcourse{
-    
-    NSString *state = [ApplicationDelegate getNetWorkStates];
-    if ([state isEqualToString:@"无网络"]) {
-        [UIAlertController showAlertAtViewController:self withMessage:@"请检查您的网络连接" cancelTitle:@"取消" confirmTitle:@"我知道了" cancelHandler:^(UIAlertAction *action) {
-        } confirmHandler:^(UIAlertAction *action) {
-        }];
-    }
-    else if ([state isEqualToString:@"wifi"]){
-        
-        [self jumpToPlayerWithCourse:SCcourse];
-        
-    }else{
-        
-        [UIAlertController showAlertAtViewController:self withMessage:@"您当前正在使用3G/4G流量" cancelTitle:@"取消" confirmTitle:@"继续播放" cancelHandler:^(UIAlertAction *action) {
+    if([SCcourse.permission isEqualToString:@"是"]){
+        NSString *state = [ApplicationDelegate getNetWorkStates];
+        if ([state isEqualToString:@"无网络"]) {
+            [UIAlertController showAlertAtViewController:self withMessage:@"请检查您的网络连接" cancelTitle:@"取消" confirmTitle:@"我知道了" cancelHandler:^(UIAlertAction *action) {
+            } confirmHandler:^(UIAlertAction *action) {
+            }];
+        }
+        else if ([state isEqualToString:@"wifi"]){
             
-        } confirmHandler:^(UIAlertAction *action) {
             [self jumpToPlayerWithCourse:SCcourse];
+            
+        }else{
+            
+            [UIAlertController showAlertAtViewController:self withMessage:@"您当前正在使用3G/4G流量" cancelTitle:@"取消" confirmTitle:@"继续播放" cancelHandler:^(UIAlertAction *action) {
+                
+            } confirmHandler:^(UIAlertAction *action) {
+                [self jumpToPlayerWithCourse:SCcourse];
+            }];
+        }
+    }else{
+        [UIAlertController showAlertAtViewController:self withMessage:@"未登陆下受限" cancelTitle:@"取消" confirmTitle:@"我知道了" cancelHandler:^(UIAlertAction *action) {
+        } confirmHandler:^(UIAlertAction *action) {
         }];
+
     }
 }
 

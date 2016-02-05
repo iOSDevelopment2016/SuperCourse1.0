@@ -136,7 +136,7 @@
                            @"param":@{@"Data":@{@"stu_id":ApplicationDelegate.userSession}}};
     [HttpTool postWithparams:para success:^(id responseObject) {
         
-        
+        NSLog(@"%@",ApplicationDelegate.userSession);
         [[NSNotificationCenter defaultCenter]postNotificationName:@"WebDataHaveLoadDone" object:nil];
         NSData *data = [[NSData alloc] initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
@@ -514,9 +514,12 @@
         }
         cell.courseLabel.text=temp_.les_size;
         
+////        if([temp_.permission isEqualToString:@"否"]){
+//        
+//            cell.selected=NO;
+//        //}
         
-        
-        
+        cell.width=self.width;
         
         
     }
