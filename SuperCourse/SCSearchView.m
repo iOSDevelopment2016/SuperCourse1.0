@@ -47,7 +47,13 @@
     // Drawing code
 }
 */
-
+-(void)awakeFromNib{
+    self.leftBtn.font=FONT_30;
+    self.rightBtn.font=FONT_30;
+    self.state.font=FONT_25;
+    self.label.font=FONT_25;
+    
+}
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
