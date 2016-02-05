@@ -79,6 +79,7 @@
 }
 
 -(void)awakeFromNib{
+    self.phone.font=FONT_20;
     self.phone.delegate = self;
     [self.phone addTarget:self action:@selector(textValueDidChange:) forControlEvents:UIControlEventAllEvents];
     [self regNotifacation];
