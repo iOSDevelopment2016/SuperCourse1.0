@@ -93,9 +93,6 @@
 -(void)loadVideoInfo{
     NSString *userID = ApplicationDelegate.userSession; // 学员内码
     NSString *userPassword = ApplicationDelegate.userPsw; // 登录密码
-    if (!userPassword) {
-        userPassword = @"7213116e861ef185275fcfd6e5fab98b";
-    }
     
     
     NSString *lesson_id = self.lessonId;
@@ -120,7 +117,7 @@
 //        NSString *str = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         
-
+        NSString *str = dic[@"msg"];
         _videoInfo = [self getVideoInfo:dic];
         // 开始播放
         shouldPlaying = YES;
@@ -146,11 +143,11 @@
     m.les_alltime = [videoInfoDict[0][@"les_alltime"] floatValue];
 //    m.ovesity_time = [videoInfoDict[0][@"ovesity_time"] floatValue];
 //    self.beginTime = m.ovesity_time;
-    m.les_url = videoInfoDict[0][@"les_url"];
-//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-//    NSString *docDir = [paths objectAtIndex:0];
-//    NSString *url=[docDir stringByAppendingPathComponent:@"load2.mp4"];
-//    m.les_url = url;
+//    m.les_url = videoInfoDict[0][@"les_url"];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docDir = [paths objectAtIndex:0];
+    NSString *url=[docDir stringByAppendingPathComponent:@"load2.mp4"];
+    m.les_url = url;
     m.les_size = videoInfoDict[0][@"les_size"];
     NSMutableArray *videoLinks = [[NSMutableArray alloc]init];
     NSArray *videoLinkArr = videoInfoDict[0][@"videoLinks"];
@@ -678,21 +675,36 @@
             NSData *data = [[NSData alloc] initWithData:responseObject];
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
             UIView *subTitleView = [self.rightView.pointView addCustomSubTitleWithData:subTitle];
-            [self.rightView.pointView addSubview:subTitleView];
-//            [self.videoInfo.studentSubTitle addObject:subTitle];
-            
-            self.writeNoteView.hidden = YES;
-            [self.videoManager resume];
-            shouldPlaying = YES;
-            [self.bottomView addSubview:self.pauseBtn];
-            [self.playBtn removeFromSuperview];
-            
-            for (UIView *view in self.rightView.pointView.subviews) {
-                if (view.tag>subTitle.bg_time) {
-                    view.y = view.y+110*HeightScale;
-                    subTitleView.y = subTitleView.y-110*HeightScale;
+            for (int i=0; i<self.videoInfo.videoSubTitles.count; i++) {
+                SCVideoSubTitleMode *m = self.videoInfo.videoSubTitles[i];
+                SCVideoSubTitleMode *stuM = self.videoInfo.studentSubTitle[i];
+                if (subTitleView.tag == (int)m.bg_time) {
+                    UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"提示" message:@"当前时间已存在节点" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+
+                }else if (subTitleView.tag == (int)stuM.bg_time){
+                    UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"提示" message:@"当前时间已存在节点" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+                }else{
+                    [self.rightView.pointView addSubview:subTitleView];
+                    self.writeNoteView.hidden = YES;
+                    [self.videoManager resume];
+                    shouldPlaying = YES;
+                    [self.bottomView addSubview:self.pauseBtn];
+                    [self.playBtn removeFromSuperview];
+                    
+                    for (UIView *view in self.rightView.pointView.subviews) {
+                        if (view.tag>subTitle.bg_time) {
+                            view.y = view.y+110*HeightScale;
+                            subTitleView.y = subTitleView.y-110*HeightScale;
+                        }
+                    }
                 }
             }
+            
+            
+            
+            
+            
+            
         } failure:^(NSError *error) {
             NSLog(@"%@",error);
             // 给出插入失败的提示

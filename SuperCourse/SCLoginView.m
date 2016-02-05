@@ -89,7 +89,9 @@
             
             //更新用户标示
             [ApplicationDelegate solidateUserSession:stu_id];
-            ApplicationDelegate.userPsw = self.password.text;
+            ApplicationDelegate.userPsw = md5password;
+            NSLog(@"%@",ApplicationDelegate.userPsw);
+            
             [[NSNotificationCenter defaultCenter]postNotificationName:@"ImageShouldChange" object:nil];
             [self removeFromSuperview];
         }else{
