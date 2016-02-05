@@ -25,7 +25,7 @@
                         <constraint firstAttribute="width" constant="437" id="YEE-X4-Wy3"/>
                     </constraints>
                 </imageView>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="手机号码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Lcl-UH-iW3">
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="手机号码" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Lcl-UH-iW3">
                     <rect key="frame" x="149" y="66" width="231" height="67"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="231" id="GBM-jW-yJH"/>
@@ -33,15 +33,14 @@
                     </constraints>
                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                    <textInputTraits key="textInputTraits"/>
+                    <textInputTraits key="textInputTraits" keyboardType="phonePad" returnKeyType="next"/>
                 </textField>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gax-1o-tCJ">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gax-1o-tCJ" customClass="SCCustomButton">
                     <rect key="frame" x="64" y="290" width="437" height="67"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="437" id="Y8A-lU-dOE"/>
                         <constraint firstAttribute="height" constant="67" id="dcp-PU-SEN"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
                     <state key="normal" title="登  录" backgroundImage="btnn">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -49,7 +48,7 @@
                         <action selector="loginClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="Oj8-bm-nIl"/>
                     </connections>
                 </button>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入4位数字验证码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1Fv-1c-3vv">
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入4位数字验证码" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="1Fv-1c-3vv">
                     <rect key="frame" x="149" y="170" width="352" height="67"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="67" id="kNx-ii-cZp"/>
@@ -57,7 +56,7 @@
                     </constraints>
                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                    <textInputTraits key="textInputTraits"/>
+                    <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                 </textField>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xDD-RK-m6G">
                     <rect key="frame" x="294" y="375" width="169" height="21"/>
@@ -170,7 +169,7 @@
                 <outlet property="textteltop" destination="cgC-kR-yK9" id="lpf-wz-gZf"/>
                 <outlet property="usertext" destination="xDD-RK-m6G" id="HcP-vU-JeO"/>
             </connections>
-            <point key="canvasLocation" x="516.5" y="363"/>
+            <point key="canvasLocation" x="392.5" y="309"/>
         </view>
     </objects>
     <resources>

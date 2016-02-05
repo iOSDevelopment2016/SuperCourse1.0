@@ -102,17 +102,17 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     [self.leftView addSubview:self.videoHistoryBtnImage];
     [self.leftView addSubview:self.myNotesBtn];
     [self.leftView addSubview:self.myNotesBtnImage];
-    [self.leftView addSubview:self.favouriteSettingBtn];
-    [self.leftView addSubview:self.favouriteSettingBtnImage];
+//    [self.leftView addSubview:self.favouriteSettingBtn];
+//    [self.leftView addSubview:self.favouriteSettingBtnImage];
     
     [self.view addSubview:self.searchTextField];
     [self.view addSubview:self.mainView];
     
     [self.mainView addSubview:self.myNotesView];//0
     [self.mainView addSubview:self.videoHistoryView];//1
-    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    self.hud.delegate = self;
-    self.hud.dimBackground = YES;
+//    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//    self.hud.delegate = self;
+//    self.hud.dimBackground = YES;
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(webDataLoaddDone) name:@"WebDataHaveLoadDone" object:nil];
     [self.mainView addSubview:self.allCourseView];//2
     
@@ -124,7 +124,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 
 -(void)webDataLoaddDone{
     
-    [self.hud hide:YES];
+//    [self.hud hide:YES];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
