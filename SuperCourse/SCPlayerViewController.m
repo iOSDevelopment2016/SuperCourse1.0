@@ -1228,8 +1228,7 @@
 - (void)showPlayer:(SCVideoLinkMode *)link {
     // 写入网络数据库
     NSMutableDictionary *methodParameter = [[NSMutableDictionary alloc]init];
-//    NSString *userID = ApplicationDelegate.userSession; // 学员内码
-    NSString *userID = UnLoginUserSession;
+    NSString *userID = ApplicationDelegate.userSession; // 学员内码
     NSString *userPassword = ApplicationDelegate.userPsw; // 登录密码
     NSString *lesson_id = link.link_les_id;
     if (!userPassword) {
