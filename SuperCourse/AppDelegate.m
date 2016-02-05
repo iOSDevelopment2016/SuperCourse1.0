@@ -45,20 +45,12 @@
     NSString *userSession = [[NSUserDefaults standardUserDefaults] objectForKey:UserSessionKey];
     if (userSession) {
         self.userSession = userSession;
+        self.userPsw = [[NSUserDefaults standardUserDefaults] objectForKey:UserPswKey];
+        self.userPhone = [[NSUserDefaults standardUserDefaults] objectForKey:UserPhoneKey];
     }else{
         self.userSession = UnLoginUserSession;
     }
 }
-
-
--(void)solidateUserSession:(NSString *)userSession{
-    
-    self.userSession = userSession;
-    NSUserDefaults *defaultes = [NSUserDefaults standardUserDefaults];
-    [defaultes setObject:self.userSession forKey:UserSessionKey];
-    [defaultes synchronize];
-}
-
 
 
 //监测网络状态

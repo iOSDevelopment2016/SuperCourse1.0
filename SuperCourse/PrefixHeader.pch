@@ -32,6 +32,13 @@
 
 //用户身份标示
 #define UserSessionKey @"UserSession"
+//用户手机号
+#define UserPhoneKey @"UserPhoneKey"
+//用户密码
+#define UserPswKey @"UserPswKey"
+
+
+
 //未登录学员标示
 #define UnLoginUserSession @"UnLoginUserSession"
 

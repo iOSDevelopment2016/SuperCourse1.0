@@ -16,7 +16,6 @@
 #import "SCSettingViewController.h"
 #import "SCPlayerViewController.h"
 #import "SCCourseTableViewCell.h"
-#import "SCItemView.h"
 #import "SCVideoInfoModel.h"
 #import "MBProgressHUD.h"
 #import "MJExtension.h"
@@ -54,7 +53,6 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 @property (nonatomic ,strong) UIView                   *scroll;
 @property (nonatomic ,strong) UIView                   *hubView;
 @property (nonatomic ,strong) SCLoginView              *loginView;
-@property (nonatomic ,strong) SCItemView               *itemView;
 @property (nonatomic ,strong) SCAllCourseView          *allCourseView;
 @property (nonatomic ,strong) SCVideoHistoryView       *videoHistoryView;
 @property (nonatomic ,strong) SCMyNotesView            *myNotesView;
@@ -181,7 +179,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     userLabel.numberOfLines=0;
     userLabel.text=[NSString stringWithFormat:@"你好!\n%@",userphone];
     [userLabel setTextColor:[UIColor whiteColor]];
-    userLabel.font=[UIFont systemFontOfSize:30];
+    userLabel.font=[UIFont systemFontOfSize:45*WidthScale];
     [self.view addSubview:leftTopView];
     [leftTopView addSubview:userLabel];
     
@@ -617,8 +615,6 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     self.loginView = nil;
     [self.hubView removeFromSuperview];
     self.hubView = nil;
-    [self.itemView removeFromSuperview];
-    self.itemView = nil;
     [self.webView removeFromSuperview];
     self.webView=nil;
     [self.extendView removeFromSuperview];
@@ -963,16 +959,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     }
     return _hubView;
 }
--(SCItemView *)itemView{
-    if (!_itemView){
-        _itemView = [[SCItemView alloc]init];
-        _itemView.backgroundColor=[UIColor whiteColor];
-        _itemView.frame = CGRectMake(0, 0, 320, 240);
-        _itemView.center = self.view.center;
-        //_loginView.delegate = self;
-    }
-    return _itemView;
-}
+
 -(SCLoginView *)loginView{
     if (!_loginView){
         _loginView = [[NSBundle mainBundle]loadNibNamed:NSStringFromClass([SCLoginView class]) owner:nil options:nil].lastObject;
