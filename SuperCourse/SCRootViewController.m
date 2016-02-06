@@ -102,8 +102,8 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     [self.leftView addSubview:self.videoHistoryBtnImage];
     [self.leftView addSubview:self.myNotesBtn];
     [self.leftView addSubview:self.myNotesBtnImage];
-//    [self.leftView addSubview:self.favouriteSettingBtn];
-//    [self.leftView addSubview:self.favouriteSettingBtnImage];
+    [self.leftView addSubview:self.favouriteSettingBtn];
+    [self.leftView addSubview:self.favouriteSettingBtnImage];
     
     [self.view addSubview:self.searchTextField];
     [self.view addSubview:self.mainView];
