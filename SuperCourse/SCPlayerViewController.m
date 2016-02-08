@@ -78,7 +78,7 @@
     [super viewDidLoad];
     isAnimating = NO; //防止重复的动画
 //    [self loadDataStub]; //加载数据桩
-    self.lessonId = @"0001";
+//    self.lessonId = @"0001";
     [self addAllControl]; //加载界面上的所有控件
     isFirstView = YES;
 //    [self.view addSubview:self.indicatorShowView];

@@ -17,6 +17,7 @@
 //@property (nonatomic,strong) UIButton *saveBtn;
 @property (nonatomic,strong) UIButton *operationBtn;
 @property (nonatomic,strong) UIView  *bottomView;
+@property (nonatomic ,strong) UIView *borderView;
 
 
 @property (nonatomic, assign) BOOL allowEdit;
@@ -48,8 +49,8 @@
         self.backgroundColor = UIBackgroundColor;
         
         [self addSubview:self.bottomView];
-        
-        [self addSubview:self.notesTextView];
+        [self addSubview:self.borderView];
+        [self.borderView addSubview:self.notesTextView];
         [self addSubview:self.scrollView];
 //        [self addSubview:self.createBtn];
 //        [self addSubview:self.saveBtn];
@@ -108,8 +109,9 @@
 -(void)layoutSubviews{
     [super layoutSubviews];
     self.bottomView.frame = CGRectMake(0, 100, self.width, 1217*HeightScale);
-
-    self.notesTextView.frame = CGRectMake(20, 120, self.width-40, 1217*HeightScale-40);
+    
+    self.borderView.frame = CGRectMake(20, 120, self.width-40, 1217*HeightScale-70);
+    self.notesTextView.frame = CGRectMake(10, 10, self.borderView.width-20, self.borderView.height-20);
     self.backgroundColor = UIBackgroundColor;
     self.scrollView.frame = CGRectMake(0, 0, self.width, 100*HeightScale);
     self.operationBtn.frame = CGRectMake(0.873*self.width-45, 0, 0.127*self.width, 100*HeightScale);
@@ -164,24 +166,32 @@
     return _bottomView;
 }
 
+-(UIView *)borderView{
+    if (!_borderView){
+        _borderView = [[UIView alloc]init];
+        _borderView.backgroundColor = [UIColor whiteColor];
+        _borderView.layer.masksToBounds = YES;
+        _borderView.layer.borderColor = [UIBackgroundColor CGColor];
+        _borderView.layer.borderWidth = 1.5f;
+        _borderView.layer.cornerRadius = 8.0;
+    }
+    return _borderView;
+}
+
 
 -(UITextView *)notesTextView{
     if (!_notesTextView) {
         _notesTextView=[[UITextView alloc]init];
         _notesTextView.delegate = self;
         _notesTextView.font = [UIFont systemFontOfSize:25];
-        _notesTextView.contentInset = UIEdgeInsetsMake(-11, -6, 0, 0);
-        _notesTextView.scrollEnabled = NO;
+        _notesTextView.scrollEnabled = YES;
         //返回键的类型
         _notesTextView.returnKeyType = UIReturnKeyDefault;
         //键盘类型
         _notesTextView.keyboardType = UIKeyboardTypeDefault;
         _notesTextView.delegate=self;
-        [_notesTextView setContentInset:UIEdgeInsetsMake(200, 200, 200, 200)];
-        _notesTextView.layer.masksToBounds = YES;
-        _notesTextView.layer.borderColor = [UIBackgroundColor CGColor];
-        _notesTextView.layer.borderWidth = 1.5f;
-        _notesTextView.layer.cornerRadius = 8.0;
+//        [_notesTextView setContentInset:UIEdgeInsetsMake(30, 30, 30, 30)];
+//        _notesTextView.backgroundColor  = [UIColor orangeColor];
         
     }
     return _notesTextView;

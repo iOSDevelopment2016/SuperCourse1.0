@@ -113,7 +113,7 @@
         if ([h.is_ready isEqualToString:@"是"]) {
             cell.state.text=@"已看完";
         }else{
-            cell.state.text= [NSString stringWithFormat:@"%f",h.lastplay_time];
+            cell.state.text= [NSString stringWithFormat:@"%d",(int)h.oversty_time];
         }
     }
     
