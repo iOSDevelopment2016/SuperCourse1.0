@@ -340,7 +340,6 @@
             NSData *data = [[NSData alloc] initWithData:responseObject];
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
             
-            
         } failure:^(NSError *error) {
             NSLog(@"%@",error);
         }];
@@ -359,6 +358,7 @@
     [self.navigationController popViewControllerAnimated:YES];
     [self.videoManager stop];
     [self.delegate changeToLearn];
+    [self getStopTime];
     
 }
 

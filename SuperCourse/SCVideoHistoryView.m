@@ -110,10 +110,16 @@
         [cell.historyBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateHighlighted];
         cell.historyBtn.tag =indexPath.section * 1000 + indexPath.row;
 //
+        CGFloat currentTime = h.oversty_time;
+        
+        int hour = (int)(currentTime/3600);
+        int minute = (int)(currentTime - hour*3600)/60;
+        int second = (int)currentTime - hour*3600 - minute*60;
+        NSString *time = [NSString stringWithFormat:@"%02d:%02d:%02d",hour,minute,second];
         if ([h.is_ready isEqualToString:@"是"]) {
             cell.state.text=@"已看完";
         }else{
-            cell.state.text= [NSString stringWithFormat:@"%d",(int)h.oversty_time];
+            cell.state.text= [NSString stringWithString:time];
         }
     }
     
