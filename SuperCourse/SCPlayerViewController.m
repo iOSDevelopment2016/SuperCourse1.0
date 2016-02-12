@@ -138,8 +138,8 @@
     NSArray *videoInfoDict = dataDict[@"videoInfo"];
     m.les_name = videoInfoDict[0][@"les_name"];
     m.les_alltime = [videoInfoDict[0][@"les_alltime"] floatValue];
-//    m.ovesity_time = [videoInfoDict[0][@"ovesity_time"] floatValue];
-//    self.beginTime = m.ovesity_time;
+    m.ovesity_time = [videoInfoDict[0][@"ovesity_time"] floatValue];
+    self.beginTime = m.ovesity_time;
     m.les_url = videoInfoDict[0][@"les_url"];
 //    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 //    NSString *docDir = [paths objectAtIndex:0];
