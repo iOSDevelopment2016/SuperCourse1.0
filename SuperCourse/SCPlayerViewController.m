@@ -82,9 +82,6 @@
     [self addAllControl]; //加载界面上的所有控件
     isFirstView = YES;
 //    [self.view addSubview:self.indicatorShowView];
-
-    
-    
     [self loadVideoInfo]; //从网络上下载视频文件的所有信息
     self.isNeedBack = NO;
 }
@@ -138,8 +135,8 @@
     NSArray *videoInfoDict = dataDict[@"videoInfo"];
     m.les_name = videoInfoDict[0][@"les_name"];
     m.les_alltime = [videoInfoDict[0][@"les_alltime"] floatValue];
-    m.ovesity_time = [videoInfoDict[0][@"ovesity_time"] floatValue];
-    self.beginTime = m.ovesity_time;
+//    m.oversty_time = [videoInfoDict[0][@"oversty_time"] floatValue];
+//    self.beginTime = m.oversty_time;
     m.les_url = videoInfoDict[0][@"les_url"];
 //    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 //    NSString *docDir = [paths objectAtIndex:0];
@@ -226,69 +223,6 @@
 }
 
 
-////加载数据桩
-//-(void)loadDataStub{
-//    if (!_videoInfo) {
-//        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-//        NSString *docDir = [paths objectAtIndex:0];
-//        NSString *url=[docDir stringByAppendingPathComponent:@"load2.mp4"];
-//        NSMutableArray *subTitleArr = [self getSubTitleData];
-//        NSMutableArray *linkArr = [self getLinkData];
-//        self.videoInfo = [[SCVideoInfoModel alloc]initWithVideoUrl:url AndTitle:@"这是一个测试数据的视频标题" AndFileSize:@"123M" AndSubTitles:subTitleArr AndLinks:linkArr];
-//    }
-//    if(!_lessonId){
-//        self.lessonId = @"0001";
-//    }
-//}
-//
-////创建子标题数据桩
-//
-//-(NSMutableArray *)getSubTitleData{
-//    float a = 10.0 ,b=17.0 ,c=24.0, d=27.0;
-//    NSNumber *arr = @(a);
-//    NSNumber *brr = @(b);
-//    NSNumber *crr = @(c);
-//    NSNumber *drr = @(d);
-//    NSArray *dataArr = @[@"iOS的历史来源和发展历程",@"iOS的系统特性",@"局域网和互联网",@"编程环境的搭建"];
-//    NSArray *timeArr = @[arr,brr,crr,drr];
-//
-//    NSMutableArray *subTitleArr = [[NSMutableArray alloc]init];
-//    SCVideoSubTitleMode *m0 = [[SCVideoSubTitleMode alloc] initWithTitle:dataArr[0] AndBeginTime:[timeArr[0] floatValue]];
-//    [subTitleArr insertObject:m0 atIndex:0];
-//    SCVideoSubTitleMode *m1 = [[SCVideoSubTitleMode alloc] initWithTitle:dataArr[1] AndBeginTime:[timeArr[1] floatValue]];
-//    [subTitleArr insertObject:m1 atIndex:1];
-//    SCVideoSubTitleMode *m2 = [[SCVideoSubTitleMode alloc] initWithTitle:dataArr[2] AndBeginTime:[timeArr[2] floatValue]];
-//    [subTitleArr insertObject:m2 atIndex:2];
-//    SCVideoSubTitleMode *m3 = [[SCVideoSubTitleMode alloc] initWithTitle:dataArr[3] AndBeginTime:[timeArr[3] floatValue]];
-//    [subTitleArr insertObject:m3 atIndex:3];
-//    
-//    return subTitleArr;
-//    
-//}
-//
-//-(NSMutableArray *)getLinkData{
-//
-//    float a = 35.0 , b = 42.0 , c = 47.0 , d = 58.0 ,e = 77.0, f = 88.0;
-//    NSNumber *arr = @(a);
-//    NSNumber *brr = @(b);
-//    NSNumber *crr = @(c);
-//    NSNumber *drr = @(d);
-//    NSNumber *err = @(e);
-//    NSNumber *frr = @(f);
-//    NSArray *timeArr = @[arr,brr,crr,drr,err,frr];
-//    NSArray *dataArr = @[@"软件编程",@"互联网和局域网",@"类的定义",@"xcode的使用",@"系统",@"视频"];
-//    NSArray *typeArr = @[@"视频",@"网页",@"网页",@"视频",@"视频",@"网页"];
-//    NSArray *videoIdArr = @[@"10",@"",@"",@"20",@"30",@""];
-//    NSArray *webUrlArr = @[@"",@"url1",@"url2",@"",@"",@"url3"];
-//    NSMutableArray *linkArr = [[NSMutableArray alloc]init];
-//    for (int i = 0 ; i<dataArr.count; i++) {
-//        SCVideoLinkMode *m = [[SCVideoLinkMode alloc]initWithTitle:dataArr[i] AndBeginTime:[timeArr[i] floatValue] AndTargetType:typeArr[i] AndLessonId:videoIdArr[i] AndWebUrl:webUrlArr[i]];
-//        [linkArr insertObject:m atIndex:i];
-//    }
-//    
-//    
-//    return linkArr;
-//}
 
 
 -(void)addAllControl{
@@ -317,10 +251,7 @@
             [self.navigationController popToRootViewControllerAnimated:YES];
         }
     }else if (alertView.tag == 2){
-//        
-//        if (buttonIndex == 0) {
-//            
-//        }
+    
     }
 }
 
@@ -427,6 +358,8 @@
     
     [self.navigationController popViewControllerAnimated:YES];
     [self.videoManager stop];
+    [self.delegate changeToLearn];
+    
 }
 
 

@@ -26,5 +26,6 @@
 @property (nonatomic ,weak) id<SCAllCourseViewDelegate> delegate;
 
 -(NSString *)getNextLessonID:(NSString *)currentLessonID;
+-(void)change;
 
 @end

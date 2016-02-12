@@ -20,7 +20,7 @@
 - (void)awakeFromNib {
     // Initialization code
     
-//    self.fileSizeLabel.backgroundColor = [UIColor orangeColor];
+    //    self.fileSizeLabel.backgroundColor = [UIColor orangeColor];
     
     self.courseLabel.font = FONT_25;
     self.contentField.titleLabel.font = FONT_27;
@@ -30,7 +30,7 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 #pragma - mark getters

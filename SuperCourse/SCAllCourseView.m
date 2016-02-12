@@ -45,6 +45,9 @@
 @property (nonatomic ,strong) MBProgressHUD              *HUD;
 
 
+@property (nonatomic ,strong) SCCoursePlayLog          *playLog;
+
+
 @property (nonatomic ,strong) UIView        *headView;
 
 @end
@@ -55,10 +58,10 @@
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
-
+    
     self = [super initWithFrame:frame];
     if (self) {
-
+        
         self.backgroundColor = [UIColor whiteColor];
         [self addSubview:self.headView];
         [self.headView addSubview:self.topImageView];
@@ -70,8 +73,10 @@
         [self.headView addSubview:self.scrollView];
         [self.HUD show:YES];
         [self loadCourseListFromNetwork];
+        //[self change];
         
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(imageShouldChange) name:@"ImageShouldChange" object:nil];
+        
         
         
     }
@@ -83,37 +88,39 @@
 -(void)imageShouldChange{
     
     
-//    NSDictionary *para = @{@"method":@"GetStudentPlayLog",
-//                           @"param":@{@"Data":@{@"stu_id":ApplicationDelegate.userSession,
-//                                                @"stu_pwd":ApplicationDelegate.userPsw}}};
-//    
-//    NSString *psw = ApplicationDelegate.userPsw;
-//    NSString *uid =ApplicationDelegate.userSession;
-//    
-//    [HttpTool postWithparams:para success:^(id responseObject) {
-//        
-//        NSData *data = [[NSData alloc] initWithData:responseObject];
-//        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-//        
-//        SCCoursePlayLog *playLog = [SCCoursePlayLog objectWithKeyValues:dic[@"data"]];
-//        NSLog(@"");
-//        
-//
-//    } failure:^(NSError *error) {
-//        NSLog(@"%@",error);
-//    }];
-
+    //    NSDictionary *para = @{@"method":@"GetStudentPlayLog",
+    //                           @"param":@{@"Data":@{@"stu_id":ApplicationDelegate.userSession,
+    //                                                @"stu_pwd":ApplicationDelegate.userPsw}}};
+    //
+    //    NSString *psw = ApplicationDelegate.userPsw;
+    //    NSString *uid =ApplicationDelegate.userSession;
+    //
+    //    [HttpTool postWithparams:para success:^(id responseObject) {
+    //
+    //        NSData *data = [[NSData alloc] initWithData:responseObject];
+    //        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+    //
+    //        SCCoursePlayLog *playLog = [SCCoursePlayLog objectWithKeyValues:dic[@"data"]];
+    //        NSLog(@"");
+    //
+    //
+    //    } failure:^(NSError *error) {
+    //        NSLog(@"%@",error);
+    //    }];
+    
 }
 
 -(void)changeImage{
     [self.startBtn setImage:[UIImage imageNamed:@"SC_continue"] forState:UIControlStateNormal];
+}
+-(void)changeImageBack{
+    [self.startBtn setImage:[UIImage imageNamed:@"SC_start"] forState:UIControlStateNormal];
 }
 
 
 //从网络请求课程列表
 -(void)loadCourseListFromNetwork{
     
-
     NSDictionary *para = @{@"method":@"VideoList",
                            @"param":@{@"Data":@{@"stuid":ApplicationDelegate.userSession}}};
     [HttpTool postWithparams:para success:^(id responseObject) {
@@ -137,41 +144,41 @@
             [courseCategoryArr addObject:cat];
         }
         
-//        [SCCourseGroup setupObjectClassInArray:^NSDictionary *{
-//            return @{@"lesarr":@"SCCourse"};
-//        }];
-//        [SCCourseCategory setupObjectClassInArray:^NSDictionary *{
-//            return @{@"sec_arr":@"SCCourseGroup"};
-//        }];
-//        [SCCourseCategory setupObjectClassInArray:^NSDictionary *{
-//            return @{@"categoryArr":@"SCCourseCategory"};
-//        }];
-//        SCCourseCategoryList *categoryList = [SCCourseCategoryList objectWithKeyValues:dic[@"data"]];
-
+        //        [SCCourseGroup setupObjectClassInArray:^NSDictionary *{
+        //            return @{@"lesarr":@"SCCourse"};
+        //        }];
+        //        [SCCourseCategory setupObjectClassInArray:^NSDictionary *{
+        //            return @{@"sec_arr":@"SCCourseGroup"};
+        //        }];
+        //        [SCCourseCategory setupObjectClassInArray:^NSDictionary *{
+        //            return @{@"categoryArr":@"SCCourseCategory"};
+        //        }];
+        //        SCCourseCategoryList *categoryList = [SCCourseCategoryList objectWithKeyValues:dic[@"data"]];
+        
         self.firstCategory=(SCCourseCategory *)(courseCategoryArr[0]);
         self.secondCategory=(SCCourseCategory *)(courseCategoryArr[1]);
-//        self.firstCategory=(SCCourseCategory *)(categoryList.categoryArr[0]);
-//        self.secondCategory=(SCCourseCategory *)(categoryList.categoryArr[1]);
+        //        self.firstCategory=(SCCourseCategory *)(categoryList.categoryArr[0]);
+        //        self.secondCategory=(SCCourseCategory *)(categoryList.categoryArr[1]);
         self.currentSource=self.firstCategory;
-
+        
         [self addSubview:self.firstTableView];
-
+        
         //[self.activityIndicator stopAnimating];               !!!!!!!!!停止加载动画
         //        NSLog(@"%@", first.course_catagory_title);
-//        NSLog(@"%@", first.course_category_id);
-//        NSLog(@"%@", first.sec_arr);
-//        for (int i = 0; i<first.sec_arr.count; i++) {
-//            SCCourseGroup *m = first.sec_arr[i];
-//            NSLog(@"%@",m.lessections_id);
-//            NSLog(@"%@",m.lessections_name);
-//            NSLog(@"%@",m.lesarr);
-//            for (int j = 0; j<m.lesarr.count; j++) {
-//                SCCourse *c = m.lesarr[j];
-//                NSLog(@"%@", c.les_id);
-//                NSLog(@"%@", c.les_name);
-//            }
-//        }
-//        NSLog(@"%@", first.sec_arr);
+        //        NSLog(@"%@", first.course_category_id);
+        //        NSLog(@"%@", first.sec_arr);
+        //        for (int i = 0; i<first.sec_arr.count; i++) {
+        //            SCCourseGroup *m = first.sec_arr[i];
+        //            NSLog(@"%@",m.lessections_id);
+        //            NSLog(@"%@",m.lessections_name);
+        //            NSLog(@"%@",m.lesarr);
+        //            for (int j = 0; j<m.lesarr.count; j++) {
+        //                SCCourse *c = m.lesarr[j];
+        //                NSLog(@"%@", c.les_id);
+        //                NSLog(@"%@", c.les_name);
+        //            }
+        //        }
+        //        NSLog(@"%@", first.sec_arr);
         
     } failure:^(NSError *error) {
         NSLog(@"%@",error);
@@ -181,6 +188,16 @@
 
 -(void)layoutSubviews{
     [super layoutSubviews];
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     self.leftBtn.selected = YES;
     self.headView.frame= CGRectMake(0, 0, self.width, 800*HeightScale);
     self.topImageView.frame = CGRectMake(0, 0, self.width, 670*HeightScale);
@@ -191,7 +208,53 @@
     self.rightBtn.frame=CGRectMake(0.562*self.width, 670*HeightScale, 0.127*self.width, 130*HeightScale);
     self.firstTableView.frame = CGRectMake(0, 800*HeightScale, self.width, 500*HeightScale);
     //self.secondTableView.frame = CGRectMake(0, 800*HeightScale, self.width, 500*HeightScale);
+    
+    
+    
 }
+
+-(void)change{
+    
+    NSString *stu_id = ApplicationDelegate.userSession;
+    NSString *stu_pwd = ApplicationDelegate.userPsw;
+    if([ApplicationDelegate.userSession isEqualToString:UnLoginUserSession])
+    {
+        [self changeImageBack];
+    }else{
+        //[self changeImage];
+        if (!stu_pwd) {
+            stu_pwd = @"";
+        }
+        stu_id = ApplicationDelegate.userSession;
+        NSDictionary *para = @{@"method":@"GetStudentPlayLog",
+                               @"param":@{@"Data":@{@"stu_id":stu_id,
+                                                    @"stu_pwd":stu_pwd}}};
+        
+        [HttpTool postWithparams:para success:^(id responseObject) {
+            
+            NSData *data = [[NSData alloc] initWithData:responseObject];
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            NSLog(@"%@",dic);
+            
+            //        [SCCourseCategory setupObjectClassInArray:^NSDictionary *{
+            //            return @{@"willknow":@"SCWillLearn"};
+            //        }];
+            
+            self.playLog = [SCCoursePlayLog objectWithKeyValues:dic[@"data"]];
+            if(self.playLog.oversty_time){
+                [self changeImage];
+            }else{
+                [self changeImageBack];
+            }
+            
+            
+        } failure:^(NSError *error) {
+            NSLog(@"%@",error);
+        }];
+    }
+    
+}
+
 
 #pragma mark - 动画
 
@@ -214,9 +277,9 @@
 //{
 //    float destinaOffset = -60;
 //    float startChangeOffset = -self.firstTableView.contentInset.top;
-//    
+//
 //    newOffset = CGPointMake(newOffset.x, newOffset.y<startChangeOffset?startChangeOffset:(newOffset.y>destinaOffset?destinaOffset:newOffset.y));
-//    
+//
 //    float titleDestinateOffset = self.headView.frame.size.height-50;
 //    float newY = -newOffset.y-self.firstTableView.contentInset.top;
 //    float d = destinaOffset-startChangeOffset;
@@ -228,7 +291,7 @@
 //    self.startBtn.frame = CGRectMake(0, 0.4*self.headView.frame.size.height+(titleDestinateOffset-0.4*self.headView.frame.size.height)*(1-alpha), self.startBtn.frame.size.width, self.startBtn.frame.size.height);
 //    //缩小主标题
 ////    self.titleLabel.font = [UIFont boldSystemFontOfSize:16+(alpha)*4];
-//    
+//
 //}
 
 
@@ -244,9 +307,9 @@
     //    NSString *docDir = [paths objectAtIndex:0];
     SCCourseGroup *courseGroup=self.firstCategory.sec_arr[secIndex];
     SCCourse *selectedCourse = courseGroup.lesarr[rowIndex];
-
+    
     NSString *url=selectedCourse.les_url;
-
+    
     //NSString *srlStr = @"http://www.shengcaibao.com/download/SCB/1.mp3";
     //如果请求正文包含中文，需要处理
     //    srlStr = [srlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -284,7 +347,7 @@
 }
 
 -(IBAction)contendFieldDidClickWithSectionIndex:(NSInteger)secIndex AndRowIndex:(NSInteger)rowIndex{
-    SCCourseGroup *courseGroup=self.firstCategory.sec_arr[secIndex];
+    SCCourseGroup *courseGroup=self.currentSource.sec_arr[secIndex];
     SCCourse *selectedCourse = courseGroup.lesarr[rowIndex];
     if ([selectedCourse.operations isEqualToString:@"视频"]) {
         //NSString *urlvideo = selectedCourse.les_url;
@@ -300,7 +363,7 @@
         SCCourseGroup *courseGroup=self.firstCategory.sec_arr[secIndex];
         SCCourse *selectedCourse = courseGroup.lesarr[rowIndex];
         [self.delegate imageClickWithCoutse:selectedCourse];
-
+        
     }else{
         SCCourseGroup *courseGroup=self.secondCategory.sec_arr[secIndex];
         SCCourse *selectedCourse = courseGroup.lesarr[rowIndex];
@@ -346,12 +409,15 @@
 }
 -(void)rightBtnClick{
     self.leftBtn.selected=NO;
-    self.rightBtn.selected=YES;
+    //    self.rightBtn.selected=YES;
     self.currentSource=self.secondCategory;
     [self.firstTableView reloadData];
     CGFloat variety=self.rightBtn.frame.origin.x-self.scrollView.frame.origin.x;
     [self.leftBtn setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
-    [self move:variety];
+    if(self.rightBtn.selected!=YES){
+        [self move:variety];
+    }
+    self.rightBtn.selected=YES;
 }
 
 #pragma mark - getters
@@ -367,11 +433,11 @@
 -(SCCustomButton *)startBtn{
     if (!_startBtn){
         _startBtn = [SCCustomButton buttonWithType:UIButtonTypeCustom];
-//        if(ApplicationDelegate.playLog){
-//            [_startBtn setImage:[UIImage imageNamed:@"SC_continue"] forState:UIControlStateNormal];
-//        }else{
+        //        if(ApplicationDelegate.playLog){
+        //            [_startBtn setImage:[UIImage imageNamed:@"SC_continue"] forState:UIControlStateNormal];
+        //        }else{
         [_startBtn setImage:[UIImage imageNamed:@"SC_start"] forState:UIControlStateNormal];
-//        }
+        //        }
         [_startBtn addTarget:self action:@selector(startBtnClick) forControlEvents:UIControlEventTouchUpInside];
         
     }
@@ -402,7 +468,7 @@
     if(!_headView){
         _headView=[[UIView alloc]init];
         _headView.clipsToBounds = YES;
-//        _headView.backgroundColor = [UIColor orangeColor];
+        //        _headView.backgroundColor = [UIColor orangeColor];
     }
     return _headView;
 }
@@ -464,7 +530,7 @@
     
     headerLabel.font = [UIFont italicSystemFontOfSize:45*HeightScale];
     
-    headerLabel.frame = CGRectMake(40.0, 10.0, 300.0, 44.0);
+    headerLabel.frame = CGRectMake(40.0, 10.0, self.width, 44.0);
     
     SCCourseGroup *temp = self.currentSource.sec_arr[section];
     
@@ -544,12 +610,12 @@
             cell.downloadBtn.hidden=YES;
         }
         cell.courseLabel.text=temp_.les_size;
-//        cell.courseLabel.font=FONT_18;
-//        cell.courseLabel.font=[UIFont systemFontOfSize:35*HeightScale];
-////        if([temp_.permission isEqualToString:@"否"]){
-//        
-//            cell.selected=NO;
-//        //}
+        //        cell.courseLabel.font=FONT_18;
+        //        cell.courseLabel.font=[UIFont systemFontOfSize:35*HeightScale];
+        ////        if([temp_.permission isEqualToString:@"否"]){
+        //
+        //            cell.selected=NO;
+        //        //}
         
         cell.width=self.width;
         
@@ -570,8 +636,8 @@
 
 //数据桩（调试程序用的假数据）
 -(void)initData{
-//    self.firstCategory = [self getCourseCatagory:@"大纲"];
-//    self.secondCategory = [self getCourseCatagory2:@"拓展"];
+    //    self.firstCategory = [self getCourseCatagory:@"大纲"];
+    //    self.secondCategory = [self getCourseCatagory2:@"拓展"];
     self.currentSource = self.firstCategory;
 }
 
@@ -586,7 +652,7 @@
 //    SCCourseGroup *c4 = [self getCourseGroup:@"第四分组"];
 //    temp.sec_arr = @[c1,c2,c3,c4];
 //    return temp;
-//    
+//
 //}
 //
 //
@@ -603,7 +669,7 @@
 //    SCCourse *c6 = [self getCourse:@"第6节课"];
 //    temp.lesarr = @[c1,c2,c3,c4,c5,c6];
 //    return temp;
-//    
+//
 //}
 //-(SCCourseCategory *)getCourseCatagory:(NSString *)title{
 //    SCCourseCategory *temp = [[SCCourseCategory alloc]init];
@@ -615,7 +681,7 @@
 //    SCCourseGroup *c4 = [self getCourseGroup:@"第四分组"];
 //    temp.sec_arr = @[c1,c2,c3,c4];
 //    return temp;
-//    
+//
 //}
 
 //生成一个课程信息
@@ -624,7 +690,7 @@
     temp.les_name = title;
     temp.les_id = @"UUID";
     //temp.courseUrl = @"";
-//    temp.courseAbstract = @"描述";
+    //    temp.courseAbstract = @"描述";
     return temp;
 }
 
@@ -639,7 +705,7 @@
         [_leftBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_leftBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateSelected];
         [_leftBtn addTarget:self action:@selector(leftBtnClick) forControlEvents:UIControlEventTouchUpInside];
-//        _leftBtn.backgroundColor = [UIColor orangeColor];
+        //        _leftBtn.backgroundColor = [UIColor orangeColor];
     }
     
     return _leftBtn;
@@ -681,7 +747,7 @@
 //        [_rightView setBackgroundColor:UIColorFromRGB(0x6fccdb)];
 //    }
 //    return _rightView;
-//    
+//
 //}
 -(UIActivityIndicatorView *)activityIndicator{
     if(!_activityIndicator){
@@ -699,7 +765,7 @@
         //停止后是否隐藏(默认为YES)
         self.activityIndicator.hidesWhenStopped = YES;
         
-     
+        
         
     }
     return _activityIndicator;

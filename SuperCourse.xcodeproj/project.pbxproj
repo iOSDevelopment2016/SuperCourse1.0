@@ -16,6 +16,8 @@
 		7D3629561C5DAF1D00A52AFA /* ZQTagList.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3629551C5DAF1D00A52AFA /* ZQTagList.m */; };
 		7D3629591C5DAF2E00A52AFA /* SZYVideoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3629581C5DAF2E00A52AFA /* SZYVideoManager.m */; };
 		7D45DEA31C5E1F2C00462B56 /* SCWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D45DEA21C5E1F2C00462B56 /* SCWebViewController.m */; };
+		7DCA89041C6DF10200F4B868 /* SCSearchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7DCA89031C6DF10200F4B868 /* SCSearchTableViewCell.xib */; };
+		7DCA890A1C6DF52B00F4B868 /* SCCourseTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7DCA89091C6DF52B00F4B868 /* SCCourseTableViewCell.xib */; };
 		B99897541C5F2AD4001DCA7D /* SClesson_list.m in Sources */ = {isa = PBXBuildFile; fileRef = B99897531C5F2AD4001DCA7D /* SClesson_list.m */; };
 		B999497D1C6053D500671BF0 /* SCHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = B999497C1C6053D500671BF0 /* SCHistory.m */; };
 		C90DE85C1C53FABA00B7137F /* SCCustomButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C90DE85B1C53FABA00B7137F /* SCCustomButton.m */; };
@@ -76,7 +78,6 @@
 		FE7F65101C5DA9AF009C7F21 /* SCHistoryTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE7F65051C5DA9AF009C7F21 /* SCHistoryTableViewCell.xib */; };
 		FE7F65111C5DA9AF009C7F21 /* SCMyNotesView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7F65071C5DA9AF009C7F21 /* SCMyNotesView.m */; };
 		FE7F65121C5DA9AF009C7F21 /* SCSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7F65091C5DA9AF009C7F21 /* SCSearchTableViewCell.m */; };
-		FE7F65131C5DA9AF009C7F21 /* SCSearchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE7F650A1C5DA9AF009C7F21 /* SCSearchTableViewCell.xib */; };
 		FE7F65141C5DA9AF009C7F21 /* SCSearchView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7F650C1C5DA9AF009C7F21 /* SCSearchView.m */; };
 		FE7F65151C5DA9AF009C7F21 /* SCVideoHistoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7F650E1C5DA9AF009C7F21 /* SCVideoHistoryView.m */; };
 		FE89CAB61C5B2D9D0091D23B /* MJConst.m in Sources */ = {isa = PBXBuildFile; fileRef = FE89CAA61C5B2D9D0091D23B /* MJConst.m */; };
@@ -109,7 +110,6 @@
 		FE92DAB71C635BC200737B17 /* UIImageView+HighlightedWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = FE92DAA51C635BC200737B17 /* UIImageView+HighlightedWebCache.m */; };
 		FE92DAB81C635BC200737B17 /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = FE92DAA71C635BC200737B17 /* UIImageView+WebCache.m */; };
 		FE92DAB91C635BC200737B17 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE92DAA91C635BC200737B17 /* UIView+WebCacheOperation.m */; };
-		FEB9B6BC1C64AFFD00663EC3 /* SCCourseTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEB9B6BB1C64AFFD00663EC3 /* SCCourseTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -148,6 +148,8 @@
 		7D3629581C5DAF2E00A52AFA /* SZYVideoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SZYVideoManager.m; sourceTree = "<group>"; };
 		7D45DEA11C5E1F2C00462B56 /* SCWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCWebViewController.h; sourceTree = "<group>"; };
 		7D45DEA21C5E1F2C00462B56 /* SCWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCWebViewController.m; sourceTree = "<group>"; };
+		7DCA89031C6DF10200F4B868 /* SCSearchTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCSearchTableViewCell.xib; sourceTree = "<group>"; };
+		7DCA89091C6DF52B00F4B868 /* SCCourseTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCCourseTableViewCell.xib; sourceTree = "<group>"; };
 		B99897521C5F2AD4001DCA7D /* SClesson_list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SClesson_list.h; sourceTree = "<group>"; };
 		B99897531C5F2AD4001DCA7D /* SClesson_list.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SClesson_list.m; sourceTree = "<group>"; };
 		B999497B1C6053D500671BF0 /* SCHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHistory.h; sourceTree = "<group>"; };
@@ -267,7 +269,6 @@
 		FE7F65071C5DA9AF009C7F21 /* SCMyNotesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCMyNotesView.m; sourceTree = "<group>"; };
 		FE7F65081C5DA9AF009C7F21 /* SCSearchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSearchTableViewCell.h; sourceTree = "<group>"; };
 		FE7F65091C5DA9AF009C7F21 /* SCSearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCSearchTableViewCell.m; sourceTree = "<group>"; };
-		FE7F650A1C5DA9AF009C7F21 /* SCSearchTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCSearchTableViewCell.xib; sourceTree = "<group>"; };
 		FE7F650B1C5DA9AF009C7F21 /* SCSearchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSearchView.h; sourceTree = "<group>"; };
 		FE7F650C1C5DA9AF009C7F21 /* SCSearchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCSearchView.m; sourceTree = "<group>"; };
 		FE7F650D1C5DA9AF009C7F21 /* SCVideoHistoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCVideoHistoryView.h; sourceTree = "<group>"; };
@@ -333,7 +334,6 @@
 		FE92DAA71C635BC200737B17 /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
 		FE92DAA81C635BC200737B17 /* UIView+WebCacheOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+WebCacheOperation.h"; sourceTree = "<group>"; };
 		FE92DAA91C635BC200737B17 /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
-		FEB9B6BB1C64AFFD00663EC3 /* SCCourseTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCCourseTableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -541,14 +541,14 @@
 				FE7F65071C5DA9AF009C7F21 /* SCMyNotesView.m */,
 				FE7F65081C5DA9AF009C7F21 /* SCSearchTableViewCell.h */,
 				FE7F65091C5DA9AF009C7F21 /* SCSearchTableViewCell.m */,
-				FE7F650A1C5DA9AF009C7F21 /* SCSearchTableViewCell.xib */,
+				7DCA89031C6DF10200F4B868 /* SCSearchTableViewCell.xib */,
 				FE7F650B1C5DA9AF009C7F21 /* SCSearchView.h */,
 				FE7F650C1C5DA9AF009C7F21 /* SCSearchView.m */,
 				FE7F650D1C5DA9AF009C7F21 /* SCVideoHistoryView.h */,
 				FE7F650E1C5DA9AF009C7F21 /* SCVideoHistoryView.m */,
 				FE005B9A1C56190300920EFB /* SCCourseTableViewCell.h */,
 				FE005B9B1C56190300920EFB /* SCCourseTableViewCell.m */,
-				FEB9B6BB1C64AFFD00663EC3 /* SCCourseTableViewCell.xib */,
+				7DCA89091C6DF52B00F4B868 /* SCCourseTableViewCell.xib */,
 				DAE2880A1C59EA3A00426DDD /* SCLoginView.h */,
 				DAE2880B1C59EA3A00426DDD /* SCLoginView.m */,
 				DAE2880C1C59EA3A00426DDD /* SCLoginView.xib */,
@@ -940,12 +940,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FEB9B6BC1C64AFFD00663EC3 /* SCCourseTableViewCell.xib in Resources */,
-				FE7F65131C5DA9AF009C7F21 /* SCSearchTableViewCell.xib in Resources */,
+				7DCA890A1C6DF52B00F4B868 /* SCCourseTableViewCell.xib in Resources */,
 				FE44D5721C60901C00354DF6 /* SCExtendView.xib in Resources */,
 				FE92DA841C6357B600737B17 /* MBProgressHUD.bundle in Resources */,
 				DAE2880E1C59EA3A00426DDD /* SCLoginView.xib in Resources */,
 				FE7F65101C5DA9AF009C7F21 /* SCHistoryTableViewCell.xib in Resources */,
+				7DCA89041C6DF10200F4B868 /* SCSearchTableViewCell.xib in Resources */,
 				FE7057361C62E5270079C614 /* SCDownloadConditionViewController.xib in Resources */,
 				FE70573B1C62EE810079C614 /* SCDownloadTableViewCell.xib in Resources */,
 				C9E4E6521C53BAF30052030E /* LaunchScreen.storyboard in Resources */,

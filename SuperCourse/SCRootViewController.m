@@ -35,7 +35,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 };
 
 
-@interface SCRootViewController ()<SCLoginViewDelegate,SCAllCourseViewDelegate,UITextFieldDelegate,SCCourseTableViewDelegate,SCExtendViewDelegate,SCHistoryViewDelegate,SCSearchViewDelegate,SCSettingViewControllerDelegate,MBProgressHUDDelegate>
+@interface SCRootViewController ()<SCLoginViewDelegate,SCAllCourseViewDelegate,UITextFieldDelegate,SCCourseTableViewDelegate,SCExtendViewDelegate,SCHistoryViewDelegate,SCSearchViewDelegate,SCSettingViewControllerDelegate,MBProgressHUDDelegate,UIPageViewControllerDelegate>
 
 
 @property (nonatomic ,strong) UIButton                 *loginBtn;
@@ -86,7 +86,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     
     if([ApplicationDelegate.userSession isEqualToString:@"UnLoginUserSession"]){
-    
+        
         [self.view addSubview:self.loginBtn];
         [self.view addSubview:self.loginBtnImage];
     }else{
@@ -100,33 +100,34 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     [self.leftView addSubview:self.videoHistoryBtnImage];
     [self.leftView addSubview:self.myNotesBtn];
     [self.leftView addSubview:self.myNotesBtnImage];
-//    [self.leftView addSubview:self.favouriteSettingBtn];
-//    [self.leftView addSubview:self.favouriteSettingBtnImage];
+    //    [self.leftView addSubview:self.favouriteSettingBtn];
+    //    [self.leftView addSubview:self.favouriteSettingBtnImage];
     
     [self.view addSubview:self.searchTextField];
     [self.view addSubview:self.mainView];
     
     [self.mainView addSubview:self.myNotesView];//0
     [self.mainView addSubview:self.videoHistoryView];//1
-//    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//    self.hud.delegate = self;
-//    self.hud.dimBackground = YES;
+    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    self.hud.delegate = self;
+    self.hud.dimBackground = YES;
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(webDataLoaddDone) name:@"WebDataHaveLoadDone" object:nil];
     [self.mainView addSubview:self.allCourseView];//2
     
-//    SCIntroduction *intro= self.datasource.har_des[0];
-//    NSString *str=intro.les_intrdoc;
-//    NSLog(@"%@",str);
+    //    SCIntroduction *intro= self.datasource.har_des[0];
+    //    NSString *str=intro.les_intrdoc;
+    //    NSLog(@"%@",str);
     self.selectedBtn = self.allCourseBtn;
 }
 
 -(void)webDataLoaddDone{
     
-//    [self.hud hide:YES];
+    [self.hud hide:YES];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    [self.allCourseView change];
     self.loginBtn.frame = CGRectMake(0, 0, 400*WidthScale, 200*HeightScale);
     self.loginBtnImage.frame=CGRectMake(51*WidthScale, 48*HeightScale, 94*WidthScale, 94*WidthScale);
     self.leftView.frame = CGRectMake(0, self.loginBtn.bottom, self.loginBtn.width, self.view.height-self.loginBtn.height);
@@ -147,7 +148,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     self.allCourseView.frame = CGRectMake(0, 0, mainFrame.size.width, mainFrame.size.height);
     self.myNotesView.frame = self.allCourseView.frame;
     self.videoHistoryView.frame = self.allCourseView.frame;
-//    self.searchView.frame = self.allCourseView.frame;
+    //    self.searchView.frame = self.allCourseView.frame;
 }
 
 
@@ -175,6 +176,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 -(void)removeHub{
     [self.hubView removeFromSuperview];
     [self hideLoginView];
+    [self.allCourseView change];
 }
 -(void)getuser:(NSString *)userphone{
     [self.loginBtnImage removeFromSuperview];
@@ -184,7 +186,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     
     UIButton *btn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 400*WidthScale, 200*HeightScale)];
     [btn addTarget:self action:@selector(loginBtnClick) forControlEvents:UIControlEventTouchUpInside];
-
+    
     UILabel *userLabel=[[UILabel alloc]initWithFrame: CGRectMake(25, 0, 400*WidthScale-50, 200*HeightScale)];
     userLabel.backgroundColor=UIThemeColor;
     userLabel.numberOfLines=0;
@@ -202,9 +204,9 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     [self.view addSubview:self.hubView];
     self.webView = [[UIWebView alloc]initWithFrame:CGRectMake(100, 100, 1000, 800)];
     
-
+    
     [self.view addSubview:self.webView];
-
+    
     NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
     //NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.baidu.com"]];
     
@@ -219,11 +221,14 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 //    playVC.currentVideoInfo = allCourseArr[5];
 //    [self.navigationController pushViewController:playVC animated:YES];
 //}
-
+-(void)changeToLearn{
+    [self.allCourseView change];
+}
 
 
 -(void)videoPlayClickWithCourse:(SCCourse *)SCcourse{
-    if([SCcourse.permission isEqualToString:@"是"]){
+    //        if([SCcourse.permission isEqualToString:@"是"])
+    if(![ApplicationDelegate.userSession isEqualToString:@"UnLoginUserSession"]){
         NSString *state = [ApplicationDelegate getNetWorkStates];
         if ([state isEqualToString:@"无网络"]) {
             [UIAlertController showAlertAtViewController:self withMessage:@"请检查您的网络连接" cancelTitle:@"取消" confirmTitle:@"我知道了" cancelHandler:^(UIAlertAction *action) {
@@ -243,27 +248,33 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
             }];
         }
     }else{
+        //        if([SCcourse.permission isEqualToString:@"是"]){
+        //            [self jumpToPlayerWithCourse:SCcourse];
+        //        }
+        //        else{
         [UIAlertController showAlertAtViewController:self withMessage:@"未登陆下受限" cancelTitle:@"取消" confirmTitle:@"我知道了" cancelHandler:^(UIAlertAction *action) {
         } confirmHandler:^(UIAlertAction *action) {
         }];
-
+        //        }
+        
     }
 }
 
 -(void)jumpToPlayerWithCourse:(SCCourse *)course
 {
     SCPlayerViewController *playVC = [[SCPlayerViewController alloc]init];
+    playVC.delegate=self;
     NSString *courseId = course.les_id;
     playVC.lessonId = courseId;
     [self.navigationController pushViewController:playVC animated:YES];
 }
 
 -(IBAction)imageClickWithCoutse:(SCCourse *)Course{
-
     
-   // 跳转到详情页面                 当前只有第一项有数据 暂且只读第一项    ！！！！！！！！后期修改
     
-    NSString *Id=@"0000";
+    // 跳转到详情页面                 当前只有第一项有数据 暂且只读第一项    ！！！！！！！！后期修改
+    
+    NSString *Id=Course.les_id;
     NSDictionary *para = @{@"method":@"Getintroduction",
                            @"param":@{@"Data":@{@"les_id":Id}}};
     
@@ -289,6 +300,13 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         self.datasource=[SCIntroductionDataSource objectWithKeyValues:dic[@"data"]];
         //SCIntroduction *introduction=self.datasource.har_des[0];
         //if(introduction.les_intrdoc){
+        if(!self.datasource.knowledge){
+            [UIAlertController showAlertAtViewController:self withMessage:@"暂无详细介绍" cancelTitle:@"取消" confirmTitle:@"我知道了" cancelHandler:^(UIAlertAction *action) {
+            } confirmHandler:^(UIAlertAction *action) {
+            }];
+            
+        }else{
+            
             self.extendView=[[SCExtendView alloc]initWithString:Course.les_name AndDataSource:self.datasource];
             
             self.extendView.frame = CGRectMake(0, 0, 0.68*self.view.width, 0.6*self.view.height);
@@ -297,12 +315,13 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
             
             [self.view addSubview:self.hubView];
             [self.view addSubview:self.extendView];
-//        }else{
-//            [UIAlertController showAlertAtViewController:self withMessage:@"暂无介绍信息" cancelTitle:@"取消" confirmTitle:@"我知道了" cancelHandler:^(UIAlertAction *action) {
-//            } confirmHandler:^(UIAlertAction *action) {
-//            }];
-
-       // }
+        }
+        //        }else{
+        //            [UIAlertController showAlertAtViewController:self withMessage:@"暂无介绍信息" cancelTitle:@"取消" confirmTitle:@"我知道了" cancelHandler:^(UIAlertAction *action) {
+        //            } confirmHandler:^(UIAlertAction *action) {
+        //            }];
+        
+        // }
     } failure:^(NSError *error) {
         NSLog(@"%@",error);
     }];
@@ -318,7 +337,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     //SCExtendView *extendView=[[SCExtendView alloc]init];
     //extendView.backgroundColor=[UIColor whiteColor];
     
-
+    
     
 }
 
@@ -351,7 +370,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     {
         [self loginBtnClick];
     }else{
-    
+        
         if (!stu_pwd) {
             stu_pwd = @"";
         }
@@ -359,23 +378,23 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         NSDictionary *para = @{@"method":@"GetStudentPlayLog",
                                @"param":@{@"Data":@{@"stu_id":stu_id,
                                                     @"stu_pwd":stu_pwd}}};
-    
-        [HttpTool postWithparams:para success:^(id responseObject) {
         
+        [HttpTool postWithparams:para success:^(id responseObject) {
+            
             NSData *data = [[NSData alloc] initWithData:responseObject];
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
             NSLog(@"%@",dic);
-        
-//        [SCCourseCategory setupObjectClassInArray:^NSDictionary *{
-//            return @{@"willknow":@"SCWillLearn"};
-//        }];
-
+            
+            //        [SCCourseCategory setupObjectClassInArray:^NSDictionary *{
+            //            return @{@"willknow":@"SCWillLearn"};
+            //        }];
+            
             self.playLog = [SCCoursePlayLog objectWithKeyValues:dic[@"data"]];
             if (!self.playLog) {
-                self.playLog = @"";
+                self.playLog = nil;
             }
-//        SCCoursePlayLog *playLog = [[SCCoursePlayLog alloc]init];
-//        playLog.lessonID = dic[@"data"][@""]
+            //        SCCoursePlayLog *playLog = [[SCCoursePlayLog alloc]init];
+            //        playLog.lessonID = dic[@"data"][@""]
             NSString *lessonId = self.playLog.les_id;
             float startTime = self.playLog.oversty_time;
             if (lessonId) {
@@ -383,21 +402,23 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
                     lessonId = [self getNextCourse:lessonId];
                     startTime = 0;
                 }
-
+                
             }else{
                 //lessonId = [self getFirstCourse];                未完成！！！！！！！！
                 lessonId = @"0001";
+                self.playLog.studyles_id=lessonId;
                 startTime = 0;
-
+                
             }
-        // 启动播放器
+            // 启动播放器
             SCPlayerViewController *playVC = [[SCPlayerViewController alloc]init];
-            playVC.lessonId = self.playLog.studyles_id;
-        // 设置播放开始时间，未完成   playVC.
+            playVC.delegate=self;
+            playVC.lessonId = lessonId;
+            // 设置播放开始时间，未完成   playVC.
             [self.navigationController pushViewController:playVC animated:YES];
-        
-//       self.datasource=[SCIntroductionDataSource objectWithKeyValues:dic[@"data"]];
-
+            
+            //       self.datasource=[SCIntroductionDataSource objectWithKeyValues:dic[@"data"]];
+            
         } failure:^(NSError *error) {
             NSLog(@"%@",error);
         }];
@@ -432,16 +453,18 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 {
     
     SCPlayerViewController *playerVC = [[SCPlayerViewController alloc]init];
+    playerVC.delegate=self;
     playerVC.lessonId = les_id;
     [self.navigationController pushViewController:playerVC animated:YES];
     
 }
 -(void)searchDidClick:(NSString *)les_id {
     SCPlayerViewController *playerVC=[[SCPlayerViewController alloc]init];
+    playerVC.delegate=self;
     playerVC.lessonId = les_id;
-//    playerVC.beginTime = b
+    //    playerVC.beginTime = b
     [self.navigationController pushViewController:playerVC animated:YES];
-//
+    //
 }
 
 #pragma mark - 私有方法
@@ -653,7 +676,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     }
     
     
-
+    
     //    self.allCourseBtn.selected=NO;
     //    self.allCourseBtnImage.selected=NO;
     //    self.videoHistoryBtn.selected=NO;

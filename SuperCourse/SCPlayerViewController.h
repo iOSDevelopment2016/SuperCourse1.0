@@ -10,6 +10,12 @@
 @class SCVIdeoInfo;
 
 
+@protocol SCPlayerViewControllerDelegate <NSObject>
+
+-(void)changeToLearn;
+
+@end
+
 
 
 @interface SCPlayerViewController : SCBaseViewController
@@ -17,6 +23,6 @@
 
 @property (nonatomic, strong) NSString *lessonId;
 
-
+@property (nonatomic ,weak) id<SCPlayerViewControllerDelegate>delegate;
 
 @end
