@@ -23,12 +23,13 @@
 @property (nonatomic ,strong) UITableView *historyTableView;
 @property (nonatomic ,strong) UIView             *hubView;
 @property (nonatomic ,strong) UIWebView          *webView;
+@property (nonatomic ,strong) SCHistory *historyData;
+@property (nonatomic ,strong) NSMutableArray *historyArr;
+
 @end
 
 
-@implementation SCVideoHistoryView{
-    NSMutableArray *historyArr;
-}
+@implementation SCVideoHistoryView
 
 - (instancetype)init
 {
@@ -36,32 +37,59 @@
     if (self) {
 //        [self initData];
          self.backgroundColor = [UIColor whiteColor];
+        _historyArr = [[NSMutableArray alloc]init];
+
 //        [self addSubview:self.historyTableView];
         [self loadCourseListFromNetwork];
        
     }
     return self;
 }
+
+
 -(void)loadCourseListFromNetwork{
     
-    NSString *stuid = ApplicationDelegate.userSession;
-    NSDictionary *para = @{@"method":@"History",
-                           @"param":@{@"Data":@{@"stuid":stuid}}};
-    [HttpTool postWithparams:para success:^(id responseObject) {
+    NSString *stu_id = ApplicationDelegate.userSession;
+//    NSString *stu_id = @"9720513e-6d0e-d0ef-0a7c-de862380c581";
+    NSMutableDictionary *firstDic = [[NSMutableDictionary alloc]init];
+    [firstDic setValue:stu_id forKey:@"stu_id"];
+    NSMutableDictionary *secondDic = [[NSMutableDictionary alloc]init];
+    [secondDic setValue:firstDic forKey:@"Data"];
+    
+    NSMutableDictionary *thirdDic = [[NSMutableDictionary alloc]init];
+    [thirdDic setValue:secondDic forKey:@"param"];
+    [thirdDic setValue:@"History" forKey:@"method"];
+    [HttpTool postWithparams:thirdDic success:^(id responseObject) {
         
         NSData *data = [[NSData alloc] initWithData:responseObject];
+//        NSString *str = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-        historyArr = [NSMutableArray array];
-        for (NSDictionary *tempDict in dic[@"data"][@"har_des"]) {
-            SCHistory *tempHistory  = [SCHistory objectWithKeyValues:tempDict];
-            [historyArr addObject:tempHistory];
-        }
 
+        [self setDataWithDic:dic];
+        
+        
         [self addSubview:self.historyTableView];
 
     } failure:^(NSError *error) {
         NSLog(@"%@",error);
     }];
+}
+
+-(void)setDataWithDic:(NSDictionary *)dict{
+
+    NSMutableDictionary *dataDict = dict[@"data"];
+    NSArray *historyInfoDict = dataDict[@"historyData"];
+    NSMutableArray *historyArr = [[NSMutableArray alloc]init];
+    for (int i=0; i<historyInfoDict.count; i++) {
+        SCHistory *h = [[SCHistory alloc]init];
+        NSDictionary *dict = historyInfoDict[i];
+        NSDictionary *historyDict = dict[@"0"];
+        h.oversty_time = [historyDict[@"oversty_time"] floatValue];
+        h.les_name = historyInfoDict[i][@"les_name"];
+        [historyArr addObject:h];
+        _historyArr[i] = historyArr[i];
+    }
+
 }
 
 
@@ -71,6 +99,9 @@
     self.historyTableView.backgroundColor= [UIColor whiteColor];
 //    [self loadCourseListFromNetwork];
 }
+
+
+
 -(UITableView *)historyTableView{
     if(!_historyTableView){
         _historyTableView = [[UITableView alloc]init];
@@ -81,35 +112,29 @@
     return  _historyTableView;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-  
-//    SCCourseGroup *temp = self.currentSource.sec_arr[section];
-//    return temp.lesarr.count;
-//    return h.count;
-    return historyArr.count;
+    
+    return _historyArr.count;
 }
 
 //返回cell
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     static NSString *CellIdentifier = @"Cell";
     SCHistoryTableViewCell *cell = (SCHistoryTableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if(cell == nil){
-        //        cell = [[[NSBundle mainBundle]loadNibNamed:NSStringFromClass:@"SCSearchTableViewCell"owner:nil options:nil] lastObject];
+
         cell= [[[NSBundle mainBundle]loadNibNamed:@"SCHistoryTableViewCell"owner:nil options:nil] firstObject];
         [cell.layer setBorderWidth:1];//设置边界的宽度
         [cell.layer setBorderColor:UIColorFromRGB(0xeeeeee).CGColor];
         cell.delegate=self;
-//        SCCourseGroup *temp=self.currentSource.sec_arr[indexPath.section];
-//        SCCourse *temp_=temp.lesarr[indexPath.row];
-//        SCHistoryList *temp=self.currentSource.lesarr[indexPath.section];
-//        SCHistoryList *h=self.currentSource.lesarr;
-        SCHistory *h=historyArr[indexPath.row];
+
+        SCHistory *h=_historyArr[indexPath.row];
         //cell.textLabel.text=temp_.courseTitle;
         [cell.historyBtn setTitle:h.les_name forState:UIControlStateNormal];
         [cell.historyBtn setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateHighlighted];
         cell.historyBtn.tag =indexPath.section * 1000 + indexPath.row;
-//
+
         CGFloat currentTime = h.oversty_time;
         
         int hour = (int)(currentTime/3600);
@@ -143,14 +168,14 @@
         }];
     }
     else if ([state isEqualToString:@"wifi"]){
-        SCHistory *currentHis = historyArr[indexPath.row];
+        SCHistory *currentHis = _historyArr[indexPath.row];
         [self.delegate historyDidClick:currentHis.les_id];
     }
     else{
         [UIAlertController showAlertAtViewController:self.viewController withMessage:@"您正在使用3G/4G流量" cancelTitle:@"取消" confirmTitle:@"继续播放" cancelHandler:^(UIAlertAction *action) {
             
         } confirmHandler:^(UIAlertAction *action) {
-            SCHistory *currentHis = historyArr[indexPath.row];
+            SCHistory *currentHis = _historyArr[indexPath.row];
             [self.delegate historyDidClick:currentHis.les_id];
 
         }];
