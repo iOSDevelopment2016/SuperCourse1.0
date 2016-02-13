@@ -18,6 +18,7 @@
 		7D45DEA31C5E1F2C00462B56 /* SCWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D45DEA21C5E1F2C00462B56 /* SCWebViewController.m */; };
 		7DCA89041C6DF10200F4B868 /* SCSearchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7DCA89031C6DF10200F4B868 /* SCSearchTableViewCell.xib */; };
 		7DCA890A1C6DF52B00F4B868 /* SCCourseTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7DCA89091C6DF52B00F4B868 /* SCCourseTableViewCell.xib */; };
+		7DCA890C1C6F52BD00F4B868 /* SCExtendView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7DCA890B1C6F52BD00F4B868 /* SCExtendView.xib */; };
 		B99897541C5F2AD4001DCA7D /* SClesson_list.m in Sources */ = {isa = PBXBuildFile; fileRef = B99897531C5F2AD4001DCA7D /* SClesson_list.m */; };
 		B999497D1C6053D500671BF0 /* SCHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = B999497C1C6053D500671BF0 /* SCHistory.m */; };
 		C90DE85C1C53FABA00B7137F /* SCCustomButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C90DE85B1C53FABA00B7137F /* SCCustomButton.m */; };
@@ -46,7 +47,6 @@
 		FE005B9D1C56190400920EFB /* SCCourseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE005B9B1C56190300920EFB /* SCCourseTableViewCell.m */; };
 		FE44D5691C60471200354DF6 /* SCCoursePlayLog.m in Sources */ = {isa = PBXBuildFile; fileRef = FE44D5681C60471200354DF6 /* SCCoursePlayLog.m */; };
 		FE44D56C1C60898B00354DF6 /* SCExtendView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE44D56B1C60898B00354DF6 /* SCExtendView.m */; };
-		FE44D5721C60901C00354DF6 /* SCExtendView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE44D5711C60901C00354DF6 /* SCExtendView.xib */; };
 		FE5835601C58FC01004DFA97 /* AFDownloadRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5835371C58FC01004DFA97 /* AFDownloadRequestOperation.m */; };
 		FE5835611C58FC01004DFA97 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE58353A1C58FC01004DFA97 /* AFHTTPRequestOperation.m */; };
 		FE5835621C58FC01004DFA97 /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FE58353C1C58FC01004DFA97 /* AFHTTPRequestOperationManager.m */; };
@@ -150,6 +150,7 @@
 		7D45DEA21C5E1F2C00462B56 /* SCWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCWebViewController.m; sourceTree = "<group>"; };
 		7DCA89031C6DF10200F4B868 /* SCSearchTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCSearchTableViewCell.xib; sourceTree = "<group>"; };
 		7DCA89091C6DF52B00F4B868 /* SCCourseTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCCourseTableViewCell.xib; sourceTree = "<group>"; };
+		7DCA890B1C6F52BD00F4B868 /* SCExtendView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCExtendView.xib; sourceTree = "<group>"; };
 		B99897521C5F2AD4001DCA7D /* SClesson_list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SClesson_list.h; sourceTree = "<group>"; };
 		B99897531C5F2AD4001DCA7D /* SClesson_list.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SClesson_list.m; sourceTree = "<group>"; };
 		B999497B1C6053D500671BF0 /* SCHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHistory.h; sourceTree = "<group>"; };
@@ -207,7 +208,6 @@
 		FE44D5681C60471200354DF6 /* SCCoursePlayLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCoursePlayLog.m; sourceTree = "<group>"; };
 		FE44D56A1C60898B00354DF6 /* SCExtendView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCExtendView.h; sourceTree = "<group>"; };
 		FE44D56B1C60898B00354DF6 /* SCExtendView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCExtendView.m; sourceTree = "<group>"; };
-		FE44D5711C60901C00354DF6 /* SCExtendView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCExtendView.xib; sourceTree = "<group>"; };
 		FE5835361C58FC01004DFA97 /* AFDownloadRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFDownloadRequestOperation.h; sourceTree = "<group>"; };
 		FE5835371C58FC01004DFA97 /* AFDownloadRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFDownloadRequestOperation.m; sourceTree = "<group>"; };
 		FE5835391C58FC01004DFA97 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
@@ -554,7 +554,7 @@
 				DAE2880C1C59EA3A00426DDD /* SCLoginView.xib */,
 				FE44D56A1C60898B00354DF6 /* SCExtendView.h */,
 				FE44D56B1C60898B00354DF6 /* SCExtendView.m */,
-				FE44D5711C60901C00354DF6 /* SCExtendView.xib */,
+				7DCA890B1C6F52BD00F4B868 /* SCExtendView.xib */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -941,12 +941,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				7DCA890A1C6DF52B00F4B868 /* SCCourseTableViewCell.xib in Resources */,
-				FE44D5721C60901C00354DF6 /* SCExtendView.xib in Resources */,
 				FE92DA841C6357B600737B17 /* MBProgressHUD.bundle in Resources */,
 				DAE2880E1C59EA3A00426DDD /* SCLoginView.xib in Resources */,
 				FE7F65101C5DA9AF009C7F21 /* SCHistoryTableViewCell.xib in Resources */,
 				7DCA89041C6DF10200F4B868 /* SCSearchTableViewCell.xib in Resources */,
 				FE7057361C62E5270079C614 /* SCDownloadConditionViewController.xib in Resources */,
+				7DCA890C1C6F52BD00F4B868 /* SCExtendView.xib in Resources */,
 				FE70573B1C62EE810079C614 /* SCDownloadTableViewCell.xib in Resources */,
 				C9E4E6521C53BAF30052030E /* LaunchScreen.storyboard in Resources */,
 				C9E4E64F1C53BAF30052030E /* Assets.xcassets in Resources */,
