@@ -618,7 +618,7 @@
         //        //}
         
         cell.width=self.width;
-        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
     }
     return cell;
