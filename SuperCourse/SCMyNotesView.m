@@ -94,14 +94,15 @@
                            @"param":@{@"Data":@{@"student_id":student_id,@"student_password":student_password,@"save":temp}}};
    
     [HttpTool postWithparams:para success:^(id responseObject){
+        
+        NSString *str = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSLog(@"");
      } failure:^(NSError *error) {
-    NSLog(@"%@",error);
-}];
-
-
-
-
+        NSLog(@"%@",error);
+     }];
 }
+
+
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView{
     return self.allowEdit;
 }

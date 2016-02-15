@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -15,19 +15,6 @@
                 <rect key="frame" x="0.0" y="0.0" width="768" height="68.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5zC-lU-YCZ">
-                        <rect key="frame" x="73" y="19" width="276" height="31"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="276" id="dHt-vc-S1Y"/>
-                            <constraint firstAttribute="height" constant="31" id="qEg-fa-BHi"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="27"/>
-                        <state key="normal" title="Button"/>
-                        <connections>
-                            <action selector="historyBtnClick:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="h98-4M-X6C"/>
-                            <action selector="searchBtnClick:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="4py-DA-c4t"/>
-                        </connections>
-                    </button>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="小圆" translatesAutoresizingMaskIntoConstraints="NO" id="cg7-FI-aHh">
                         <rect key="frame" x="21" y="25" width="20" height="19"/>
                         <constraints>
@@ -45,6 +32,21 @@
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5zC-lU-YCZ">
+                        <rect key="frame" x="73" y="19" width="276" height="31"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="276" id="dHt-vc-S1Y"/>
+                            <constraint firstAttribute="height" constant="31" id="qEg-fa-BHi"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="27"/>
+                        <state key="normal" title="Button">
+                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="historyBtnClick:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="h98-4M-X6C"/>
+                            <action selector="searchBtnClick:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="4py-DA-c4t"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="MJr-CK-Nx6" firstAttribute="leading" secondItem="5zC-lU-YCZ" secondAttribute="trailing" constant="161" id="13f-Sm-hE2"/>

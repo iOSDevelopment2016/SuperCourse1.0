@@ -17,7 +17,7 @@
 -(void)layoutSubviews{
     CGFloat topImage=self.bounds.size.height*0.362;
     CGFloat leftImage=self.bounds.size.width*0.027;
-    CGFloat widthImage=self.bounds.size.width*0.021;
+    CGFloat widthImage=self.bounds.size.width*0.0232;
     CGFloat heighthImage=self.bounds.size.height*0.232;
     CGFloat topBtn=self.bounds.size.height*0.275;
     CGFloat leftBtn=self.bounds.size.width*0.047;
@@ -25,8 +25,8 @@
     CGFloat heighthBtn=self.bounds.size.height*0.450;
     self.topImage.constant=topImage;
     self.leftImage.constant=leftImage;
-    self.widthImage.constant=widthImage;
-    self.heighthImage.constant=heighthImage;
+//    self.widthImage.constant=widthImage;
+//    self.heighthImage.constant=heighthImage;
     self.topBtn.constant=topBtn;
     self.leftBtn.constant=leftBtn;
     self.widthBtn.constant=widthBtn;

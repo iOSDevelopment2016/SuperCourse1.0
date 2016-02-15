@@ -106,9 +106,9 @@
             
             NSData *data = [[NSData alloc] initWithData:responseObject];
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-            NSLog(@"%@",dic);
+//            NSLog(@"%@",dic);
             NSString *nowState=[dic objectForKey:@"msg"];
-            //NSLog(@"%@",nowState);
+//            NSLog(@"%@",nowState);
             NSString *State=@"";
             if ([nowState isEqualToString:State]) {
                 NSLog(@"注册成功");
@@ -146,7 +146,7 @@
         NSData *data = [[NSData alloc] initWithData:responseObject];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         NSString *nowState=[dic objectForKey:@"data"][@"LoginSucceed"];
-        NSString *errorMsg = dic[@"msg"];
+//        NSString *errorMsg = dic[@"msg"];
         //NSLog(@"%@",nowState);
         NSString *State=@"OK";
         if ([nowState isEqualToString:State]) {
@@ -172,11 +172,12 @@
 
             [[NSNotificationCenter defaultCenter]postNotificationName:@"ImageShouldChange" object:nil];
             [self removeFromSuperview];
+            [self.delegate removeHub];
         }else{
             [self shakeAnimationForView:self];
         }
         
-        [self.delegate removeHub];
+        
     } failure:^(NSError *error) {
         NSLog(@"%@",error);
     }];
