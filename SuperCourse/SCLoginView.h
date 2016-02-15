@@ -13,6 +13,7 @@
 -(void)getuser:(NSString *)userphone;
 -(void)removeHub;
 -(void)changeImage;
+-(void)sendAlert;
 @end
 
 @interface SCLoginView : UIView
@@ -25,6 +26,7 @@
 - (IBAction)sendPswClick:(id)sender;
 - (IBAction)loginClick:(id)sender;
 - (IBAction)usertextClick:(id)sender;
+
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *telWidth;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *telHeight;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *telTop;

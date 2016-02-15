@@ -88,6 +88,7 @@
     self.phone.delegate = self;
     [self.phone addTarget:self action:@selector(textValueDidChange:) forControlEvents:UIControlEventAllEvents];
     [self regNotifacation];
+    self.password.enabled=NO;
 }
 
 -(void)textValueDidChange:(UITextField *)textField{
@@ -113,6 +114,8 @@
             if ([nowState isEqualToString:State]) {
                 NSLog(@"注册成功");
                 self.sendPsw.selected=YES;
+                self.password.enabled=YES;
+                self.password.placeholder=@"请输入4位数字验证码";
             }else{
                 [self shakeAnimationForView:self];
             }
@@ -187,6 +190,7 @@
 
 - (IBAction)usertextClick:(id)sender {
 }
+
 //观察者模式
 //设置观察者模式
 -(void)regNotifacation{
