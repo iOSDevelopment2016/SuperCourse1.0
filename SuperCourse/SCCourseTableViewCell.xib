@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="14F1605" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -12,7 +12,7 @@
             <rect key="frame" x="0.0" y="0.0" width="1094" height="60"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="1094" height="59.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="1094" height="59"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AGu-dy-GbD">
@@ -24,6 +24,11 @@
                         <state key="normal">
                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         </state>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="6iG-t6-1sQ"/>
+                            </mask>
+                        </variation>
                         <connections>
                             <action selector="contendFieldClick:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="ZGJ-DQ-mZu"/>
                         </connections>
@@ -38,9 +43,9 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="小圆" translatesAutoresizingMaskIntoConstraints="NO" id="h4e-3m-cjY">
-                        <rect key="frame" x="21" y="20" width="23" height="18"/>
+                        <rect key="frame" x="21" y="15" width="23" height="23"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="18" id="eas-6Q-bpm"/>
+                            <constraint firstAttribute="height" constant="23" id="eas-6Q-bpm"/>
                             <constraint firstAttribute="width" constant="23" id="fid-wH-Eie"/>
                         </constraints>
                     </imageView>
@@ -88,6 +93,7 @@
                 </constraints>
                 <variation key="default">
                     <mask key="constraints">
+                        <exclude reference="BF0-s0-UaE"/>
                         <exclude reference="QFh-d8-bP0"/>
                         <exclude reference="Vxn-82-53X"/>
                         <exclude reference="LYW-8E-hSX"/>
