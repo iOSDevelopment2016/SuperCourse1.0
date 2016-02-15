@@ -307,11 +307,14 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
             
         }else{
             
-            self.extendView=[[SCExtendView alloc]initWithString:Course.les_name AndDataSource:self.datasource];
+            self.extendView = [[SCExtendView alloc]initWithString:Course.les_name AndDataSource:self.datasource AndWidth:0.68*self.view.width AndHeight:0.6*self.view.height];
             
             self.extendView.frame = CGRectMake(0, 0, 0.68*self.view.width, 0.6*self.view.height);
+            
             self.extendView.center = self.view.center;
             self.extendView.delegate = self;
+            self.extendView.width = 0.68*self.view.width;
+            self.extendView.height = 0.6*self.view.height;
             
             [self.view addSubview:self.hubView];
             [self.view addSubview:self.extendView];

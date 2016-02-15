@@ -21,10 +21,11 @@
 @end
 
 @interface SCExtendView : UIView
-
+@property (nonatomic) float width;
+@property (nonatomic) float height;
 @property (nonatomic,strong) id<SCExtendViewDelegate> delegate;
 
 //@property (nonatomic ,strong)NSString *title;
 //@property (nonatomic ,strong) SCIntroductionDataSource *datasource;
-- (instancetype)initWithString:(NSString *)title AndDataSource:(SCIntroductionDataSource *)datasource;
+- (instancetype)initWithString:(NSString *)title AndDataSource:(SCIntroductionDataSource *)datasource AndWidth:(float)width AndHeight:(float)height;
 @end
