@@ -174,6 +174,8 @@
             }
 
             [[NSNotificationCenter defaultCenter]postNotificationName:@"ImageShouldChange" object:nil];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"UserDidLogin" object:nil];
+            
             [self removeFromSuperview];
             [self.delegate removeHub];
         }else{

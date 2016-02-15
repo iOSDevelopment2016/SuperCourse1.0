@@ -41,9 +41,18 @@
 
 //        [self addSubview:self.historyTableView];
         [self loadCourseListFromNetwork];
-       
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadCourseListFromNetwork) name:@"UserDidLogin" object:nil];
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(clearHistory) name:@"UserDidLogout" object:nil];
+
     }
     return self;
+}
+
+-(void)clearHistory
+{
+    
+    [self.historyTableView removeFromSuperview];
 }
 
 
@@ -67,6 +76,7 @@
         [self setDataWithDic:dic];
         
         [self addSubview:self.historyTableView];
+        [self.historyTableView reloadData];
 
     } failure:^(NSError *error) {
         NSLog(@"%@",error);
@@ -80,8 +90,8 @@
     NSMutableArray *historyArr = [[NSMutableArray alloc]init];
     for (int i=0; i<historyInfoDict.count; i++) {
         SCHistory *h = [[SCHistory alloc]init];
-        NSDictionary *dict = historyInfoDict[i];
-        NSDictionary *historyDict = dict[@"0"];
+        NSDictionary *historyDict = historyInfoDict[i];
+//        NSDictionary *historyDict = dict[@"0"];
         h.oversty_time = [historyDict[@"oversty_time"] floatValue];
         h.les_name = historyInfoDict[i][@"les_name"];
         [historyArr addObject:h];
@@ -144,6 +154,7 @@
         }else{
             cell.state.text= [NSString stringWithString:time];
         }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     return cell;

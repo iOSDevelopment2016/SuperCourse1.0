@@ -56,8 +56,16 @@
 //        [self addSubview:self.saveBtn];
         [self addSubview:self.operationBtn];
         [self loadData];
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(loadData) name:@"UserDidLogin" object:nil];
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(clearNotes) name:@"UserDidLogout" object:nil];
+
     }
     return self;
+}
+
+-(void)clearNotes{
+    
+    self.notesTextView.text = @"";
 }
 
 -(void)loadData{
