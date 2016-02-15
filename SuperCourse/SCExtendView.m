@@ -71,7 +71,6 @@
         self.thirdLabel.font=[UIFont systemFontOfSize:25*HeightScale];
         self.backBtn.font=[UIFont systemFontOfSize:50*HeightScale];
 
-
     }
     return self;
 }
