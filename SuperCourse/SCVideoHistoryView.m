@@ -62,11 +62,9 @@
     [HttpTool postWithparams:thirdDic success:^(id responseObject) {
         
         NSData *data = [[NSData alloc] initWithData:responseObject];
-//        NSString *str = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
 
         [self setDataWithDic:dic];
-        
         
         [self addSubview:self.historyTableView];
 

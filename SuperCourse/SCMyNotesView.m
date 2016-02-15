@@ -84,7 +84,7 @@
 }
 
 -(void)loadDataSave{
-    NSString *student_id = @"0000";
+    NSString *student_id = ApplicationDelegate.userSession;
     NSString *student_password = ApplicationDelegate.userPsw;
     NSString *temp=self.notesTextView.text;
     if (!student_password) {
