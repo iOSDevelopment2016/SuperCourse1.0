@@ -16,7 +16,7 @@
 @protocol SCExtendViewDelegate <NSObject>
 
 -(void)returnToMainView;
--(NSString *)getTitle;
+//-(NSString *)getTitle;
 
 @end
 

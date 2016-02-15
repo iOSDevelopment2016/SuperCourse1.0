@@ -11,16 +11,18 @@
 
 @interface SCExtendView ()
 @property (strong, nonatomic) IBOutlet UILabel       *headLabel;
+
 @property (strong, nonatomic) IBOutlet UILabel       *firseLabel;
 @property (strong, nonatomic) IBOutlet UILabel       *secondLabel;
 @property (strong, nonatomic) IBOutlet UILabel       *thirdLabel;
+
 @property (strong, nonatomic) IBOutlet UILabel       *firseLabelText;
 @property (strong, nonatomic) IBOutlet UILabel       *secondLabelText;
 @property (strong, nonatomic) IBOutlet UILabel       *thirdLabelText;
 
-
 @property (strong, nonatomic) IBOutlet UIButton *backBtn;
 - (IBAction)backBtnClick:(id)sender;
+
 @end
 
 
