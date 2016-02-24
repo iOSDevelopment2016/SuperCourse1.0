@@ -731,14 +731,14 @@
         //        //}
         LocalDatabase *db=[LocalDatabase sharedManager];
         if([db isDownloading:temp_.les_id]){
-            cell.downloadBtn.enabled=YES;
+            cell.downloadBtn.enabled=NO;
             cell.beDownloadingLabel.text=@"当前下载";
             cell.beDownloadingLabel.font=FONT_25;
             [cell.downloadBtn setHidden:NO];
             [cell.beDownloadingLabel setHidden:YES];
         }else{
             if([db isDownload:temp_.les_id]){
-                cell.downloadBtn.enabled=YES;
+                cell.downloadBtn.enabled=NO;
                 cell.beDownloadingLabel.text=@"下载完成";
                 cell.beDownloadingLabel.font=FONT_25;
                 [cell.downloadBtn setHidden:YES];
@@ -747,7 +747,7 @@
             }else{
                 if([db findConfig:temp_.les_id])
                 {
-                    cell.downloadBtn.enabled=YES;
+                    cell.downloadBtn.enabled=NO;
                     cell.beDownloadingLabel.text=@"等待下载";
                     cell.beDownloadingLabel.font=FONT_25;
                     [cell.downloadBtn setHidden:NO];
