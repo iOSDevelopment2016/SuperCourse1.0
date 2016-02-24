@@ -143,6 +143,11 @@
     
     //[self.navigationController popViewControllerAnimated:YES];
 }
+
+-(void)loginBtnClick{
+    [self.navigationController popViewControllerAnimated:YES];
+    [self.delegate toLogin];
+}
 /*
 #pragma mark - Navigation
 
@@ -245,13 +250,24 @@
     if(!_exitBtn){
         _exitBtn=[[UIButton alloc]init];
         _exitBtn.backgroundColor=[UIColor redColor];
-        [_exitBtn setTitle:@"退出当前账号" forState:UIControlStateNormal];
+//        NSString *stu_id = ApplicationDelegate.userSession;
+//        NSString *stu_pwd = ApplicationDelegate.userPsw;
+        if([ApplicationDelegate.userSession isEqualToString:UnLoginUserSession])
+        {
+            [_exitBtn setTitle:@" 登     陆 " forState:UIControlStateNormal];
+            [_exitBtn addTarget:self action:@selector(loginBtnClick) forControlEvents:UIControlEventTouchUpInside];
+        }else{
+            [_exitBtn setTitle:@"退出当前账号" forState:UIControlStateNormal];
+            [_exitBtn addTarget:self action:@selector(exitBtnClick) forControlEvents:UIControlEventTouchUpInside];
+        }
+
+        
         [_exitBtn setFont:[UIFont systemFontOfSize:45*WidthScale]];
         [_exitBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _exitBtn.layer.masksToBounds = YES;
         _exitBtn.layer.cornerRadius = 26;
         //_exitBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        [_exitBtn addTarget:self action:@selector(exitBtnClick) forControlEvents:UIControlEventTouchUpInside];
+        
     }
     
     return _exitBtn;

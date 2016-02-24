@@ -12,7 +12,7 @@
 @protocol SCSettingViewControllerDelegate <NSObject>
 
 -(void)unlogin;
-
+-(void)toLogin;
 @end
 
 

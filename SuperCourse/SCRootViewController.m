@@ -400,6 +400,10 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     
 }
 
+-(void)toLogin{
+    [self loginBtnClick];
+}
+
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     [self.searchTextField resignFirstResponder];
 }
@@ -942,8 +946,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     //    self.favouriteSettingBtn.selected=YES;
     //    self.favouriteSettingBtnImage.selected=YES;
     
-    self.setVC = [[SCSettingViewController alloc]init];
-    self.setVC.delegate=self;
+    
     [self.navigationController pushViewController:self.setVC animated:YES];
 }
 
@@ -1313,6 +1316,13 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         _searchView.viewController =self;
     }
     return _searchView;
+}
+-(SCSettingViewController *)setVC{
+    if(!_setVC){
+        _setVC = [[SCSettingViewController alloc]init];
+        _setVC.delegate=self;
+    }
+    return _setVC;
 }
 
 @end

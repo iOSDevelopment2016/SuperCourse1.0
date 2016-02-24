@@ -87,7 +87,8 @@
                     [db updateDBInfoValueWithKey:[mode.les_id UTF8String] value:[value UTF8String]];
                     //[db updateTable];
                     [self downloadWithSCDownlodaMode:mode];
-                    
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"getRefresh" object:self userInfo:@{}];
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"toBeDownload" object:self userInfo:@{@"name":mode.les_name}];
 //                    if([ApplicationDelegate.mark isEqualToString:@"YES"]){
 //                        [[NSNotificationCenter defaultCenter]postNotificationName:@"sendDownloadCondition" object:self userInfo:@{}];
 //                    }
@@ -188,7 +189,7 @@
         [db releaseDownloading:mode.les_id];
         [db updateFinished:mode.les_id];
         [[NSNotificationCenter defaultCenter]postNotificationName:@"downloadFinished" object:self userInfo:@{@"les_ID":mode.les_id}];
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"getRefresh" object:self userInfo:@{}];
+        
         [[NSNotificationCenter defaultCenter]postNotificationName:@"beingFinished" object:self userInfo:@{@"name":mode.les_name}];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         

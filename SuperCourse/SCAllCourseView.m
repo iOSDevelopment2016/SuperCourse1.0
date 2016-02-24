@@ -94,6 +94,10 @@
                                                  selector: @selector(beDelete:)
                                                      name: @"beingDelete"
                                                    object: nil];
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(BeDownloading:)
+                                                     name: @"toBeDownload"
+                                                   object: nil];
 
         
     }
@@ -110,17 +114,24 @@
             SCCourseTableViewCell *cell =  [self.firstTableView cellForRowAtIndexPath:index];
             NSLog(@"%@",cell.contentField.titleLabel.text);
             if([cell.contentField.titleLabel.text isEqualToString:name]){
-                cell.downloadBtn.enabled=NO;
-                LocalDatabase *db=[LocalDatabase sharedManager];
-                if([db isDownloadingName:name]){
-                    cell.beDownloadingLabel.text=@"当前下载";
-                }else{
-                    cell.beDownloadingLabel.text=@"等待下载";
-                }
-                cell.beDownloadingLabel.font=FONT_25;
-                [cell.downloadBtn setHidden:NO];
-                [cell.beDownloadingLabel setHidden:YES];
-                cell.beDownloadingLabel.textColor=UIColorFromRGB(0x6fccdb);
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    SCCourseGroup *temp=self.currentSource.sec_arr[i];
+                    SCCourse *temp_=temp.lesarr[j];
+                    
+                    LocalDatabase *db=[LocalDatabase sharedManager];
+                    if([db isDownloadingName:name]){
+                        cell.beDownloadingLabel.text=@"当前下载";
+                        temp_.downloading=@"YES";
+                    }else{
+                        cell.beDownloadingLabel.text=@"等待下载";
+                        temp_.downloading=@"NO";
+                    }
+                    
+                    
+                    [self.firstTableView reloadData];
+                    temp_.downloading=nil;
+                });
                 break;
             }
            
@@ -128,21 +139,54 @@
     }
     
 }
--(void)beFinished:(NSNotification *)message{
+-(void)BeDownloading:(NSNotification *)message{
     NSDictionary *userInfo = [message userInfo];
     NSString *name = userInfo[@"name"];
-    for(int i=0;i<20;i++){
-        for(int j=0;j<20;j++){
+    for(int i=0;i<10;i++){
+        for(int j=0;j<10;j++){
             NSIndexPath *index =  [NSIndexPath indexPathForItem:j inSection:i];
             SCCourseTableViewCell *cell =  [self.firstTableView cellForRowAtIndexPath:index];
             NSLog(@"%@",cell.contentField.titleLabel.text);
             if([cell.contentField.titleLabel.text isEqualToString:name]){
-                cell.downloadBtn.enabled=NO;
-                cell.beDownloadingLabel.text=@"下载完成";
-                cell.beDownloadingLabel.font=FONT_25;
-                [cell.downloadBtn setHidden:YES];
-                [cell.beDownloadingLabel setHidden:NO];
-                cell.beDownloadingLabel.textColor=UIColorFromRGB(0x6fccdb);
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    SCCourseGroup *temp=self.currentSource.sec_arr[i];
+                    SCCourse *temp_=temp.lesarr[j];
+                    
+                    
+                        cell.beDownloadingLabel.text=@"当前下载";
+                        temp_.downloading=@"YES";
+                                        
+                    
+                    [self.firstTableView reloadData];
+                    temp_.downloading=nil;
+                });
+                break;
+            }
+            
+        }
+    }
+    
+}
+
+-(void)beFinished:(NSNotification *)message{
+    NSDictionary *userInfo = [message userInfo];
+    NSString *name = userInfo[@"name"];
+    for(int i=0;i<10;i++){
+        for(int j=0;j<10;j++){
+            NSIndexPath *index =  [NSIndexPath indexPathForItem:j inSection:i];
+            SCCourseTableViewCell *cell =  [self.firstTableView cellForRowAtIndexPath:index];
+            NSLog(@"%@",cell.contentField.titleLabel.text);
+            if([cell.contentField.titleLabel.text isEqualToString:name]){
+                
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    SCCourseGroup *temp=self.currentSource.sec_arr[i];
+                    SCCourse *temp_=temp.lesarr[j];
+                    temp_.downloaded=@"YES";
+                    [self.firstTableView reloadData];
+                    temp_.downloaded=nil;
+                });
                 break;
             }
             
@@ -730,31 +774,54 @@
         //            cell.selected=NO;
         //        //}
         LocalDatabase *db=[LocalDatabase sharedManager];
-        if([db isDownloading:temp_.les_id]){
+                if([temp_.downloaded isEqualToString:@"YES"]){
+            cell.downloadBtn.enabled=NO;
+            cell.beDownloadingLabel.text=@"下载完成";
+            cell.beDownloadingLabel.font=FONT_25;
+            [cell.downloadBtn setHidden:YES];
+            [cell.beDownloadingLabel setHidden:NO];
+            
+        }else if([temp_.downloading isEqualToString:@"YES"]){
             cell.downloadBtn.enabled=NO;
             cell.beDownloadingLabel.text=@"当前下载";
             cell.beDownloadingLabel.font=FONT_25;
-            [cell.downloadBtn setHidden:NO];
-            [cell.beDownloadingLabel setHidden:YES];
+            [cell.downloadBtn setHidden:YES];
+            [cell.beDownloadingLabel setHidden:NO];
+        }else if([temp_.downloading isEqualToString:@"NO"]){
+            cell.downloadBtn.enabled=NO;
+            cell.beDownloadingLabel.text=@"等待下载";
+            cell.beDownloadingLabel.font=FONT_25;
+            [cell.downloadBtn setHidden:YES];
+            [cell.beDownloadingLabel setHidden:NO];
         }else{
-            if([db isDownload:temp_.les_id]){
+            if([db isDownloading:temp_.les_id]){
                 cell.downloadBtn.enabled=NO;
-                cell.beDownloadingLabel.text=@"下载完成";
+                cell.beDownloadingLabel.text=@"当前下载";
                 cell.beDownloadingLabel.font=FONT_25;
                 [cell.downloadBtn setHidden:YES];
                 [cell.beDownloadingLabel setHidden:NO];
-                
             }else{
-                if([db findConfig:temp_.les_id])
-                {
+                if([db isDownload:temp_.les_id]){
                     cell.downloadBtn.enabled=NO;
-                    cell.beDownloadingLabel.text=@"等待下载";
+                    cell.beDownloadingLabel.text=@"下载完成";
                     cell.beDownloadingLabel.font=FONT_25;
-                    [cell.downloadBtn setHidden:NO];
-                    [cell.beDownloadingLabel setHidden:YES];
+                    [cell.downloadBtn setHidden:YES];
+                    [cell.beDownloadingLabel setHidden:NO];
+                    
+                }else{
+                    if([db findConfig:temp_.les_id])
+                    {
+                        cell.downloadBtn.enabled=NO;
+                        cell.beDownloadingLabel.text=@"等待下载";
+                        cell.beDownloadingLabel.font=FONT_25;
+                        [cell.downloadBtn setHidden:YES];
+                        [cell.beDownloadingLabel setHidden:NO];
+                    }
                 }
             }
+
         }
+        
         
         
         cell.width=self.width;

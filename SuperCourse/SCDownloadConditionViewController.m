@@ -65,8 +65,18 @@
 }
 
 -(void)toRefresh{
-    //[self getChange];
+    [self toGetChange];
 }
+
+-(void)toGetChange{
+    LocalDatabase *db = [LocalDatabase sharedManager];
+    datasource= [db getAllData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.downloadTableView reloadData];
+    });
+    
+}
+
 
 //- (void)toDownload:(NSNotification *)message{
 //    NSDictionary *userInfo = [message userInfo];

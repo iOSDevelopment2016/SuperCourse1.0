@@ -121,8 +121,10 @@
             //            }else{
             //                return YES;
             //            }
+        }else{
+            return NO;
         }
-        sqlite3_finalize(statement);
+        //sqlite3_finalize(statement);
         
     }else{
         sqlite3_finalize(statement);
@@ -261,6 +263,8 @@
             // [array addObject:mode];//对么？
         }
         
+    }else{
+        return NO;
     }
     sqlite3_finalize(statement);
     if([mode.les_downloading isEqualToString:@"YES"]){
