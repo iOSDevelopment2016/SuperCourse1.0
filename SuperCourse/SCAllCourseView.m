@@ -530,8 +530,7 @@
 
 -(UIImageView *)topImageView{
     if (!_topImageView){
-        _topImageView = [[UIImageView alloc]init];
-        [_topImageView sd_setImageWithURL:[NSURL URLWithString:@"http://101.200.73.189/SuperCourseServer/Images/AllCourseHeadImage.png"] placeholderImage:[UIImage imageNamed:@"SC_background"]];
+        _topImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"SC_background"]];
         
         _topImageView.userInteractionEnabled = YES;
         _topImageView.clipsToBounds = YES;
@@ -568,7 +567,7 @@
     if(!_headImageView){
         
         _headImageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"iOS"]];
-        
+        [_headImageView sd_setImageWithURL:[NSURL URLWithString:@"http://101.200.73.189/SuperCourseServer/Images/AllCourseHeadImage.png"] placeholderImage:[UIImage imageNamed:@"iOS"]];
     }
     return _headImageView;
     
