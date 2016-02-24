@@ -102,7 +102,7 @@
     [super viewWillAppear:animated];
     
     self.backImageBtn.frame=CGRectMake(40, 42, 20, 35);
-    self.backBtn.frame=CGRectMake(40, 40, 250, 40);
+    self.backBtn.frame=CGRectMake(40, 40, 190, 40);
     self.downloadTableView.frame = CGRectMake(0, 180*HeightScale, 2048*WidthScale, 1000*HeightScale);
     self.downloadTableView.backgroundColor=UIColorFromRGB(0xeeeeee);
     self.label.frame=CGRectMake(0, 0, 0.3*self.view.width, 0.2*self.view.height);

@@ -273,8 +273,8 @@
     return _exitBtn;
 }
 -(void)poseDownloads{
-    [UIAlertController showAlertAtViewController:self withMessage:@"功能尚未开放，敬请期待" cancelTitle:@"取消" confirmTitle:@"我知道了" cancelHandler:^(UIAlertAction *action) {
-    } confirmHandler:^(UIAlertAction *action) {
+    
+    [UIAlertController showAlertAtViewController:self title:@"提示" message:@"功能尚未开放，敬请期待" confirmTitle:@"我知道了" confirmHandler:^(UIAlertAction *action) {
     }];
 }
 -(void)posetMesseges{
