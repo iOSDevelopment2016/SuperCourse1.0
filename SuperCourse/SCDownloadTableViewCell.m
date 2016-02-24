@@ -20,7 +20,7 @@
     self.example2.centerLabelVisible = YES;
     self.example2.percentage=ApplicationDelegate.pram;
     [self addSubview:self.example2];
-    
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
    
 
     // [self.examples addObject:self.example2];
