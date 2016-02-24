@@ -13,7 +13,7 @@
 - (void)awakeFromNib {
     // Initialization code
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(showTime:) name:@"sendTime" object:nil];
-    self.example2 = [[THCircularProgressView alloc] initWithFrame:CGRectMake(650*WidthScale, 33*HeightScale, 60*HeightScale, 60*HeightScale)];
+    self.example2 = [[THCircularProgressView alloc] initWithFrame:CGRectMake(670*WidthScale, self.height/2-30*HeightScale, 60*HeightScale, 60*HeightScale)];
     self.example2.lineWidth = 8.0f;
     self.example2.progressColor = [UIColor greenColor];
     self.example2.centerLabel.font = [UIFont boldSystemFontOfSize:40];

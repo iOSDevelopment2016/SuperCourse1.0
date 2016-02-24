@@ -249,7 +249,7 @@
         [_exitBtn setFont:[UIFont systemFontOfSize:45*WidthScale]];
         [_exitBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _exitBtn.layer.masksToBounds = YES;
-        _exitBtn.layer.cornerRadius = 35;
+        _exitBtn.layer.cornerRadius = 26;
         //_exitBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         [_exitBtn addTarget:self action:@selector(exitBtnClick) forControlEvents:UIControlEventTouchUpInside];
     }

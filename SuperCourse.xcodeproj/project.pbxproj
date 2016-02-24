@@ -71,7 +71,6 @@
 		FE7057351C62E5270079C614 /* SCDownloadConditionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7057331C62E5270079C614 /* SCDownloadConditionViewController.m */; };
 		FE70573A1C62EE810079C614 /* SCDownloadTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7057381C62EE810079C614 /* SCDownloadTableViewCell.m */; };
 		FE70573B1C62EE810079C614 /* SCDownloadTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE7057391C62EE810079C614 /* SCDownloadTableViewCell.xib */; };
-		FE7667591C753F9E00017604 /* libdispatch.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FE7667571C753F9E00017604 /* libdispatch.tbd */; };
 		FE76675C1C75419000017604 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FE76675B1C75419000017604 /* libsqlite3.0.tbd */; };
 		FE7667651C754F8F00017604 /* LocalDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7667641C754F8F00017604 /* LocalDatabase.m */; };
 		FE7667691C75593500017604 /* SCDownlodaMode.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7667681C75593500017604 /* SCDownlodaMode.m */; };
@@ -267,7 +266,6 @@
 		FE7057371C62EE810079C614 /* SCDownloadTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCDownloadTableViewCell.h; sourceTree = "<group>"; };
 		FE7057381C62EE810079C614 /* SCDownloadTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCDownloadTableViewCell.m; sourceTree = "<group>"; };
 		FE7057391C62EE810079C614 /* SCDownloadTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCDownloadTableViewCell.xib; sourceTree = "<group>"; };
-		FE7667571C753F9E00017604 /* libdispatch.tbd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.text-based-dylib-definition"; path = libdispatch.tbd; sourceTree = "<group>"; };
 		FE76675B1C75419000017604 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		FE7667631C754F8F00017604 /* LocalDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalDatabase.h; sourceTree = "<group>"; };
 		FE7667641C754F8F00017604 /* LocalDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalDatabase.m; sourceTree = "<group>"; };
@@ -359,7 +357,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE76675C1C75419000017604 /* libsqlite3.0.tbd in Frameworks */,
-				FE7667591C753F9E00017604 /* libdispatch.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -462,7 +459,6 @@
 			isa = PBXGroup;
 			children = (
 				FE76675B1C75419000017604 /* libsqlite3.0.tbd */,
-				FE7667571C753F9E00017604 /* libdispatch.tbd */,
 				C9E4E6411C53BAF30052030E /* SuperCourse */,
 				C9E4E65B1C53BAF30052030E /* SuperCourseTests */,
 				C9E4E6661C53BAF30052030E /* SuperCourseUITests */,
@@ -1247,8 +1243,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Zhong Jin (2SPA2FSXHP)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Zhong Jin (2SPA2FSXHP)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = SuperCourse/PrefixHeader.pch;
 				INFOPLIST_FILE = SuperCourse/Info.plist;
@@ -1260,7 +1256,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.sunzhongyuan.SuperCourse;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7663fc99-8d0e-49a0-99d1-ead20b7d261b";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
@@ -1269,8 +1265,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Zhong Jin (2SPA2FSXHP)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Zhong Jin (2SPA2FSXHP)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = SuperCourse/PrefixHeader.pch;
 				INFOPLIST_FILE = SuperCourse/Info.plist;
@@ -1282,7 +1278,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.sunzhongyuan.SuperCourse;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7663fc99-8d0e-49a0-99d1-ead20b7d261b";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;

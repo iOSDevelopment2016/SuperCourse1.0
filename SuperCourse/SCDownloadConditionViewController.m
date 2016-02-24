@@ -202,7 +202,7 @@
     
     headerLabel2.font = [UIFont italicSystemFontOfSize:35*HeightScale];
     
-    headerLabel2.frame = CGRectMake(420*WidthScale, 10.0, 300.0, 44.0);
+    headerLabel2.frame = CGRectMake(470*WidthScale, 10.0, 300.0, 44.0);
     
     // SCCourseGroup *temp = self.currentSource.sec_arr[section];
     
@@ -242,7 +242,7 @@
     
     headerLabel4.font = [UIFont italicSystemFontOfSize:35*HeightScale];
     
-    headerLabel4.frame = CGRectMake(1400*WidthScale, 10.0, 300.0, 44.0);
+    headerLabel4.frame = CGRectMake(1680*WidthScale, 10.0, 300.0, 44.0);
     
     // SCCourseGroup *temp = self.currentSource.sec_arr[section];
     
