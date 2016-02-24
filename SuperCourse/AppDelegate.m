@@ -11,6 +11,7 @@
 #import "SCRootViewController.h"
 #import "AFNetworking.h"
 #import "UIKit+AFNetworking.h"
+#import "SCDownloader.h"
 
 @interface AppDelegate ()
 
@@ -21,6 +22,12 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
+    self.pram=0;
+    self.download = [[SCDownloader alloc]init];
+    
+    self.program=@"";
+    self.mark=@"";
+   // self.download=[[SCDownloadConditionViewController alloc]init];
     
     self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
@@ -43,6 +50,7 @@
 
 -(void)initUserSession{
     NSString *userSession = [[NSUserDefaults standardUserDefaults] objectForKey:UserSessionKey];
+    //self.program= [[NSUserDefaults standardUserDefaults] objectForKey:ProgramKey];
     if (userSession) {
         self.userSession = userSession;
         self.userPsw = [[NSUserDefaults standardUserDefaults] objectForKey:UserPswKey];

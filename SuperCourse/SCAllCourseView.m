@@ -20,7 +20,7 @@
 #import "SCLoginView.h"
 #import "HttpTool.h"
 #import "SCCoursePlayLog.h"
-
+#import "LocalDatabase.h"
 @interface SCAllCourseView ()<UITableViewDataSource, UITableViewDelegate,SCCourseTableViewDelegate,MBProgressHUDDelegate,SCLoginViewDelegate>
 
 @property (weak, nonatomic  ) IBOutlet UITextField                *phone;
@@ -77,12 +77,92 @@
         
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(imageShouldChange) name:@"ImageShouldChange" object:nil];
         
-        
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(beDownload:)
+                                                     name: @"beingDownload"
+                                                   object: nil];
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(beFinished:)
+                                                     name: @"beingFinished"
+                                                   object: nil];
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(beDelete:)
+                                                     name: @"beingDelete"
+                                                   object: nil];
+
         
     }
     return self;
 }
 
+
+-(void)beDownload:(NSNotification *)message{
+    NSDictionary *userInfo = [message userInfo];
+    NSString *name = userInfo[@"name"];
+    for(int i=0;i<20;i++){
+        for(int j=0;j<20;j++){
+            NSIndexPath *index =  [NSIndexPath indexPathForItem:j inSection:i];
+            SCCourseTableViewCell *cell =  [self.firstTableView cellForRowAtIndexPath:index];
+            NSLog(@"%@",cell.contentField.titleLabel.text);
+            if([cell.contentField.titleLabel.text isEqualToString:name]){
+                cell.downloadBtn.enabled=NO;
+                LocalDatabase *db=[LocalDatabase sharedManager];
+                if([db isDownloadingName:name]){
+                    cell.beDownloadingLabel.text=@"当前下载";
+                }else{
+                    cell.beDownloadingLabel.text=@"等待下载";
+                }
+                cell.beDownloadingLabel.font=FONT_25;
+                [cell.downloadBtn setHidden:YES];
+                [cell.beDownloadingLabel setHidden:NO];
+                cell.beDownloadingLabel.textColor=UIColorFromRGB(0x6fccdb);
+                break;
+            }
+           
+        }
+    }
+    
+}
+-(void)beFinished:(NSNotification *)message{
+    NSDictionary *userInfo = [message userInfo];
+    NSString *name = userInfo[@"name"];
+    for(int i=0;i<20;i++){
+        for(int j=0;j<20;j++){
+            NSIndexPath *index =  [NSIndexPath indexPathForItem:j inSection:i];
+            SCCourseTableViewCell *cell =  [self.firstTableView cellForRowAtIndexPath:index];
+            NSLog(@"%@",cell.contentField.titleLabel.text);
+            if([cell.contentField.titleLabel.text isEqualToString:name]){
+                cell.downloadBtn.enabled=NO;
+                cell.beDownloadingLabel.text=@"下载完成";
+                cell.beDownloadingLabel.font=FONT_25;
+                [cell.downloadBtn setHidden:YES];
+                [cell.beDownloadingLabel setHidden:NO];
+                cell.beDownloadingLabel.textColor=UIColorFromRGB(0x6fccdb);
+                break;
+            }
+            
+        }
+    }
+}
+-(void)beDelete:(NSNotification *)message{
+    NSDictionary *userInfo = [message userInfo];
+    NSString *name = userInfo[@"name"];
+    for(int i=0;i<20;i++){
+        for(int j=0;j<20;j++){
+            NSIndexPath *index =  [NSIndexPath indexPathForItem:j inSection:i];
+            SCCourseTableViewCell *cell =  [self.firstTableView cellForRowAtIndexPath:index];
+            NSLog(@"%@",cell.contentField.titleLabel.text);
+            if([cell.contentField.titleLabel.text isEqualToString:name]){
+                cell.downloadBtn.enabled=YES;
+                
+                [cell.downloadBtn setHidden:NO];
+                [cell.beDownloadingLabel setHidden:YES];
+                break;
+            }
+            
+        }
+    }
+}
 
 
 -(void)imageShouldChange{
@@ -212,6 +292,9 @@
     
     
 }
+-(void)postDownload{
+    [self.delegate poseDownloads];
+}
 
 -(void)change{
     
@@ -303,48 +386,59 @@
 //}
 
 -(IBAction)downloadClickWithWithSectionIndex:(NSInteger)secIndex AndRowIndex:(NSInteger)rowIndex{
-    //    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    //    NSString *docDir = [paths objectAtIndex:0];
-    SCCourseGroup *courseGroup=self.firstCategory.sec_arr[secIndex];
-    SCCourse *selectedCourse = courseGroup.lesarr[rowIndex];
+    //        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    //        NSString *docDir = [paths objectAtIndex:0];
+    //   NSIndexPath *cellIndexpath=[[NSIndexPath alloc]init];
     
-    NSString *url=selectedCourse.les_url;
+    //    cellIndexpath.section=secIndex;
+    //    cellIndexpath.row=rowIndex;
     
-    //NSString *srlStr = @"http://www.shengcaibao.com/download/SCB/1.mp3";
-    //如果请求正文包含中文，需要处理
-    //    srlStr = [srlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
-    NSString *filePath = [NSHomeDirectory() stringByAppendingPathComponent:@"/Library/Caches/music.mp3"];
-    self.fileDownloader = [[AFDownloadRequestOperation alloc]initWithRequest:request fileIdentifier:@"music.mp3" targetPath:filePath shouldResume:YES];
-    self.fileDownloader.shouldOverwrite = YES;
+    //LocalDatabase *db = [LocalDatabase sharedManager];
     
-    [self.fileDownloader start];
+    if(!self.rightBtn.selected){
+        SCCourseGroup *courseGroup=self.firstCategory.sec_arr[secIndex];
+        SCCourse *selectedCourse = courseGroup.lesarr[rowIndex];
+        [self.delegate postDownloadName:selectedCourse.les_name AndURL:selectedCourse.les_url AndSize:selectedCourse.les_size AndID:selectedCourse.les_id];
+        
+    }else{
+        SCCourseGroup *courseGroup=self.secondCategory.sec_arr[secIndex];
+        SCCourse *selectedCourse = courseGroup.lesarr[rowIndex];
+        [self.delegate postDownloadName:selectedCourse.les_name AndURL:selectedCourse.les_url AndSize:selectedCourse.les_size AndID:selectedCourse.les_id];
+    }
     
-    //下载进度
-    [self.fileDownloader setProgressiveDownloadProgressBlock:^(AFDownloadRequestOperation *operation, NSInteger bytesRead, long long totalBytesRead, long long totalBytesExpected, long long totalBytesReadForFile, long long totalBytesExpectedToReadForFile) {
-        
-        CGFloat percent = (float)totalBytesReadForFile / (float)totalBytesExpectedToReadForFile;
-        NSLog(@"百分比:%.3f%% %ld  %lld  %lld  %lld", percent * 100, (long)bytesRead, totalBytesRead, totalBytesReadForFile, totalBytesExpectedToReadForFile);
-        
-        
-        
-    }];
+    // 检查是否正在下载
     
-    //结束
-    [self.fileDownloader setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        NSLog(@"下载成功 %@", responseObject);
-        
-        
-        
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        NSLog(@"下载失败 %@", error);
-        
-    }];
+//        if([db findConfig:selectedCourse.les_id]==YES){
+//            [self.delegate downloadingAlart];
+//        }else{
+//
+//            [[NSNotificationCenter defaultCenter]postNotificationName:@"sendDownloadCondition" object:self userInfo:@{@"name":selectedCourse.les_name,@"size":selectedCourse.les_size,@"url":selectedCourse.les_url,@"id":selectedCourse.les_id}];
+//            
+//        }
     
+    
+//    [UIAlertController showAlertAtViewController:self withMessage:@"您确定退出登录吗？" cancelTitle:@"取消" confirmTitle:@"注销" cancelHandler:^(UIAlertAction *action) {
+//        
+//    } confirmHandler:^(UIAlertAction *action) {
+//        //退出登录
+//        ApplicationDelegate.userSession=UnLoginUserSession;
+//        
+//        //ApplicationDelegate.userSession = ApplicationDelegat;
+//        ApplicationDelegate.userPsw = nil;
+//        ApplicationDelegate.userPhone =nil;
+//        ApplicationDelegate.playLog=@"";
+//        NSUserDefaults *defaultes = [NSUserDefaults standardUserDefaults];
+//        [defaultes removeObjectForKey:UserSessionKey];
+//        [defaultes removeObjectForKey:UserPswKey];
+//        [defaultes removeObjectForKey:UserPhoneKey];
+//        [defaultes removeObjectForKey:PlayLogKey];
+//        [defaultes synchronize];
+//        
+//        [self unlogin];
+//    }];
+
 }
+
 
 -(IBAction)contendFieldDidClickWithSectionIndex:(NSInteger)secIndex AndRowIndex:(NSInteger)rowIndex{
     SCCourseGroup *courseGroup=self.currentSource.sec_arr[secIndex];
@@ -605,10 +699,12 @@
         [cell.contentField setTitleColor:UIColorFromRGB(0x6fccdb) forState:UIControlStateHighlighted];
         cell.contentField.tag =indexPath.section * 1000 + indexPath.row;
         cell.imageBtn.tag =indexPath.section * 1000 + indexPath.row;
-        
+        cell.downloadBtn.tag =indexPath.section * 1000 + indexPath.row;
         if([temp_.operations isEqualToString:@"网页"]){
             cell.downloadBtn.hidden=YES;
         }
+        [cell.beDownloadingLabel setHidden:YES];
+        cell.beDownloadingLabel.textColor=UIColorFromRGB(0x6fccdb);
         cell.courseLabel.text=temp_.les_size;
         //        cell.courseLabel.font=FONT_18;
         //        cell.courseLabel.font=[UIFont systemFontOfSize:35*HeightScale];
@@ -616,6 +712,33 @@
         //
         //            cell.selected=NO;
         //        //}
+        LocalDatabase *db=[LocalDatabase sharedManager];
+        if([db isDownloading:temp_.les_id]){
+            cell.downloadBtn.enabled=YES;
+            cell.beDownloadingLabel.text=@"当前下载";
+            cell.beDownloadingLabel.font=FONT_25;
+            [cell.downloadBtn setHidden:YES];
+            [cell.beDownloadingLabel setHidden:NO];
+        }else{
+            if([db isDownload:temp_.les_id]){
+                cell.downloadBtn.enabled=YES;
+                cell.beDownloadingLabel.text=@"下载完成";
+                cell.beDownloadingLabel.font=FONT_25;
+                [cell.downloadBtn setHidden:YES];
+                [cell.beDownloadingLabel setHidden:NO];
+                
+            }else{
+                if([db findConfig:temp_.les_id])
+                {
+                    cell.downloadBtn.enabled=YES;
+                    cell.beDownloadingLabel.text=@"等待下载";
+                    cell.beDownloadingLabel.font=FONT_25;
+                    [cell.downloadBtn setHidden:YES];
+                    [cell.beDownloadingLabel setHidden:NO];
+                }
+            }
+        }
+        
         
         cell.width=self.width;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;

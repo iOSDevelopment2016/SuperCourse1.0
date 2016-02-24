@@ -19,7 +19,8 @@
 #import "MJExtension.h"
 #import "SCHistory.h"
 #import "UIAlertController+SZYKit.h"
-@interface SCVideoHistoryView ()<UITableViewDataSource, UITableViewDelegate,SCHistoryTableViewDelegate>
+#import "SCPlayerViewController.h"
+@interface SCVideoHistoryView ()<UITableViewDataSource, UITableViewDelegate,SCHistoryTableViewDelegate,SCPlayerViewControllerDelegate>
 @property (nonatomic ,strong) UITableView *historyTableView;
 @property (nonatomic ,strong) UIView             *hubView;
 @property (nonatomic ,strong) UIWebView          *webView;
@@ -39,11 +40,22 @@
          self.backgroundColor = [UIColor whiteColor];
         _historyArr = [[NSMutableArray alloc]init];
 
-//        [self addSubview:self.historyTableView];
-        [self loadCourseListFromNetwork];
+        [self addSubview:self.historyTableView];
+        [self observer];
+//        [self loadCourseListFromNetwork];
+
        
     }
     return self;
+}
+
+-(void)observer{
+
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(updateHistoryInfo)
+                                                 name: @"updateHistoryInfo"
+                                               object: nil];
+
 }
 
 
@@ -65,8 +77,8 @@
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
 
         [self setDataWithDic:dic];
-        
-        [self addSubview:self.historyTableView];
+        [self.historyTableView reloadData];
+
 
     } failure:^(NSError *error) {
         NSLog(@"%@",error);
@@ -81,13 +93,20 @@
     for (int i=0; i<historyInfoDict.count; i++) {
         SCHistory *h = [[SCHistory alloc]init];
         NSDictionary *dict = historyInfoDict[i];
-        NSDictionary *historyDict = dict[@"0"];
-        h.oversty_time = [historyDict[@"oversty_time"] floatValue];
-        h.les_name = historyInfoDict[i][@"les_name"];
+//        NSDictionary *historyDict = dict[@"0"];
+        h.oversty_time = [dict[@"oversty_time"] floatValue];
+        h.les_id = dict[@"les_id"];
+        h.les_name = dict[@"les_name"];
         [historyArr addObject:h];
         _historyArr[i] = historyArr[i];
     }
 
+
+}
+
+-(void)updateHistoryInfo{
+
+    [self loadCourseListFromNetwork];
 }
 
 
@@ -95,7 +114,9 @@
     [super layoutSubviews];
     self.historyTableView.frame = CGRectMake(0, 0, self.width, self.height);
     self.historyTableView.backgroundColor= [UIColor whiteColor];
-//    [self loadCourseListFromNetwork];
+//    [self.historyTableView removeFromSuperview];
+    [self loadCourseListFromNetwork];
+    
 }
 
 

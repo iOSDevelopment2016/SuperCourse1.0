@@ -59,6 +59,7 @@
 }
 #pragma - mark getters
 -(UIButton *)historyBtn{
+    _historyBtn.enabled = NO;
     return _historyBtn;
     
 }

@@ -14,6 +14,8 @@
 
 -(void)changeToLearn;
 
+-(void)updateHistoryInfo;
+
 @end
 
 

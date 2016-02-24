@@ -17,6 +17,7 @@
 #import "SCWebViewController.h"
 #import "HttpTool.h"
 #import "MJExtension.h"
+#import "LocalDatabase.h"
 
 
 @interface SCPlayerViewController ()<SCPointViewDelegate, SCRightViewDelegate>{
@@ -68,7 +69,7 @@
 @property (nonatomic, strong) IBOutlet UIView *indicatorShowView;
 @property (nonatomic, strong) NSArray *letterArr;
 @property (nonatomic, assign) NSTimeInterval beginTime;
-
+@property (nonatomic, strong) UIButton *downloadBtn;
 
 @end
 
@@ -77,14 +78,63 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     isAnimating = NO; //防止重复的动画
-//    [self loadDataStub]; //加载数据桩
-//    self.lessonId = @"0001";
+    //    [self loadDataStub]; //加载数据桩
+    //    self.lessonId = @"0001";
     [self addAllControl]; //加载界面上的所有控件
     isFirstView = YES;
-//    [self.view addSubview:self.indicatorShowView];
+    //    [self.view addSubview:self.indicatorShowView];
     [self loadVideoInfo]; //从网络上下载视频文件的所有信息
+    [self observe];
     self.isNeedBack = NO;
+
 }
+
+-(void)observe{
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(playWithFile:)
+                                                 name: @"downloadFinished"
+                                               object: nil];
+    
+    
+    
+
+}
+
+-(void)setIsDownloadLabelText{
+
+    if ([self isDownLoad]) {
+        self.isDownloadLabel.text = [NSString stringWithFormat:@"已下载"];
+    }else{
+        [self.isDownloadLabel setText:self.videoInfo.les_size];
+    }
+}
+
+- (void)playWithFile:(NSNotification *)message{
+   
+    NSDictionary *userInfo = [message userInfo];
+    NSString *les_ID = userInfo[@"les_ID"];
+    BOOL isDownload =YES;
+    if (isDownload) {
+        if ([les_ID isEqualToString:self.lessonId]) {
+            [self continuePlaying];
+        }
+    }
+    [self.downloadBtn removeFromSuperview];
+    self.isDownloadLabel.text = [NSString stringWithFormat:@"已下载"];
+    
+}
+-(void)continuePlaying{
+
+    [self getStopTime];
+    self.oversty_time = self.currentTime;
+    [self.slider removeFromSuperview];
+    [self.videoManager stop];
+    self.videoManager = nil;
+    [self loadVideoInfo];
+    [self.videoManager moveToSecond:self.oversty_time];
+
+}
+
 
 // 从网络下载视频文件的所有信息
 -(void)loadVideoInfo{
@@ -93,7 +143,7 @@
     
     
     NSString *lesson_id = self.lessonId;
-
+    
     
     NSMutableDictionary *firstDic = [[NSMutableDictionary alloc]init];
     [firstDic setValue:userID forKey:@"stu_id"];
@@ -110,8 +160,6 @@
     [HttpTool postWithparams:thirdDic success:^(id responseObject) {
         
         NSData *data = [[NSData alloc] initWithData:responseObject];
-        
-//        NSString *str = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         
         _videoInfo = [self getVideoInfo:dic];
@@ -125,24 +173,48 @@
         NSLog(@"%@",error);
     }];
     
-
+    
 }
 
+-(BOOL)isDownLoad{
+    LocalDatabase *db = [LocalDatabase sharedManager];
+    BOOL msg=[db isDownload:self.lessonId];
+    return msg;
+}
+
+-(void)getVideoURLWithDict:(SCVideoInfoModel *)m AndVideoInfoDict:(NSArray *)videoInfoDict AndLes_name:(NSString *)les_name{
+    BOOL isDownLoad = [self isDownLoad];
+    NSString *url = videoInfoDict[0][@"les_url"];
+    NSArray *array = [url componentsSeparatedByString:@"/"];
+    NSString *name = array[4];
+    if (isDownLoad) {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *docDir = [paths objectAtIndex:0];
+        NSString *url=[docDir stringByAppendingPathComponent:name];
+        m.les_url = url;
+    }else{
+        m.les_url = videoInfoDict[0][@"les_url"];
+    }
+}
+
+
 -(SCVideoInfoModel *)getVideoInfo:(NSDictionary *)dict{
-   
+    
     SCVideoInfoModel *m = [[SCVideoInfoModel alloc]init];
     NSMutableDictionary *dataDict = dict[@"data"];
     NSArray *videoInfoDict = dataDict[@"videoInfo"];
     m.les_name = videoInfoDict[0][@"les_name"];
     m.les_alltime = [videoInfoDict[0][@"les_alltime"] floatValue];
-//    m.oversty_time = [videoInfoDict[0][@"oversty_time"] floatValue];
-//    self.beginTime = m.oversty_time;
-    m.les_url = videoInfoDict[0][@"les_url"];
-//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-//    NSString *docDir = [paths objectAtIndex:0];
-//    NSString *url=[docDir stringByAppendingPathComponent:@"load2.mp4"];
-//    m.les_url = url;
+    //    m.oversty_time = [videoInfoDict[0][@"oversty_time"] floatValue];
+    //    self.beginTime = m.oversty_time;
+    //    m.les_url = videoInfoDict[0][@"les_url"];
+    //    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    //    NSString *docDir = [paths objectAtIndex:0];
+    //    NSString *url=[docDir stringByAppendingPathComponent:@"load2.mp4"];
+    //    m.les_url = url;
+    [self getVideoURLWithDict:m AndVideoInfoDict:videoInfoDict AndLes_name:m.les_name];
     m.les_size = videoInfoDict[0][@"les_size"];
+    self.videoInfo.les_size = m.les_size;
     NSMutableArray *videoLinks = [[NSMutableArray alloc]init];
     NSArray *videoLinkArr = videoInfoDict[0][@"videoLinks"];
     for (int i=0; i<videoLinkArr.count; i++) {
@@ -165,7 +237,7 @@
         NSDictionary *timeDict = oversty_time[0];
         self.beginTime = [timeDict[@"oversty_time"] floatValue];
     }
-
+    
     
     NSMutableArray *videoSubTitle = [[NSMutableArray alloc]init];
     NSArray *videoSubTitleArr = videoInfoDict[0][@"videoSubTitles"];
@@ -193,12 +265,12 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-
+    
     self.isNeedBack = NO;
     [self.videoManager moveToSecond:self.oversty_time];
     self.slider.value = self.oversty_time;
     [self.videoManager pause];
-
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -211,15 +283,21 @@
 }
 
 -(void)initVideoManager{
-
-//    NSURL *murl=[NSURL fileURLWithPath:self.videoInfo.les_url];
+    NSURL *murl = nil;
+    if ([self isDownLoad]) {
+        murl=[NSURL fileURLWithPath:self.videoInfo.les_url];
+    }else{
+        murl = [NSURL URLWithString:self.videoInfo.les_url];
+    }
     
-    NSURL *murl = [NSURL URLWithString:self.videoInfo.les_url];
     [self.videoManager setUpRemoteVideoPlayerWithContentURL:murl view:self.container];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoLoadDone:) name:VideoLoadDoneNotification object:nil];
-
+    
     [self.container addSubview:self.startBtnView];
     [self.view addSubview:self.writeNoteView];
+    [self.videoManager moveToSecond:self.oversty_time];
+    [self setIsDownloadLabelText];
+
 }
 
 
@@ -231,7 +309,7 @@
     [self.view addSubview:self.nowPoint];
     [self.view addSubview:self.isDownloadLabel];
     [self.view addSubview:self.container];
-
+    
     [self.view addSubview:self.bottomView];
     [self.view addSubview:self.returnBtn];
     [self.bottomView addSubview:self.pauseBtn];
@@ -240,31 +318,32 @@
     [self.bottomView addSubview:self.lockBtn];
     [self.bottomView addSubview:self.timeLable];
     
-
-
-
+    
+    
+    
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     
     if (alertView.tag == 1) {
         if (buttonIndex == 0) {
+            [self getStopTime];
             [self.navigationController popToRootViewControllerAnimated:YES];
         }
     }else if (alertView.tag == 2){
-    
+        
     }
 }
 
 
 
 -(void)playerPlayFinished{
-
+    
     _alert = [[UIAlertView alloc]initWithTitle:@"提示"message:@"当前视频已播放完成,请添加您的备注"
-                         
-                                                 delegate:self
-                         
-                                        cancelButtonTitle:@"确定"
-                         
+              
+                                      delegate:self
+              
+                             cancelButtonTitle:@"确定"
+              
                              otherButtonTitles:nil];
     
     
@@ -296,20 +375,20 @@
 
 -(void)turnToTime:(UIButton *)sender{
     
-//    if (!isAnimating) {
-        [self.videoManager resume];
-        [self.playBtn removeFromSuperview];
-        [self.bottomView addSubview:self.pauseBtn];
-        self.startBtnView.hidden = YES;
-        [self transformRecover];
-        shouldPlaying = YES;
-//    }
+    //    if (!isAnimating) {
+    [self.videoManager resume];
+    [self.playBtn removeFromSuperview];
+    [self.bottomView addSubview:self.pauseBtn];
+    self.startBtnView.hidden = YES;
+    [self transformRecover];
+    shouldPlaying = YES;
+    //    }
     [self.videoManager moveToSecond:(NSTimeInterval)sender.superview.tag];
     self.slider.value = (NSTimeInterval)sender.superview.tag;
 }
 
 -(void)getStopTime{
-//    ApplicationDelegate.userSession = UnLoginUserSession;
+    //    ApplicationDelegate.userSession = UnLoginUserSession;
     
     if (![ApplicationDelegate.userSession isEqualToString:UnLoginUserSession]) {
         self.oversty_time = self.currentTime;
@@ -343,29 +422,27 @@
         } failure:^(NSError *error) {
             NSLog(@"%@",error);
         }];
-
+        
     }
     
-    
-    
-    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"updateHistoryInfo" object:self userInfo:nil];
 }
 
 #pragma mark - 点击事件
 
 -(void)backBtnClick{
-    
-    [self.navigationController popViewControllerAnimated:YES];
-    [self.videoManager stop];
-    [self.delegate changeToLearn];
+
     [self getStopTime];
+    [self.videoManager stop];
+    [self.navigationController popViewControllerAnimated:YES];
+    [self.delegate changeToLearn];
     
 }
 
 
 -(void)videoLoadDone:(NSNotification *)noti{
     
-//    [self.indicatorShowView removeFromSuperview];
+    //    [self.indicatorShowView removeFromSuperview];
     [self.videoManager moveToSecond:self.beginTime];
     self.slider.value = self.beginTime;
     [self.videoManager startWithHandler:^(NSTimeInterval elapsedTime, NSTimeInterval timeRemaining, NSTimeInterval playableDuration, BOOL finished) {
@@ -377,8 +454,8 @@
         }
         [self.rightView.tagList changeBtnLookingWithTime:elapsedTime];
         [self.nowPoint setTitle:self.nowPointString forState:UIControlStateNormal];
-
-
+        
+        
         
     }];
     if (!shouldPlaying) {
@@ -392,22 +469,24 @@
     _slider.maximumValue = [noti.object floatValue];
     [self.startBtnView addSubview:_slider];
     [self.nowCourse setText:self.videoInfo.les_name];
-    [self.isDownloadLabel setText:self.videoInfo.les_size];
-
-
+    [self setIsDownloadLabelText];
+    if (![self isDownLoad]) {
+        [self.view addSubview:self.downloadBtn];
+    }
+    
 }
 
 -(void)closeWriteNoteView{
-
+    
     self.writeNoteView.hidden = YES;
     
     self.textField.text = nil;
     
-
+    
 }
 
 -(void)nextPlayerPlayBtnClick:(UIButton *)sender{
-
+    
     
 }
 
@@ -424,7 +503,7 @@
 
 
 -(void)pauseBtnClick{
-
+    
     [self.videoManager pause];
     [self.pauseBtn removeFromSuperview];
     [self.bottomView addSubview:self.playBtn];
@@ -453,14 +532,14 @@
 }
 
 -(void)resume{
-
+    
     [self.videoManager resume];
     shouldPlaying = YES;
     [self.bottomView addSubview:self.pauseBtn];
     [self.playBtn removeFromSuperview];
     self.startBtnView.hidden = YES;
     [self transformRecover];
-
+    
 }
 
 -(void)speedBtnClick:(CGFloat)rate{
@@ -506,18 +585,18 @@
     
     self.lockView.hidden = NO;
     self.lockBtn.selected = YES;
-   
+    
 }
 
 -(void)unLockBtnClick{
-
+    
     self.lockView.hidden = YES;
     self.lockBtn.selected = NO;
 }
 
 
 -(void)startBtnClick{
-
+    
     if (!isAnimating) {
         self.startBtnView.hidden = YES;
         [self transformRecover];
@@ -529,13 +608,13 @@
 }
 
 -(void)writeNoteBtnClick{
-
+    
     self.startBtnView.hidden = YES;
     [self transformRecover];
 }
 
 -(void)writeCodeBtnClick{
-
+    
     self.startBtnView.hidden = YES;
     [self transformRecover];
 }
@@ -581,7 +660,7 @@
 //    for (UIView *view in self.rightView.pointView.subviews) {
 //        [subTitleArr addObject:view];
 //    }
-//    
+//
 //    for (int i=0; i<subTitleArr.count-1; i++) {
 //        int m = (int)subTitleArr.count-1;
 //        UIView *changeView = subTitleArr[m];
@@ -596,9 +675,9 @@
 //        UIView *nowView = subTitleArr[shouldInsert];
 //        nowView.y = nowView.y+100*HeightScale;
 //    }
-//    
 //
-//    
+//
+//
 //}
 
 
@@ -635,31 +714,31 @@
             
             NSData *data = [[NSData alloc] initWithData:responseObject];
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-//            for (int i=0; i<self.videoInfo.videoSubTitles.count; i++) {
-//                SCVideoSubTitleMode *m = self.videoInfo.videoSubTitles[i];
-//                if ((int)subTitle.bg_time== (int)m.bg_time) {
-                    UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"提示" message:@"当前时间已存在节点" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
-                    
+            //            for (int i=0; i<self.videoInfo.videoSubTitles.count; i++) {
+            //                SCVideoSubTitleMode *m = self.videoInfo.videoSubTitles[i];
+            //                if ((int)subTitle.bg_time== (int)m.bg_time) {
+            UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"提示" message:@"当前时间已存在节点" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
             
-                    
             
-                    UIView *subTitleView = [self.rightView.pointView addCustomSubTitleWithData:subTitle];
-                    [self.rightView.pointView addSubview:subTitleView];
-                    self.writeNoteView.hidden = YES;
-                    [self.videoManager resume];
-                    shouldPlaying = YES;
-                    [self.bottomView addSubview:self.pauseBtn];
-                    [self.playBtn removeFromSuperview];
+            
+            
+            UIView *subTitleView = [self.rightView.pointView addCustomSubTitleWithData:subTitle];
+            [self.rightView.pointView addSubview:subTitleView];
+            self.writeNoteView.hidden = YES;
+            [self.videoManager resume];
+            shouldPlaying = YES;
+            [self.bottomView addSubview:self.pauseBtn];
+            [self.playBtn removeFromSuperview];
+            
+            for (UIView *view in self.rightView.pointView.subviews) {
+                if (view.tag>subTitle.bg_time) {
+                    view.y = view.y+110*HeightScale;
+                    subTitleView.y = subTitleView.y-110*HeightScale;
                     
-                    for (UIView *view in self.rightView.pointView.subviews) {
-                        if (view.tag>subTitle.bg_time) {
-                            view.y = view.y+110*HeightScale;
-                            subTitleView.y = subTitleView.y-110*HeightScale;
-                        
                     
                 }
             }
-        
+            
             
             
             
@@ -680,16 +759,35 @@
         [self.textField endEditing:YES];
     }
     
+    
+}
 
+
+-(void)downloadVideo{
+    NSString *les_name = self.videoInfo.les_name;
+    NSString *les_url = self.videoInfo.les_url;
+    NSString *les_size = self.videoInfo.les_size;
+    NSString *lessonID = self.lessonId;
+    NSLog(@"%@,%@,%@,%@",les_name,les_url,les_size,lessonID);
+    //从播放界面下载视频。
+    LocalDatabase *db = [LocalDatabase sharedManager];
+    if(![db findConfig:lessonID]){
+    [db insertRecordIntoTableName:@"DOWNLOADINFO" withField1:@"LESSON_ID" field1Value:lessonID andField2:@"LESSON_NAME" field2Value:les_name andField3:@"LESSON_URL" field3Value:les_url andField4:@"LESSON_SIZE" field4Value:les_size andField5:@"LESSON_DOWNLOADING" field5Value:@"NO" andField6:@"FINISHED" field6Value:@"NO"];
+        [UIAlertController showAlertAtViewController:self title:@"提示" message:@"已成功加入下载列表" confirmTitle:@"我知道了" confirmHandler:^(UIAlertAction *action) {
+        }];
+    }else{
+//        [UIAlertController showAlertAtViewController:self withMessage:@"该进程在下载列表中已存在" cancelTitle:@"" confirmTitle:@"我知道了" cancelHandler:^(UIAlertAction *action) {
+//        } confirmHandler:^(UIAlertAction *action) {
+//        }];
+        [UIAlertController showAlertAtViewController:self title:@"提示" message:@"该进程在下载列表中已存在" confirmTitle:@"我知道了" confirmHandler:^(UIAlertAction *action) {
+        }];
+    }
 }
 
 
 
-
-
-
 - (void)tapBtn:(UIPanGestureRecognizer *) recognizer{
-
+    
     if (!isAnimating) {
         BOOL _hidden;
         _hidden = self.startBtnView.hidden;
@@ -700,7 +798,7 @@
             [self.videoManager pause];
             [self getStopTime];
             shouldPlaying = NO;
-//            [self.speedBtn setImage:[UIImage imageNamed:@"2X"] forState:UIControlStateNormal];
+            //            [self.speedBtn setImage:[UIImage imageNamed:@"2X"] forState:UIControlStateNormal];
             [self.bottomView addSubview:self.playBtn];
             [self.pauseBtn removeFromSuperview];
             
@@ -719,8 +817,8 @@
                 
             }
         }
-//        shouldPlaying = !shouldPlaying;
-
+        //        shouldPlaying = !shouldPlaying;
+        
     }
     
     
@@ -728,22 +826,22 @@
 
 
 -(void)transformAnimated{
-
+    
     isAnimating = YES;
     
     [UIView animateWithDuration:0.2 animations:^{
-       
+        
         self.addPointBtn.alpha = 1;
- 
+        
         
         self.addPointBtn.frame = CGRectMake(932*WidthScale*2048/1614, 438*HeightScale/1212*1563, 234*WidthScale*2048/1614, 75*HeightScale/1212*1563);
-
+        
         
     }completion:^(BOOL finished) {
         [UIView animateWithDuration:0.2 animations:^{
             self.writeCodeBtn.alpha = 1;
             self.writeNoteBtn.alpha = 1;
-
+            
             self.writeNoteBtn.frame = CGRectMake(901*WidthScale*2048/1614, 568*HeightScale/1212*1563, 234*WidthScale*2048/1614, 75*HeightScale/1212*1563);
             self.writeCodeBtn.frame = CGRectMake(901*WidthScale*2048/1614, 308*HeightScale/1212*1563, 234*WidthScale*2048/1614, 75*HeightScale/1212*1563);
             self.writeCodeBtn.transform = CGAffineTransformMakeRotation(-0.5);
@@ -755,37 +853,37 @@
 }
 
 -(void)transformRecover{
-
-        
-        self.addPointBtn.alpha = 0;
-        self.writeCodeBtn.alpha = 0;
-        self.writeNoteBtn.alpha = 0;
-        self.addPointBtn.frame=CGRectMake(668*WidthScale*2048/1614, 438*HeightScale/1212*1563, 234*WidthScale*2048/1614, 75*HeightScale/1212*1563);
-        self.writeCodeBtn.frame=CGRectMake(932*WidthScale*2048/1614, 438*HeightScale/1212*1563, 234*WidthScale*2048/1614, 75*HeightScale/1212*1563);
-        self.writeNoteBtn.frame=CGRectMake(932*WidthScale*2048/1614, 438*HeightScale/1212*1563, 234*WidthScale*2048/1614, 75*HeightScale/1212*1563);
     
-
-        self.writeCodeBtn.transform = CGAffineTransformMakeRotation(0);
-        self.writeNoteBtn.transform = CGAffineTransformMakeRotation(0);
     
-
+    self.addPointBtn.alpha = 0;
+    self.writeCodeBtn.alpha = 0;
+    self.writeNoteBtn.alpha = 0;
+    self.addPointBtn.frame=CGRectMake(668*WidthScale*2048/1614, 438*HeightScale/1212*1563, 234*WidthScale*2048/1614, 75*HeightScale/1212*1563);
+    self.writeCodeBtn.frame=CGRectMake(932*WidthScale*2048/1614, 438*HeightScale/1212*1563, 234*WidthScale*2048/1614, 75*HeightScale/1212*1563);
+    self.writeNoteBtn.frame=CGRectMake(932*WidthScale*2048/1614, 438*HeightScale/1212*1563, 234*WidthScale*2048/1614, 75*HeightScale/1212*1563);
+    
+    
+    self.writeCodeBtn.transform = CGAffineTransformMakeRotation(0);
+    self.writeNoteBtn.transform = CGAffineTransformMakeRotation(0);
+    
+    
     
 }
 
 
 
 -(void)panToTime:(UIPanGestureRecognizer*) recognizer{
-
-    CGPoint statePoint = [recognizer translationInView:self.container];
- 
     
-//    beginStatePoint = [recognizer locationInView:self.container];
-//    
-//    CGFloat beginStateX = beginStatePoint.x;
-//    CGFloat endStateX;
+    CGPoint statePoint = [recognizer translationInView:self.container];
+    
+    
+    //    beginStatePoint = [recognizer locationInView:self.container];
+    //
+    //    CGFloat beginStateX = beginStatePoint.x;
+    //    CGFloat endStateX;
     CGFloat endStateY;
     CGPoint endStatePoint = [recognizer locationInView:self.container];
-//    endStateX = endStatePoint.x;
+    //    endStateX = endStatePoint.x;
     endStateY = endStatePoint.y;
     CGFloat moveDistance = statePoint.x;
     if (endStateY >= 0 && endStateY < self.container.height/3) {
@@ -876,7 +974,7 @@
 
 
 -(UIButton *)pauseBtn{
-
+    
     if (!_pauseBtn) {
         _pauseBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         _pauseBtn.frame = CGRectMake(50*WidthScale, 45*HeightScale, 64*WidthScale, 64*HeightScale);
@@ -937,7 +1035,7 @@
     if (!_nowPoint) {
         _nowPoint = [UIButton buttonWithType:UIButtonTypeCustom];
         _nowPoint.frame = CGRectMake(630*WidthScale, 10, 440*WidthScale, 90*HeightScale);
-//        [_nowPoint setTitle:self.nowPointString forState:UIControlStateNormal];
+        //        [_nowPoint setTitle:self.nowPointString forState:UIControlStateNormal];
         _nowPoint.titleLabel.font = [UIFont systemFontOfSize:35*WidthScale];
         [_nowPoint setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         [_nowPoint setTitleColor:UIThemeColor forState:UIControlStateHighlighted];
@@ -977,7 +1075,7 @@
 }
 
 -(UIView *)startBtnView{
-
+    
     if (!_startBtnView) {
         _startBtnView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 2048*WidthScale, 1280*HeightScale)];
         _startBtnView.backgroundColor = [UIColor clearColor];
@@ -986,19 +1084,19 @@
         [_startBtnView addSubview:self.writeNoteBtn];
         [_startBtnView addSubview:self.addPointBtn];
         _startBtnView.hidden = YES;
-       
+        
     }
     return _startBtnView;
 }
 
 -(UIButton *)startBtn{
-
+    
     if (!_startBtn) {
         _startBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_startBtn setBackgroundImage:[UIImage imageNamed:@"bofang"] forState:UIControlStateNormal];
         [_startBtn setFrame:CGRectMake(668*WidthScale*2048/1614, 361*HeightScale/1212*1563, 234*WidthScale*2048/1614, 234*HeightScale/1212*1563)];
         [_startBtn addTarget:self action:@selector(startBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    
+        
     }
     return _startBtn;
 }
@@ -1022,7 +1120,7 @@
     if (!_writeNoteBtn) {
         _writeNoteBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_writeNoteBtn setBackgroundImage:[UIImage imageNamed:@"记笔记"] forState:UIControlStateNormal];
-//        [_writeNoteBtn setFrame:CGRectMake(906*WidthScale*2048/1614, 265*HeightScale/1212*1563, 213*WidthScale*2048/1614, 157*HeightScale/1212*1563)];
+        //        [_writeNoteBtn setFrame:CGRectMake(906*WidthScale*2048/1614, 265*HeightScale/1212*1563, 213*WidthScale*2048/1614, 157*HeightScale/1212*1563)];
         [_writeNoteBtn setFrame:CGRectMake(932*WidthScale*2048/1614, 438*HeightScale/1212*1563, 234*WidthScale*2048/1614, 75*HeightScale/1212*1563)];
         [_writeNoteBtn addTarget:self action:@selector(writeNoteBtnClick) forControlEvents:UIControlEventTouchUpInside];
         _writeNoteBtn.alpha = 0;
@@ -1055,7 +1153,7 @@
 
 
 -(UIView *)lockView{
-
+    
     if (!_lockView) {
         _lockView = [[UIView alloc]initWithFrame:self.view.frame];
         [_lockView setBackgroundColor:[UIColor clearColor]];
@@ -1074,17 +1172,17 @@
 //}
 
 -(UIView *)writeNoteView{
-
+    
     if (!_writeNoteView) {
         _writeNoteView = [[UIView alloc]initWithFrame:self.view.frame];
         _writeNoteView.backgroundColor = [UIColor clearColor];
-
+        
         
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         [btn setImage:[UIImage imageNamed:@"添加备注"] forState:UIControlStateNormal];
         btn.frame = CGRectMake(0, 0, 100*WidthScale, 100*HeightScale);
         [btn addTarget:self action:@selector(addPoint) forControlEvents:UIControlEventTouchUpInside];
-  
+        
         [self.textField.rightView addSubview:btn];
         [_writeNoteView addSubview:self.textField];
         _writeNoteView.hidden = YES;
@@ -1098,7 +1196,7 @@
 }
 
 -(UITextField *)textField{
-
+    
     if (!_textField) {
         _textField = [[UITextField alloc]initWithFrame:CGRectMake((self.view.width-1700*WidthScale)/2,361*HeightScale/1212*1563 , 1700*WidthScale, 200*HeightScale)];
         _textField.placeholder = @"请添加节点，不超过20字";
@@ -1116,12 +1214,12 @@
 }
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-
+    
     [self.textField resignFirstResponder];
 }
 
 -(UILabel *)isDownloadLabel{
-
+    
     if (!_isDownloadLabel) {
         _isDownloadLabel = [[UILabel alloc]initWithFrame:CGRectMake(1743*WidthScale, 10, 305*WidthScale, 90*HeightScale)];
         _isDownloadLabel.font = [UIFont systemFontOfSize:35*HeightScale];
@@ -1131,8 +1229,19 @@
     return _isDownloadLabel;
 }
 
--(UIPanGestureRecognizer *)pan{
+-(UIButton *)downloadBtn{
 
+    if (!_downloadBtn) {
+        _downloadBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _downloadBtn.frame = CGRectMake(1643*WidthScale, 38*HeightScale, 54*WidthScale, 44*HeightScale);
+        [_downloadBtn addTarget:self action:@selector(downloadVideo) forControlEvents:UIControlEventTouchUpInside];
+        [_downloadBtn setImage:[UIImage imageNamed:@"download"] forState:UIControlStateNormal];
+    }
+    return _downloadBtn;
+}
+
+-(UIPanGestureRecognizer *)pan{
+    
     if (!_pan) {
         _pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panToTime:)];
     }
@@ -1221,7 +1330,7 @@
 
 
 -(UIActivityIndicatorView *)indicatorView{
-
+    
     if (!_indicatorView) {
         _indicatorView = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake((self.container.width-200*WidthScale)/2, (self.container.height-200*HeightScale)/2, 200*WidthScale, 200*HeightScale)];
         [_indicatorView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -1231,7 +1340,7 @@
 }
 
 -(UIView *)indicatorShowView{
-
+    
     if (!_indicatorShowView) {
         _indicatorShowView = [[UIView alloc]initWithFrame:CGRectMake(0, 100*HeightScale, self.view.width, self.view.height)];
         _indicatorShowView.backgroundColor = [UIColor clearColor];
