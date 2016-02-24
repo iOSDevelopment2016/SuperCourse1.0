@@ -418,6 +418,7 @@
             
             NSData *data = [[NSData alloc] initWithData:responseObject];
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"updateHistoryInfo" object:self userInfo:nil];
             
         } failure:^(NSError *error) {
             NSLog(@"%@",error);
@@ -425,7 +426,7 @@
         
     }
     
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"updateHistoryInfo" object:self userInfo:nil];
+    
 }
 
 #pragma mark - 点击事件

@@ -58,7 +58,6 @@
                                                  name: @"updateHistoryInfo"
                                                object: nil];
 
-
 }
 
 
@@ -80,7 +79,12 @@
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
 
         [self setDataWithDic:dic];
-        [self.historyTableView reloadData];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.historyTableView reloadData];
+        });
+        
+        
 
     } failure:^(NSError *error) {
         NSLog(@"%@",error);
