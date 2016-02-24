@@ -140,8 +140,8 @@
                 cell.downloadBtn.enabled=NO;
                 cell.beDownloadingLabel.text=@"下载完成";
                 cell.beDownloadingLabel.font=FONT_25;
-                [cell.downloadBtn setHidden:NO];
-                [cell.beDownloadingLabel setHidden:YES];
+                [cell.downloadBtn setHidden:YES];
+                [cell.beDownloadingLabel setHidden:NO];
                 cell.beDownloadingLabel.textColor=UIColorFromRGB(0x6fccdb);
                 break;
             }
@@ -741,8 +741,8 @@
                 cell.downloadBtn.enabled=YES;
                 cell.beDownloadingLabel.text=@"下载完成";
                 cell.beDownloadingLabel.font=FONT_25;
-                [cell.downloadBtn setHidden:NO];
-                [cell.beDownloadingLabel setHidden:YES];
+                [cell.downloadBtn setHidden:YES];
+                [cell.beDownloadingLabel setHidden:NO];
                 
             }else{
                 if([db findConfig:temp_.les_id])
