@@ -567,7 +567,7 @@
     if(!_headImageView){
         
         _headImageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"iOS"]];
-        [_headImageView sd_setImageWithURL:[NSURL URLWithString:@"http://101.200.73.189/SuperCourseServer/Images/AllCourseHeadImage.png"] placeholderImage:[UIImage imageNamed:@""]];
+        [_headImageView sd_setImageWithURL:[NSURL URLWithString:@"http://101.200.73.189/SuperCourseServer/Images/AllCourseHeadImage.png"] placeholderImage:[UIImage imageNamed:@"iOS"]];
     }
     return _headImageView;
     
@@ -587,7 +587,7 @@
         
         _characterImageView=[[UIImageView alloc]init];
         
-        [_characterImageView sd_setImageWithURL:[NSURL URLWithString:@"http://101.200.73.189/SuperCourseServer/Images/AllCourseCharaImage.png"] placeholderImage:[UIImage imageNamed:@""]];
+        [_characterImageView sd_setImageWithURL:[NSURL URLWithString:@"http://101.200.73.189/SuperCourseServer/Images/AllCourseCharaImage.png"] placeholderImage:[UIImage imageNamed:@"SC_c"]];
         
     }
     
