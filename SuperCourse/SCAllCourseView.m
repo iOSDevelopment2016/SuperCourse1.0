@@ -118,8 +118,8 @@
                     cell.beDownloadingLabel.text=@"等待下载";
                 }
                 cell.beDownloadingLabel.font=FONT_25;
-                [cell.downloadBtn setHidden:YES];
-                [cell.beDownloadingLabel setHidden:NO];
+                [cell.downloadBtn setHidden:NO];
+                [cell.beDownloadingLabel setHidden:YES];
                 cell.beDownloadingLabel.textColor=UIColorFromRGB(0x6fccdb);
                 break;
             }
@@ -140,8 +140,8 @@
                 cell.downloadBtn.enabled=NO;
                 cell.beDownloadingLabel.text=@"下载完成";
                 cell.beDownloadingLabel.font=FONT_25;
-                [cell.downloadBtn setHidden:YES];
-                [cell.beDownloadingLabel setHidden:NO];
+                [cell.downloadBtn setHidden:NO];
+                [cell.beDownloadingLabel setHidden:YES];
                 cell.beDownloadingLabel.textColor=UIColorFromRGB(0x6fccdb);
                 break;
             }
@@ -735,15 +735,15 @@
             cell.downloadBtn.enabled=YES;
             cell.beDownloadingLabel.text=@"当前下载";
             cell.beDownloadingLabel.font=FONT_25;
-            [cell.downloadBtn setHidden:YES];
-            [cell.beDownloadingLabel setHidden:NO];
+            [cell.downloadBtn setHidden:NO];
+            [cell.beDownloadingLabel setHidden:YES];
         }else{
             if([db isDownload:temp_.les_id]){
                 cell.downloadBtn.enabled=YES;
                 cell.beDownloadingLabel.text=@"下载完成";
                 cell.beDownloadingLabel.font=FONT_25;
-                [cell.downloadBtn setHidden:YES];
-                [cell.beDownloadingLabel setHidden:NO];
+                [cell.downloadBtn setHidden:NO];
+                [cell.beDownloadingLabel setHidden:YES];
                 
             }else{
                 if([db findConfig:temp_.les_id])
@@ -751,8 +751,8 @@
                     cell.downloadBtn.enabled=YES;
                     cell.beDownloadingLabel.text=@"等待下载";
                     cell.beDownloadingLabel.font=FONT_25;
-                    [cell.downloadBtn setHidden:YES];
-                    [cell.beDownloadingLabel setHidden:NO];
+                    [cell.downloadBtn setHidden:NO];
+                    [cell.beDownloadingLabel setHidden:YES];
                 }
             }
         }
