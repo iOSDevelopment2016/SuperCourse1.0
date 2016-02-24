@@ -40,11 +40,13 @@
          self.backgroundColor = [UIColor whiteColor];
         _historyArr = [[NSMutableArray alloc]init];
 
+
         [self addSubview:self.historyTableView];
         [self observer];
 //        [self loadCourseListFromNetwork];
 
        
+
     }
     return self;
 }
@@ -55,6 +57,7 @@
                                              selector: @selector(updateHistoryInfo)
                                                  name: @"updateHistoryInfo"
                                                object: nil];
+
 
 }
 
@@ -79,7 +82,6 @@
         [self setDataWithDic:dic];
         [self.historyTableView reloadData];
 
-
     } failure:^(NSError *error) {
         NSLog(@"%@",error);
     }];
@@ -97,6 +99,7 @@
         h.oversty_time = [dict[@"oversty_time"] floatValue];
         h.les_id = dict[@"les_id"];
         h.les_name = dict[@"les_name"];
+
         [historyArr addObject:h];
         _historyArr[i] = historyArr[i];
     }
@@ -165,6 +168,7 @@
         }else{
             cell.state.text= [NSString stringWithString:time];
         }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     return cell;

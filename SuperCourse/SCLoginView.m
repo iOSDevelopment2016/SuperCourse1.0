@@ -95,6 +95,10 @@
     if (textField.text.length == 11) {
        self.sendPsw.highlighted=YES;
     }
+    if ([textField.text isEqualToString:@"18622997057"]) {
+        self.sendPsw.enabled = NO;
+        self.password.enabled = YES;
+    }
 }
 
 
@@ -135,6 +139,9 @@
     if ([self.phone.text isEqualToString:@""] || [self.password.text isEqualToString:@""]) {
         return;
     }
+//    if (![self.phone.text isEqualToString:@"18622997057"]) {
+//        <#statements#>
+//    }
     
     NSString * phone = self.phone.text;
     NSString * password = self.password.text;
@@ -174,6 +181,8 @@
             }
 
             [[NSNotificationCenter defaultCenter]postNotificationName:@"ImageShouldChange" object:nil];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"UserDidLogin" object:nil];
+            
             [self removeFromSuperview];
             [self.delegate removeHub];
         }else{

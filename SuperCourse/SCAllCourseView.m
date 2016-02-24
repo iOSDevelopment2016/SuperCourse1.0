@@ -54,6 +54,9 @@
 
 @implementation SCAllCourseView{
     NSMutableArray *courseCategoryArr;
+    CGRect  initFrame;
+    CGFloat defaultViewHeight;
+    CGPoint headImageCenter;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -64,13 +67,13 @@
         
         self.backgroundColor = [UIColor whiteColor];
         [self addSubview:self.headView];
-        [self.headView addSubview:self.topImageView];
-        [self.topImageView addSubview:self.startBtn];
-        [self.topImageView addSubview:self.characterImageView];
-        [self.topImageView addSubview:self.headImageView];
-        [self.headView addSubview:self.leftBtn];
-        [self.headView addSubview:self.rightBtn];
-        [self.headView addSubview:self.scrollView];
+        [_headView addSubview:self.topImageView];
+        [_headView addSubview:self.startBtn];
+        [_headView addSubview:self.characterImageView];
+        [_headView addSubview:self.headImageView];
+        [_headView addSubview:self.leftBtn];
+        [_headView addSubview:self.rightBtn];
+        [_headView addSubview:self.scrollView];
         [self.HUD show:YES];
         [self loadCourseListFromNetwork];
         //[self change];
@@ -190,6 +193,7 @@
     
 }
 
+
 -(void)changeImage{
     [self.startBtn setImage:[UIImage imageNamed:@"SC_continue"] forState:UIControlStateNormal];
 }
@@ -268,16 +272,7 @@
 
 -(void)layoutSubviews{
     [super layoutSubviews];
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     self.leftBtn.selected = YES;
     self.headView.frame= CGRectMake(0, 0, self.width, 800*HeightScale);
     self.topImageView.frame = CGRectMake(0, 0, self.width, 670*HeightScale);
@@ -286,15 +281,70 @@
     self.characterImageView.frame=CGRectMake(270*WidthScale,280*HeightScale, 1087*WidthScale, 138*HeightScale);
     self.leftBtn.frame=CGRectMake(0.312*self.width, 670*HeightScale, 0.127*self.width, 130*HeightScale);
     self.rightBtn.frame=CGRectMake(0.562*self.width, 670*HeightScale, 0.127*self.width, 130*HeightScale);
-    self.firstTableView.frame = CGRectMake(0, 800*HeightScale, self.width, 500*HeightScale);
+    self.firstTableView.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
+//    self.firstTableView.frame = CGRectMake(0, 800*HeightScale, self.width, 500*HeightScale);
     //self.secondTableView.frame = CGRectMake(0, 800*HeightScale, self.width, 500*HeightScale);
     
-    
-    
+    [self setUPAnimation];
 }
+
+#pragma mark - 顶部动画
+
+-(void)setUPAnimation{
+    initFrame = _topImageView.frame;
+    defaultViewHeight = initFrame.size.height;
+    headImageCenter = CGPointMake(_headImageView.centerX, _headImageView.centerY);
+    
+    UIView *headerView = [[UIView alloc]initWithFrame:self.headView.frame];
+    _firstTableView.tableHeaderView = headerView;
+    
+    [_firstTableView addSubview:self.headView];
+}
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    //设置header与tableview同宽
+    CGRect f     = _topImageView.frame;
+    f.size.width = _firstTableView.frame.size.width;
+    _topImageView.frame  = f;
+    
+    CGFloat destinaOffset = 300;
+    CGFloat offset = (scrollView.contentOffset.y + scrollView.contentInset.top) * -1;
+    CGFloat alph = 1;
+    
+    if (scrollView.contentOffset.y < 0){//从起始点向下拉
+        
+        initFrame.origin.x = - offset/2;
+        initFrame.origin.y = - offset;
+        initFrame.size.width = _firstTableView.frame.size.width+offset;
+        initFrame.size.height = defaultViewHeight+offset;
+        _topImageView.frame = initFrame;
+
+        _headImageView.frame = CGRectMake(0, 0, 158*HeightScale+offset/5, 158*HeightScale+offset/5);
+        _headImageView.center = CGPointMake(headImageCenter.x, headImageCenter.y);
+        
+    }
+    else if (scrollView.contentOffset.y >= 0  && scrollView.contentOffset.y < destinaOffset){//从起始点向上拉
+        
+        alph = 1 - (-offset / 300.0f);
+        _headImageView.alpha = alph;
+        _characterImageView.alpha = alph;
+    }
+    else{//向上超过终点之后
+        
+    }
+}
+
+-(void)viewDidLayoutSubviews
+{
+    initFrame.size.width = _firstTableView.frame.size.width;
+    _topImageView.frame = initFrame;
+}
+
 -(void)postDownload{
     [self.delegate poseDownloads];
 }
+
 
 -(void)change{
     
@@ -330,52 +380,12 @@
                 [self changeImageBack];
             }
             
-            
         } failure:^(NSError *error) {
             NSLog(@"%@",error);
         }];
     }
     
 }
-
-
-#pragma mark - 动画
-
-//-(void)willMoveToSuperview:(UIView *)newSuperview
-//{
-//    //监测滚动视图的滚动距离
-//    [self.firstTableView addObserver:self forKeyPath:@"contentOffset" options:(NSKeyValueObservingOptionNew) context:Nil];
-//    self.firstTableView.contentInset = UIEdgeInsetsMake(self.headView.height, 0 ,0, 0);
-//}
-//
-//-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-//{
-//    //获取content滚动的距离
-//    CGPoint newOffset = [change[@"new"] CGPointValue];
-//    //    NSLog(@"%f,%f",newOffset.x,newOffset.y);
-//    [self updateSubViewsWithScrollOffset:newOffset];
-//}
-//
-//-(void)updateSubViewsWithScrollOffset:(CGPoint)newOffset
-//{
-//    float destinaOffset = -60;
-//    float startChangeOffset = -self.firstTableView.contentInset.top;
-//
-//    newOffset = CGPointMake(newOffset.x, newOffset.y<startChangeOffset?startChangeOffset:(newOffset.y>destinaOffset?destinaOffset:newOffset.y));
-//
-//    float titleDestinateOffset = self.headView.frame.size.height-50;
-//    float newY = -newOffset.y-self.firstTableView.contentInset.top;
-//    float d = destinaOffset-startChangeOffset;
-//    float alpha = 1-(newOffset.y-startChangeOffset)/d;
-//    //副标题渐变消失
-//    self.characterImageView.alpha = alpha;
-//    self.headView.frame = CGRectMake(0, newY, self.headView.frame.size.width, self.headView.frame.size.height);
-//    self.topImageView.frame = CGRectMake(0, -0.5*self.headView.frame.size.height+(1.5*self.headView.frame.size.height-60)*(1-alpha), self.topImageView.frame.size.width, self.topImageView.frame.size.height);
-//    self.startBtn.frame = CGRectMake(0, 0.4*self.headView.frame.size.height+(titleDestinateOffset-0.4*self.headView.frame.size.height)*(1-alpha), self.startBtn.frame.size.width, self.startBtn.frame.size.height);
-//    //缩小主标题
-////    self.titleLabel.font = [UIFont boldSystemFontOfSize:16+(alpha)*4];
-//
-//}
 
 
 #pragma mark - delegate
@@ -520,6 +530,7 @@
     if (!_topImageView){
         _topImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"SC_background"]];
         _topImageView.userInteractionEnabled = YES;
+        _topImageView.clipsToBounds = YES;
     }
     return _topImageView;
 }
@@ -562,6 +573,7 @@
     if(!_headView){
         _headView=[[UIView alloc]init];
         _headView.clipsToBounds = YES;
+        _headView.clipsToBounds = NO;
         //        _headView.backgroundColor = [UIColor orangeColor];
     }
     return _headView;
