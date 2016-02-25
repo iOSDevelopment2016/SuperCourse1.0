@@ -309,7 +309,10 @@
     [self.view addSubview:self.nowPoint];
     [self.view addSubview:self.isDownloadLabel];
     [self.view addSubview:self.container];
-    
+    if (![self isDownLoad]) {
+        [self.view addSubview:self.downloadBtn];
+    }
+
     [self.view addSubview:self.bottomView];
     [self.view addSubview:self.returnBtn];
     [self.bottomView addSubview:self.pauseBtn];
@@ -471,9 +474,6 @@
     [self.startBtnView addSubview:_slider];
     [self.nowCourse setText:self.videoInfo.les_name];
     [self setIsDownloadLabelText];
-    if (![self isDownLoad]) {
-        [self.view addSubview:self.downloadBtn];
-    }
     
 }
 
