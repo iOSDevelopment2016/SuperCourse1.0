@@ -121,8 +121,6 @@
     [self.delegate unlogin];
     
     
-    
-    
     //[self.navigationController popViewControllerAnimated:YES];
 }
 
