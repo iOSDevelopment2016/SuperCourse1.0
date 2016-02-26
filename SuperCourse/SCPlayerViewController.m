@@ -440,6 +440,7 @@
     [self.videoManager stop];
     [self.navigationController popViewControllerAnimated:YES];
     [self.delegate changeToLearn];
+    self.lessonId = nil;
     
 }
 

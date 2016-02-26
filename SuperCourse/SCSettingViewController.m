@@ -98,24 +98,6 @@
 }
 -(void)toExtendBtnClick{
     
-    
-//    self.extendView = [[SCExtendView alloc]initWithString:Course.les_name AndDataSource:self.datasource AndWidth:0.68*self.view.width AndHeight:0.6*self.view.height];
-//    
-//    self.extendView.frame = CGRectMake(0, 0, 0.68*self.view.width, 0.6*self.view.height);
-//    
-//    self.extendView.center = self.view.center;
-//    self.extendView.delegate = self;
-//    self.extendView.width = 0.68*self.view.width;
-//    self.extendView.height = 0.6*self.view.height;
-//    
-//    [self.view addSubview:self.hubView];
-//    [self.view addSubview:self.extendView];
-    self.aboutView=[[SCAboutView alloc]init];
-    self.aboutView.frame = CGRectMake(0, 0, 0.68*self.view.width, 0.6*self.view.height);
-
-    self.aboutView.center = self.view.center;
-    
-
     [self.view addSubview:self.hubView];
     [self.view addSubview:self.aboutView];
     
@@ -350,6 +332,16 @@
         
     }
     return _sizeLabel;
+}
+
+-(SCAboutView *)aboutView{
+
+    if (!_aboutView) {
+        _aboutView = [[SCAboutView alloc]initWithFrame:CGRectMake(0, 0, 0.68*self.view.width, 0.6*self.view.height)];
+//        _aboutView.frame = CGRectMake(0, 0, 0.68*self.view.width, 0.6*self.view.height);
+        _aboutView.center = self.view.center;
+    }
+    return _aboutView;
 }
 
 @end
