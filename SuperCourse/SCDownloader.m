@@ -191,6 +191,8 @@
         [[NSNotificationCenter defaultCenter]postNotificationName:@"downloadFinished" object:self userInfo:@{@"les_ID":mode.les_id}];
         
         [[NSNotificationCenter defaultCenter]postNotificationName:@"beingFinished" object:self userInfo:@{@"name":mode.les_name}];
+        
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"getRefresh" object:self userInfo:@{}];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
         NSLog(@"下载失败 %@", error);
