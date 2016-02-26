@@ -20,9 +20,10 @@
 #import "SCLoginView.h"
 #import "HttpTool.h"
 #import "SCCoursePlayLog.h"
-#import "LocalDatabase.h"
+//#import "LocalDatabase.h"
 #import "UIImageView+WebCache.h"
-
+#import "SZYNoteSolidater.h"
+#import "SCDownlodaMode.h"
 @interface SCAllCourseView ()<UITableViewDataSource, UITableViewDelegate,SCCourseTableViewDelegate,MBProgressHUDDelegate,SCLoginViewDelegate>
 
 @property (weak, nonatomic  ) IBOutlet UITextField                *phone;
@@ -52,6 +53,8 @@
 
 @property (nonatomic ,strong) UIView        *headView;
 
+@property (nonatomic, strong) SZYNoteSolidater          *db;
+
 @end
 
 @implementation SCAllCourseView{
@@ -63,7 +66,7 @@
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
-    
+    self.db=[[SZYNoteSolidater alloc]init];
     self = [super initWithFrame:frame];
     if (self) {
         
@@ -118,9 +121,25 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     SCCourseGroup *temp=self.currentSource.sec_arr[i];
                     SCCourse *temp_=temp.lesarr[j];
+                    __block BOOL isDodownloading;
                     
-                    LocalDatabase *db=[LocalDatabase sharedManager];
-                    if([db isDownloadingName:name]){
+                    
+                    
+                    [ApplicationDelegate.dbQueue inDatabase:^(FMDatabase *database) {
+                        [self.db readOneByName:name successHandler:^(id result) {
+                            NSArray *noteArr = (NSArray *)result;
+                            if ([noteArr count] < 1) {
+                                isDodownloading=NO;
+                            }else{
+                                isDodownloading=YES;
+                            }
+                        } failureHandler:^(NSString *errorMsg) {
+                            NSLog(@"%@",errorMsg);
+                        }];
+                        
+                    }];
+                    
+                    if(isDodownloading){
                         cell.beDownloadingLabel.text=@"当前下载";
                         temp_.downloading=@"YES";
                     }else{
@@ -773,7 +792,7 @@
         //
         //            cell.selected=NO;
         //        //}
-        LocalDatabase *db=[LocalDatabase sharedManager];
+        //LocalDatabase *db=[LocalDatabase sharedManager];
                 if([temp_.downloaded isEqualToString:@"YES"]){
             cell.downloadBtn.enabled=NO;
             cell.beDownloadingLabel.text=@"下载完成";
@@ -794,14 +813,46 @@
             [cell.downloadBtn setHidden:YES];
             [cell.beDownloadingLabel setHidden:NO];
         }else{
-            if([db isDownloading:temp_.les_id]){
+            __block BOOL isDodownloading;
+            [ApplicationDelegate.dbQueue inDatabase:^(FMDatabase *database) {
+                [self.db readOneByID:temp_.les_id successHandler:^(id result) {
+                    NSArray *noteArr = (NSArray *)result;
+                    SCDownlodaMode *mode=[noteArr firstObject];
+                    if([mode.les_downloading isEqualToString:@"YES"]){
+                        isDodownloading=YES;
+                    }else{
+                        isDodownloading=NO;
+                    }
+                } failureHandler:^(NSString *errorMsg) {
+                    NSLog(@"%@",errorMsg);
+                }];
+                
+            }];
+
+            if(isDodownloading){
                 cell.downloadBtn.enabled=NO;
                 cell.beDownloadingLabel.text=@"当前下载";
                 cell.beDownloadingLabel.font=FONT_25;
                 [cell.downloadBtn setHidden:YES];
                 [cell.beDownloadingLabel setHidden:NO];
             }else{
-                if([db isDownload:temp_.les_id]){
+                __block BOOL isDodownloaded;
+                [ApplicationDelegate.dbQueue inDatabase:^(FMDatabase *database) {
+                    [self.db readOneByID:temp_.les_id successHandler:^(id result) {
+                        NSArray *noteArr = (NSArray *)result;
+                        SCDownlodaMode *mode=[noteArr firstObject];
+                        if([mode.finished isEqualToString:@"YES"]){
+                            isDodownloaded=YES;
+                        }else{
+                            isDodownloaded=NO;
+                        }
+                    } failureHandler:^(NSString *errorMsg) {
+                        NSLog(@"%@",errorMsg);
+                    }];
+                    
+                }];
+
+                if(isDodownloaded){
                     cell.downloadBtn.enabled=NO;
                     cell.beDownloadingLabel.text=@"下载完成";
                     cell.beDownloadingLabel.font=FONT_25;
@@ -809,7 +860,24 @@
                     [cell.beDownloadingLabel setHidden:NO];
                     
                 }else{
-                    if([db findConfig:temp_.les_id])
+                    __block BOOL isExist;
+                    
+                    
+                    
+                    [ApplicationDelegate.dbQueue inDatabase:^(FMDatabase *database) {
+                        [self.db readOneByID:temp_.les_id successHandler:^(id result) {
+                            NSArray *noteArr = (NSArray *)result;
+                            if ([noteArr count] < 1) {
+                                isExist=NO;
+                            }else{
+                                isExist=YES;
+                            }
+                        } failureHandler:^(NSString *errorMsg) {
+                            NSLog(@"%@",errorMsg);
+                        }];
+                        
+                    }];
+                    if(isExist)
                     {
                         cell.downloadBtn.enabled=NO;
                         cell.beDownloadingLabel.text=@"等待下载";

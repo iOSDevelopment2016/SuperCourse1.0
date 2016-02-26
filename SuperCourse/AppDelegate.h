@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "SCDownloader.h"
+#import "FMDatabase.h"
+#include "FMDatabaseQueue.h"
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
@@ -27,6 +29,8 @@
 
 - (NSString *)getNetWorkStates;
 @property (nonatomic)float pram;
+
+@property (nonatomic, strong)FMDatabaseQueue *dbQueue;
 
 @end
 

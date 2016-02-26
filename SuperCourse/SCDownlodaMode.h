@@ -14,7 +14,7 @@
 @property (nonatomic, strong) NSString *les_id;
 @property (nonatomic, strong) NSString *les_name;
 @property (nonatomic, strong) NSString *les_url;
-@property (nonatomic, strong) NSString *les_filename;
+//@property (nonatomic, strong) NSString *les_filename;
 @property (nonatomic, strong) NSString *les_size;
 @property (nonatomic, strong) NSString *les_downloading;
 @property (nonatomic, strong) NSString *finished;
