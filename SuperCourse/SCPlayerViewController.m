@@ -17,8 +17,9 @@
 #import "SCWebViewController.h"
 #import "HttpTool.h"
 #import "MJExtension.h"
-#import "LocalDatabase.h"
-
+//#import "LocalDatabase.h"
+#import "SZYNoteSolidater.h"
+#import "SCDownlodaMode.h"
 
 @interface SCPlayerViewController ()<SCPointViewDelegate, SCRightViewDelegate>{
     BOOL isAnimating; // 正在动画
@@ -70,6 +71,7 @@
 @property (nonatomic, strong) NSArray *letterArr;
 @property (nonatomic, assign) NSTimeInterval beginTime;
 @property (nonatomic, strong) UIButton *downloadBtn;
+@property (nonatomic, strong) SZYNoteSolidater          *db;
 
 @end
 
@@ -77,6 +79,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.db=[[SZYNoteSolidater alloc]init];
     isAnimating = NO; //防止重复的动画
     //    [self loadDataStub]; //加载数据桩
     //    self.lessonId = @"0001";
@@ -177,9 +180,28 @@
 }
 
 -(BOOL)isDownLoad{
-    LocalDatabase *db = [LocalDatabase sharedManager];
-    BOOL msg=[db isDownload:self.lessonId];
-    return msg;
+//    LocalDatabase *db = [LocalDatabase sharedManager];
+//    BOOL msg=[db isDownload:self.lessonId];
+    __block BOOL isdownload;
+    
+    
+    
+    [ApplicationDelegate.dbQueue inDatabase:^(FMDatabase *database) {
+        [self.db readOneByID:self.lessonId successHandler:^(id result) {
+            NSArray *noteArr = (NSArray *)result;
+            SCDownlodaMode *mode=[noteArr firstObject];
+            if ([mode.finished isEqualToString:@"YES"]) {
+                isdownload=YES;
+            }else{
+                isdownload=NO;
+            }
+        } failureHandler:^(NSString *errorMsg) {
+            NSLog(@"%@",errorMsg);
+        }];
+        
+    }];
+
+    return isdownload;
 }
 
 -(void)getVideoURLWithDict:(SCVideoInfoModel *)m AndVideoInfoDict:(NSArray *)videoInfoDict AndLes_name:(NSString *)les_name{
@@ -435,7 +457,7 @@
 #pragma mark - 点击事件
 
 -(void)backBtnClick{
-
+    self.lessonId=nil;
     [self getStopTime];
     [self.videoManager stop];
     [self.navigationController popViewControllerAnimated:YES];
@@ -771,10 +793,41 @@
     NSString *lessonID = self.lessonId;
     NSLog(@"%@,%@,%@,%@",les_name,les_url,les_size,lessonID);
     //从播放界面下载视频。
-    LocalDatabase *db = [LocalDatabase sharedManager];
-    if(![db findConfig:lessonID]){
-    [db insertRecordIntoTableName:@"DOWNLOADINFO" withField1:@"LESSON_ID" field1Value:lessonID andField2:@"LESSON_NAME" field2Value:les_name andField3:@"LESSON_URL" field3Value:les_url andField4:@"LESSON_SIZE" field4Value:les_size andField5:@"LESSON_DOWNLOADING" field5Value:@"NO" andField6:@"FINISHED" field6Value:@"NO"];
-        [UIAlertController showAlertAtViewController:self title:@"提示" message:@"已成功加入下载列表" confirmTitle:@"我知道了" confirmHandler:^(UIAlertAction *action) {
+    __block BOOL isExist;
+    
+    
+    
+    [ApplicationDelegate.dbQueue inDatabase:^(FMDatabase *database) {
+        [self.db readOneByID:lessonID successHandler:^(id result) {
+            NSArray *noteArr = (NSArray *)result;
+            if ([noteArr count] < 1) {
+                isExist=NO;
+            }else{
+                isExist=YES;
+            }
+        } failureHandler:^(NSString *errorMsg) {
+            NSLog(@"%@",errorMsg);
+        }];
+        
+    }];
+//    LocalDatabase *db = [LocalDatabase sharedManager];
+    if(!isExist){
+//    [db insertRecordIntoTableName:@"DOWNLOADINFO" withField1:@"LESSON_ID" field1Value:lessonID andField2:@"LESSON_NAME" field2Value:les_name andField3:@"LESSON_URL" field3Value:les_url andField4:@"LESSON_SIZE" field4Value:les_size andField5:@"LESSON_DOWNLOADING" field5Value:@"NO" andField6:@"FINISHED" field6Value:@"NO"];
+//        [UIAlertController showAlertAtViewController:self title:@"提示" message:@"已成功加入下载列表" confirmTitle:@"我知道了" confirmHandler:^(UIAlertAction *action) {
+//        }];
+        SCDownlodaMode *mode=[[SCDownlodaMode alloc]init];
+        mode.les_id=lessonID;
+        mode.les_name=les_name;
+        mode.les_url=les_url;
+        mode.les_size=les_size;
+        mode.les_downloading=@"NO";
+        mode.finished=@"NO";
+        [ApplicationDelegate.dbQueue inDatabase:^(FMDatabase *database) {
+            [self.db saveOne:mode successHandler:^(id result) {
+                
+            } failureHandler:^(NSString *errorMsg) {
+                NSLog(@"%@",errorMsg);
+            }];
         }];
     }else{
 //        [UIAlertController showAlertAtViewController:self withMessage:@"该进程在下载列表中已存在" cancelTitle:@"" confirmTitle:@"我知道了" cancelHandler:^(UIAlertAction *action) {

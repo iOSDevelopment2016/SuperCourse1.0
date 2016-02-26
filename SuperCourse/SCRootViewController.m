@@ -27,7 +27,8 @@
 #import "SCCoursePlayLog.h"
 #import "SCExtendView.h"
 #import "MBProgressHUD.h"
-#import "LocalDatabase.h"
+//#import "LocalDatabase.h"
+#import "SZYNoteSolidater.h"
 typedef NS_ENUM(NSInteger,SCShowViewType) {
     SCShowViewType_MyNotes = 0,
     SCShowViewType_VideoHistory,
@@ -65,6 +66,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 @property (nonatomic ,strong) SCIntroductionDataSource *datasource;
 @property (nonatomic ,strong) MBProgressHUD            *hud;
 @property (nonatomic ,strong) SCCoursePlayLog          *playLog;
+@property (nonatomic, strong) SZYNoteSolidater          *db;
 
 @property CGFloat Variety;
 
@@ -82,7 +84,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     [super viewDidLoad];
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *docDir = [paths objectAtIndex:0];
-    
+    self.db=[[SZYNoteSolidater alloc]init];
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(echo)
                                                  name: @"echo"
@@ -233,15 +235,30 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 //}
 
 -(void)postDownloadName:(NSString *)name AndURL:(NSString *)url AndSize:(NSString *)size AndID:(NSString *)les_id{
+    __block BOOL beExist;
     
-            LocalDatabase *db = [LocalDatabase sharedManager];
-            if([db findConfig:les_id]==YES){
-                [self downloadingAlart];
+    
+    
+    [ApplicationDelegate.dbQueue inDatabase:^(FMDatabase *database) {
+        [self.db readOneByID:@"YES" successHandler:^(id result) {
+            NSArray *noteArr = (NSArray *)result;
+            if ([noteArr count] < 1) {
+                beExist=NO;
             }else{
-                [self downloadingMsg];
-                [[NSNotificationCenter defaultCenter]postNotificationName:@"sendDownloadCondition" object:self userInfo:@{@"name":name,@"size":size,@"url":url,@"id":les_id}];
-                
+                beExist=YES;
             }
+        } failureHandler:^(NSString *errorMsg) {
+            NSLog(@"%@",errorMsg);
+        }];
+        
+    }];
+    if(beExist==YES){
+        [self downloadingAlart];
+    }else{
+        [self downloadingMsg];
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"sendDownloadCondition" object:self userInfo:@{@"name":name,@"size":size,@"url":url,@"id":les_id}];
+        
+    }
     
 }
 

@@ -9,10 +9,10 @@
 #import "SCDownloadConditionViewController.h"
 #import "SCDownloadTableViewCell.h"
 #import "AFDownloadRequestOperation.h"
-#import "LocalDatabase.h"
+//#import "LocalDatabase.h"
 #import "SCDownlodaMode.h"
 #import "SCPlayerViewController.h"
-
+#import "SZYNoteSolidater.h"
 @interface SCDownloadConditionViewController ()<UITableViewDataSource, UITableViewDelegate,SCDownloadTableViewCellDelegate>
 
 @property (nonatomic, strong)UIButton   *backBtn;
@@ -22,22 +22,35 @@
 //@property (nonatomic, strong)SCDownlodaMode *data;
 //@property (nonatomic, strong)UIView     *view;
 @property (nonatomic, strong)UILabel *label;
+@property (nonatomic, strong)SZYNoteSolidater *db;
+
 @end
 
 @implementation SCDownloadConditionViewController{
-    NSMutableArray *datasource;
+    __block NSArray *datasource;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     //self.view.backgroundColor=UIColorFromRGB(0xeeeeee);;
+    self.db=[[SZYNoteSolidater alloc]init];
     [self.view addSubview:self.backImageBtn];
     [self.view addSubview:self.backBtn];
     [self.view addSubview:self.downloadTableView];
     [self.view addSubview:self.label];
-    LocalDatabase *db = [LocalDatabase sharedManager];
-    datasource= [db getAllData];
+    
+    [ApplicationDelegate.dbQueue inDatabase:^(FMDatabase *database) {
+        [self.db readallBySuccessHandler:^(id result) {
+            NSArray *noteArr = (NSArray *)result;
+            datasource=noteArr;
+        } failureHandler:^(NSString *errorMsg) {
+            NSLog(@"%@",errorMsg);
+        }];
+        
+    }];
+    
+    
     [self.downloadTableView reloadData];
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(getChange)
@@ -59,8 +72,16 @@
 
 
 -(void)getChange{
-    LocalDatabase *db = [LocalDatabase sharedManager];
-    datasource= [db getAllData];
+    
+    [ApplicationDelegate.dbQueue inDatabase:^(FMDatabase *database) {
+        [self.db readallBySuccessHandler:^(id result) {
+            NSArray *noteArr = (NSArray *)result;
+            datasource=noteArr;
+        } failureHandler:^(NSString *errorMsg) {
+            NSLog(@"%@",errorMsg);
+        }];
+        
+    }];
     [self.downloadTableView reloadData];
 }
 
@@ -69,8 +90,15 @@
 }
 
 -(void)toGetChange{
-    LocalDatabase *db = [LocalDatabase sharedManager];
-    datasource= [db getAllData];
+    [ApplicationDelegate.dbQueue inDatabase:^(FMDatabase *database) {
+        [self.db readallBySuccessHandler:^(id result) {
+            NSArray *noteArr = (NSArray *)result;
+            datasource=noteArr;
+        } failureHandler:^(NSString *errorMsg) {
+            NSLog(@"%@",errorMsg);
+        }];
+        
+    }];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.downloadTableView reloadData];
     });
@@ -462,9 +490,20 @@
     [UIAlertController showAlertAtViewController:self withMessage:@"您确定要删除该文件吗？" cancelTitle:@"取消" confirmTitle:@"确定" cancelHandler:^(UIAlertAction *action) {
         
     } confirmHandler:^(UIAlertAction *action) {
-        SCDownlodaMode *temp =datasource[rowIndex];
-        LocalDatabase *db = [LocalDatabase sharedManager];
-        SCDownlodaMode *mode=[db checkDownloading:temp.les_id];
+        __block SCDownlodaMode *temp =datasource[rowIndex];
+        
+        __block SCDownlodaMode *mode =[[SCDownlodaMode alloc]init];
+        
+        [ApplicationDelegate.dbQueue inDatabase:^(FMDatabase *database) {
+            [self.db readOneByID:temp.les_id successHandler:^(id result) {
+                NSArray *noteArr = (NSArray *)result;
+                mode=[noteArr firstObject];
+            } failureHandler:^(NSString *errorMsg) {
+                
+            }];
+        }];
+
+        
         [[NSNotificationCenter defaultCenter]postNotificationName:@"beingDelete" object:self userInfo:@{@"name":mode.les_name}];
         [[NSNotificationCenter defaultCenter]postNotificationName:@"deleteLesson" object:self userInfo:@{@"id":temp.les_id}];
         ApplicationDelegate.program=@"";

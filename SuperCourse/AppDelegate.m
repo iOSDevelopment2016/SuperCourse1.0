@@ -21,7 +21,10 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *path = [documentsDirectory stringByAppendingPathComponent:@"myDatabase.sqlite3"];
+    self.dbQueue = [FMDatabaseQueue databaseQueueWithPath:path];
     self.pram=0;
     self.download = [[SCDownloader alloc]init];
     
