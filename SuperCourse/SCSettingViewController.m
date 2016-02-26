@@ -20,9 +20,9 @@
 @property (nonatomic, strong)UIButton   *memoryClearBtn;
 @property (nonatomic, strong)UIButton   *extendBtn;
 @property (nonatomic, strong)UILabel    *sizeLabel;
-
-
 @property (nonatomic, strong)UIButton   *exitBtn;
+
+
 
 @property (nonatomic)float size;
 
@@ -48,6 +48,8 @@
     [self.view addSubview:self.extendBtn];
     [self.view addSubview:self.exitBtn];
     [self.view addSubview:self.sizeLabel];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeBtn) name:@"UserDidLogin" object:nil];
+
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -62,6 +64,18 @@
     self.exitBtn.frame=CGRectMake(self.view.width/2-350*WidthScale, 225+HeightScale*500, 700*WidthScale, 100*HeightScale);
     self.sizeLabel.frame=CGRectMake(self.view.width-200*WidthScale, 152+HeightScale*250, 200*WidthScale, HeightScale*125);
 }
+-(void)changeBtn{
+    if([ApplicationDelegate.userSession isEqualToString:UnLoginUserSession])
+    {
+//        [self.exitBtn setTitle:@" 登     陆 " forState:UIControlStateNormal];
+//        [self.exitBtn addTarget:self action:@selector(loginDidBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    }else{
+        [self.exitBtn setTitle:@"退出当前账号" forState:UIControlStateNormal];
+        [self.exitBtn addTarget:self action:@selector(exitBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    }
+}
+
+
 #pragma mark - click
 -(void)backBtnClick{
     
@@ -115,7 +129,14 @@
     [defaultes removeObjectForKey:UserPhoneKey];
     [defaultes removeObjectForKey:PlayLogKey];
     [defaultes synchronize];
-
+    if([ApplicationDelegate.userSession isEqualToString:UnLoginUserSession])
+    {
+        [self.exitBtn setTitle:@" 登     陆 " forState:UIControlStateNormal];
+        [self.exitBtn addTarget:self action:@selector(loginBtnDidClick) forControlEvents:UIControlEventTouchUpInside];
+    }else{
+        [self.exitBtn setTitle:@"退出当前账号" forState:UIControlStateNormal];
+        [self.exitBtn addTarget:self action:@selector(exitBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    }
     
     [self.navigationController popViewControllerAnimated:YES];
     [self.delegate unlogin];
@@ -124,7 +145,7 @@
     //[self.navigationController popViewControllerAnimated:YES];
 }
 
--(void)loginBtnClick{
+-(void)loginBtnDidClick{
     [self.navigationController popViewControllerAnimated:YES];
     [self.delegate toLogin];
 }
@@ -235,7 +256,7 @@
         if([ApplicationDelegate.userSession isEqualToString:UnLoginUserSession])
         {
             [_exitBtn setTitle:@" 登     陆 " forState:UIControlStateNormal];
-            [_exitBtn addTarget:self action:@selector(loginBtnClick) forControlEvents:UIControlEventTouchUpInside];
+            [_exitBtn addTarget:self action:@selector(loginBtnDidClick) forControlEvents:UIControlEventTouchUpInside];
         }else{
             [_exitBtn setTitle:@"退出当前账号" forState:UIControlStateNormal];
             [_exitBtn addTarget:self action:@selector(exitBtnClick) forControlEvents:UIControlEventTouchUpInside];

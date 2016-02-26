@@ -179,7 +179,7 @@
             if(ApplicationDelegate.playLog){
                 [self.delegate changeImage];
             }
-
+            
             [[NSNotificationCenter defaultCenter]postNotificationName:@"ImageShouldChange" object:nil];
             [[NSNotificationCenter defaultCenter]postNotificationName:@"UserDidLogin" object:nil];
             

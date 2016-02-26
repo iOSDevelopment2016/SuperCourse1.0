@@ -128,7 +128,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     //    NSLog(@"%@",str);
     self.selectedBtn = self.allCourseBtn;
     
-    }
+}
 
 -(void)webDataLoaddDone{
     
