@@ -1138,7 +1138,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         _searchTextField.font = [UIFont systemFontOfSize:45*WidthScale];
         _searchTextField.layer.masksToBounds = YES;
         _searchTextField.layer.cornerRadius = 50*WidthScale;
-        _searchTextField.textAlignment = UITextAlignmentCenter;
+        _searchTextField.textAlignment = NSTextAlignmentLeft;
         _searchTextField.rightView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 170*WidthScale, 150*HeightScale)];
         _searchTextField.rightView.backgroundColor=UIColorFromRGB(0x6fccdb);
         _searchTextField.rightViewMode=UITextFieldViewModeAlways;
