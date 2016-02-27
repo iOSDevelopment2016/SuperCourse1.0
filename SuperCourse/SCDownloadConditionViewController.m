@@ -407,7 +407,7 @@
             }else{
                 [cell.example2 setHidden:YES];
                 [cell.pauseBtn setTitle:@"等待下载" forState:UIControlStateNormal];
-                cell.program.text=@"未获取进度";
+                cell.program.text=@"";
             }
         }else{
             [cell.example2 setHidden:YES];
