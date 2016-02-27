@@ -12,6 +12,7 @@
 
 - (void)awakeFromNib {
     // Initialization code
+    
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(showTime:) name:@"sendTime" object:nil];
     self.example2 = [[THCircularProgressView alloc] initWithFrame:CGRectMake(520, self.height/2-30*HeightScale, 60*HeightScale, 60*HeightScale)];
     self.example2.lineWidth = 8.0f;
@@ -22,6 +23,9 @@
     self.example2.progressColor=UIThemeColor;
     [self addSubview:self.example2];
     self.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+//    self.leadingSpacingConstrants.constant = 0.02*UIScreenWidth;
+//    self.trailingSpacingConstrants.constant = 0.03*UIScreenWidth;
     
     
 
