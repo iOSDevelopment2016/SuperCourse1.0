@@ -379,8 +379,8 @@
         cell.playBtn.tag=indexPath.section * 1000 + indexPath.row;
         cell.deleteBtn.tag=indexPath.section * 1000 + indexPath.row;
         cell.pauseBtn.tag=indexPath.section * 1000 + indexPath.row;
-        cell.circle2.tag=indexPath.section * 1000 + indexPath.row;
-        cell.circle3.tag=indexPath.section * 1000 + indexPath.row;
+        cell.deleteImageBtn.tag=indexPath.section * 1000 + indexPath.row;
+        cell.playImageBtn.tag=indexPath.section * 1000 + indexPath.row;
         cell.videoSize.text=temp.les_size;
         cell.videoName.text=temp.les_name;
         if([temp.finished isEqualToString:@"NO"]){
