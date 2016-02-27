@@ -42,7 +42,7 @@
     
     [self.view addSubview:self.backImageBtn];
     [self.view addSubview:self.backBtn];
-    [self.view addSubview:self.selfConditidonBtn];
+    //[self.view addSubview:self.selfConditidonBtn];
     [self.view addSubview:self.downloadConditionBtn];
     [self.view addSubview:self.memoryClearBtn];
     [self.view addSubview:self.extendBtn];
@@ -58,9 +58,9 @@
     self.backImageBtn.frame=CGRectMake(40, 42, 20, 35);
     self.backBtn.frame=CGRectMake(55, 40, 100, 40);
     self.selfConditidonBtn.frame=CGRectMake(0, 100, self.view.width, HeightScale*125);
-    self.downloadConditionBtn.frame=CGRectMake(0, 150+HeightScale*125, self.view.width, HeightScale*125);
-    self.memoryClearBtn.frame=CGRectMake(0, 152+HeightScale*250, self.view.width, HeightScale*125);
-    self.extendBtn.frame=CGRectMake(0, 210+HeightScale*375, self.view.width, HeightScale*125);
+    self.downloadConditionBtn.frame=CGRectMake(0, 100, self.view.width, HeightScale*125);
+    self.memoryClearBtn.frame=CGRectMake(0, 103+HeightScale*125, self.view.width, HeightScale*125);
+    self.extendBtn.frame=CGRectMake(0, 150+HeightScale*250, self.view.width, HeightScale*125);
     self.exitBtn.frame=CGRectMake(self.view.width/2-350*WidthScale, 225+HeightScale*500, 700*WidthScale, 100*HeightScale);
     self.sizeLabel.frame=CGRectMake(self.view.width-200*WidthScale, 152+HeightScale*250, 200*WidthScale, HeightScale*125);
 }
