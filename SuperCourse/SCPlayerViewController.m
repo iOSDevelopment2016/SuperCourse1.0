@@ -830,6 +830,8 @@
                 NSLog(@"%@",errorMsg);
             }];
         }];
+        [UIAlertController showAlertAtViewController:self title:@"提示" message:@"成功添加到下载列表" confirmTitle:@"我知道了" confirmHandler:^(UIAlertAction *action) {
+        }];
     }else{
 //        [UIAlertController showAlertAtViewController:self withMessage:@"该进程在下载列表中已存在" cancelTitle:@"" confirmTitle:@"我知道了" cancelHandler:^(UIAlertAction *action) {
 //        } confirmHandler:^(UIAlertAction *action) {
