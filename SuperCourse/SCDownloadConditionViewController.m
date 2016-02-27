@@ -220,7 +220,7 @@
     
     headerLabel1.font = [UIFont italicSystemFontOfSize:35*HeightScale];
     
-    headerLabel1.frame = CGRectMake(200*WidthScale, 10.0, 300.0, 44.0);
+    headerLabel1.frame = CGRectMake(160, 10.0, 300.0, 44.0);
     
     // SCCourseGroup *temp = self.currentSource.sec_arr[section];
     
@@ -240,7 +240,7 @@
     
     headerLabel2.font = [UIFont italicSystemFontOfSize:35*HeightScale];
     
-    headerLabel2.frame = CGRectMake(470*WidthScale, 10.0, 300.0, 44.0);
+    headerLabel2.frame = CGRectMake(450, 10.0, 300.0, 44.0);
     
     // SCCourseGroup *temp = self.currentSource.sec_arr[section];
     
@@ -260,7 +260,7 @@
     
     headerLabel3.font = [UIFont italicSystemFontOfSize:35*HeightScale];
     
-    headerLabel3.frame = CGRectMake(1120*WidthScale, 10.0, 300.0, 44.0);
+    headerLabel3.frame = CGRectMake(735, 10.0, 300.0, 44.0);
     
     // SCCourseGroup *temp = self.currentSource.sec_arr[section];
     
@@ -280,7 +280,7 @@
     
     headerLabel4.font = [UIFont italicSystemFontOfSize:35*HeightScale];
     
-    headerLabel4.frame = CGRectMake(1680*WidthScale, 10.0, 300.0, 44.0);
+    headerLabel4.frame = CGRectMake(900, 10.0, 300.0, 44.0);
     
     // SCCourseGroup *temp = self.currentSource.sec_arr[section];
     
@@ -379,6 +379,8 @@
         cell.playBtn.tag=indexPath.section * 1000 + indexPath.row;
         cell.deleteBtn.tag=indexPath.section * 1000 + indexPath.row;
         cell.pauseBtn.tag=indexPath.section * 1000 + indexPath.row;
+        cell.deleteImageBtn.tag=indexPath.section * 1000 + indexPath.row;
+        cell.playImageBtn.tag=indexPath.section * 1000 + indexPath.row;
         cell.videoSize.text=temp.les_size;
         cell.videoName.text=temp.les_name;
         if([temp.finished isEqualToString:@"NO"]){
@@ -405,7 +407,7 @@
             }else{
                 [cell.example2 setHidden:YES];
                 [cell.pauseBtn setTitle:@"等待下载" forState:UIControlStateNormal];
-                cell.program.text=@"未获取进度";
+                cell.program.text=@"";
             }
         }else{
             [cell.example2 setHidden:YES];
@@ -577,29 +579,69 @@
 
 -(void)videoPlayClickWithCourse:(SCDownlodaMode *)temp{
     //        if([SCcourse.permission isEqualToString:@"是"])
-    [UIAlertController showAlertAtViewController:self withMessage:@"未下载完成视频仍使用网络资源" cancelTitle:@"先不看了" confirmTitle:@"我要观看" cancelHandler:^(UIAlertAction *action) {
-        
-    } confirmHandler:^(UIAlertAction *action) {
-        
-        if(![ApplicationDelegate.userSession isEqualToString:@"UnLoginUserSession"]){
-            NSString *state = [ApplicationDelegate getNetWorkStates];
-            if ([state isEqualToString:@"无网络"]) {
-                [UIAlertController showAlertAtViewController:self withMessage:@"请检查您的网络连接" cancelTitle:@"取消" confirmTitle:@"我知道了" cancelHandler:^(UIAlertAction *action) {
-                } confirmHandler:^(UIAlertAction *action) {
-                }];
-            }
-            else if ([state isEqualToString:@"wifi"]){
-                
-                [self jumpToPlayerWithCourse:temp];
-                
+    
+    __block BOOL isDodownloaded;
+    
+    
+    
+    [ApplicationDelegate.dbQueue inDatabase:^(FMDatabase *database) {
+        [self.db readOneByID:temp.les_id successHandler:^(id result) {
+            NSArray *noteArr = (NSArray *)result;
+            SCDownlodaMode  *mode=[noteArr firstObject];
+            if([mode.finished isEqualToString:@"YES"]){
+                isDodownloaded=YES;
             }else{
-                
-                [UIAlertController showAlertAtViewController:self withMessage:@"您当前正在使用3G/4G流量" cancelTitle:@"取消" confirmTitle:@"继续播放" cancelHandler:^(UIAlertAction *action) {
-                    
-                } confirmHandler:^(UIAlertAction *action) {
-                    [self jumpToPlayerWithCourse:temp];
-                }];
+                isDodownloaded=NO;
             }
+        } failureHandler:^(NSString *errorMsg) {
+            NSLog(@"%@",errorMsg);
+        }];
+        
+    }];
+    if(!isDodownloaded){
+        [UIAlertController showAlertAtViewController:self withMessage:@"未下载完成视频仍使用网络资源" cancelTitle:@"先不看了" confirmTitle:@"我要观看" cancelHandler:^(UIAlertAction *action) {
+            
+        } confirmHandler:^(UIAlertAction *action) {
+            
+            if(![ApplicationDelegate.userSession isEqualToString:@"UnLoginUserSession"]){
+                NSString *state = [ApplicationDelegate getNetWorkStates];
+                if ([state isEqualToString:@"无网络"]) {
+                    [UIAlertController showAlertAtViewController:self withMessage:@"请检查您的网络连接" cancelTitle:@"取消" confirmTitle:@"我知道了" cancelHandler:^(UIAlertAction *action) {
+                    } confirmHandler:^(UIAlertAction *action) {
+                    }];
+                }
+                else if ([state isEqualToString:@"wifi"]){
+                    
+                    [self jumpToPlayerWithCourse:temp];
+                    
+                }else{
+                    
+                    [UIAlertController showAlertAtViewController:self withMessage:@"您当前正在使用3G/4G流量" cancelTitle:@"取消" confirmTitle:@"继续播放" cancelHandler:^(UIAlertAction *action) {
+                        
+                    } confirmHandler:^(UIAlertAction *action) {
+                        [self jumpToPlayerWithCourse:temp];
+                    }];
+                }
+            }else{
+                //        if([SCcourse.permission isEqualToString:@"是"]){
+                //            [self jumpToPlayerWithCourse:SCcourse];
+                //        }
+                //        else{
+                [UIAlertController showAlertAtViewController:self withMessage:@"未登陆下受限" cancelTitle:@"取消" confirmTitle:@"我知道了" cancelHandler:^(UIAlertAction *action) {
+                } confirmHandler:^(UIAlertAction *action) {
+                }];
+            //        }
+            
+            }
+
+            
+            
+        }];
+    }else{
+        if(![ApplicationDelegate.userSession isEqualToString:@"UnLoginUserSession"]){
+            
+            [self jumpToPlayerWithCourse:temp];               
+            
         }else{
             //        if([SCcourse.permission isEqualToString:@"是"]){
             //            [self jumpToPlayerWithCourse:SCcourse];
@@ -611,11 +653,7 @@
             //        }
             
         }
-
-        
-        
-    }];
-
+    }
     
     
     

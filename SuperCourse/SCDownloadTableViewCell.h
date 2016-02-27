@@ -26,13 +26,15 @@
 @property (strong, nonatomic) IBOutlet UIButton *playBtn;
 @property (strong, nonatomic) IBOutlet UIButton *deleteBtn;
 @property (strong, nonatomic) IBOutlet UIButton *pauseBtn;
+@property (strong, nonatomic) IBOutlet UIButton *playImageBtn;
+@property (strong, nonatomic) IBOutlet UIButton *deleteImageBtn;
 - (IBAction)playBtnClick:(id)sender;
 - (IBAction)deleteBtnClick:(id)sender;
 - (IBAction)pauseBtnClick:(id)sender;
+- (IBAction)playImageClick:(id)sender;
+- (IBAction)deleteImageBtnClick:(id)sender;
 @property (nonatomic,strong) THCircularProgressView *example2;
 @property (strong, nonatomic) IBOutlet UIImageView *circle1;
-@property (strong, nonatomic) IBOutlet UIImageView *circle2;
-@property (strong, nonatomic) IBOutlet UIImageView *circle3;
 @property (strong, nonatomic) IBOutlet UILabel *program;
 @property (nonatomic, weak) id<SCDownloadTableViewCellDelegate> delegate;
 

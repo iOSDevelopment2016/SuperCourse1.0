@@ -29,6 +29,7 @@
 #import "MBProgressHUD.h"
 //#import "LocalDatabase.h"
 #import "SZYNoteSolidater.h"
+#import "SCDownlodaMode.h"
 typedef NS_ENUM(NSInteger,SCShowViewType) {
     SCShowViewType_MyNotes = 0,
     SCShowViewType_VideoHistory,
@@ -43,6 +44,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 @property (nonatomic ,strong) UIButton                 *loginBtnImage;
 @property (nonatomic ,strong) UIView                   *leftView;
 @property (nonatomic ,strong) UITextField              *searchTextField;
+@property (nonatomic ,strong) UIView                   *backView;
 @property (nonatomic ,strong) UIButton                 *allCourseBtn;
 @property (nonatomic ,strong) UIButton                 *allCourseBtnImage;
 @property (nonatomic ,strong) UIButton                 *videoHistoryBtn;
@@ -112,7 +114,8 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     [self.leftView addSubview:self.favouriteSettingBtn];
     [self.leftView addSubview:self.favouriteSettingBtnImage];
     
-    [self.view addSubview:self.searchTextField];
+    [self.view addSubview:self.backView];
+    [self.backView addSubview:self.searchTextField];
     [self.view addSubview:self.mainView];
     
     [self.mainView addSubview:self.myNotesView];//0
@@ -128,7 +131,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     //    NSLog(@"%@",str);
     self.selectedBtn = self.allCourseBtn;
     
-    }
+}
 
 -(void)webDataLoaddDone{
     
@@ -149,8 +152,8 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     self.myNotesBtnImage.frame=CGRectMake(51*WidthScale, 350*HeightScale+35*HeightScale, 64*WidthScale, 64*HeightScale);
     self.favouriteSettingBtn.frame = CGRectMake(0, self.leftView.height-150*HeightScale,400*WidthScale, 150*HeightScale);
     self.favouriteSettingBtnImage.frame = CGRectMake(51*WidthScale, self.leftView.height-150*HeightScale+35*HeightScale,64*WidthScale, 64*HeightScale);
-    self.searchTextField.frame= CGRectMake(1234*WidthScale, 56*HeightScale, self.view.width/3, 100*HeightScale);
-    
+    self.searchTextField.frame= CGRectMake(10, 0, self.view.width/3, 100*HeightScale);
+    self.backView.frame= CGRectMake(1234*WidthScale, 56*HeightScale, self.view.width/3, 100*HeightScale);
     //中央视图尺寸
     mainFrame = CGRectMake(self.leftView.right, self.leftView.top, self.view.width-self.leftView.width, self.leftView.height);
     self.mainView.frame = mainFrame;
@@ -301,24 +304,46 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
 
 -(void)videoPlayClickWithCourse:(SCCourse *)SCcourse{
     //        if([SCcourse.permission isEqualToString:@"是"])
+    __block BOOL isDodownloaded;
+    
+    
+    
+    [ApplicationDelegate.dbQueue inDatabase:^(FMDatabase *database) {
+        [self.db readOneByID:SCcourse.les_id successHandler:^(id result) {
+            NSArray *noteArr = (NSArray *)result;
+            SCDownlodaMode  *mode=[noteArr firstObject];
+            if([mode.finished isEqualToString:@"YES"]){
+                isDodownloaded=YES;
+            }else{
+                isDodownloaded=NO;
+            }
+        } failureHandler:^(NSString *errorMsg) {
+            NSLog(@"%@",errorMsg);
+        }];
+        
+    }];
     if(![ApplicationDelegate.userSession isEqualToString:@"UnLoginUserSession"]){
-        NSString *state = [ApplicationDelegate getNetWorkStates];
-        if ([state isEqualToString:@"无网络"]) {
-            [UIAlertController showAlertAtViewController:self withMessage:@"请检查您的网络连接" cancelTitle:@"取消" confirmTitle:@"我知道了" cancelHandler:^(UIAlertAction *action) {
-            } confirmHandler:^(UIAlertAction *action) {
-            }];
-        }
-        else if ([state isEqualToString:@"wifi"]){
-            
-            [self jumpToPlayerWithCourse:SCcourse];
-            
-        }else{
-            
-            [UIAlertController showAlertAtViewController:self withMessage:@"您当前正在使用3G/4G流量" cancelTitle:@"取消" confirmTitle:@"继续播放" cancelHandler:^(UIAlertAction *action) {
+        if(!isDodownloaded){
+            NSString *state = [ApplicationDelegate getNetWorkStates];
+            if ([state isEqualToString:@"无网络"]) {
+                [UIAlertController showAlertAtViewController:self withMessage:@"请检查您的网络连接" cancelTitle:@"取消" confirmTitle:@"我知道了" cancelHandler:^(UIAlertAction *action) {
+                } confirmHandler:^(UIAlertAction *action) {
+                }];
+            }
+            else if ([state isEqualToString:@"wifi"]){
                 
-            } confirmHandler:^(UIAlertAction *action) {
                 [self jumpToPlayerWithCourse:SCcourse];
-            }];
+                
+            }else{
+                
+                [UIAlertController showAlertAtViewController:self withMessage:@"您当前正在使用3G/4G流量" cancelTitle:@"取消" confirmTitle:@"继续播放" cancelHandler:^(UIAlertAction *action) {
+                    
+                } confirmHandler:^(UIAlertAction *action) {
+                    [self jumpToPlayerWithCourse:SCcourse];
+                }];
+            }
+        }else{
+            [self jumpToPlayerWithCourse:SCcourse];
         }
     }else{
         //        if([SCcourse.permission isEqualToString:@"是"]){
@@ -1124,21 +1149,31 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
     }
     return YES;
 }
-
+-(UIView *)backView{
+    if(!_backView){
+        _backView=[[UIView alloc]init];
+        _backView.layer.masksToBounds = YES;
+        _backView.layer.cornerRadius = 50*WidthScale;
+        _backView.backgroundColor=[UIColor whiteColor];
+    }
+    return _backView;
+}
 -(UITextField *)searchTextField{
     if(!_searchTextField){
         _searchTextField=[[UITextField alloc]init];
         //_SearchTextField=[[UITextField alloc]init];
         [_searchTextField setBackgroundColor:[UIColor whiteColor]];
-        _searchTextField.placeholder = @"请输入搜索内容";
+        _searchTextField.placeholder = @"      请输入搜索内容";
         //_searchTextField.keyboardType=UIKeyboardAppearanceDefault;
         //_searchTextField.clearButtonMode=UITextFieldViewModeWhileEditing;
         //_searchTextField.secureTextEntry=YES;
         _searchTextField.returnKeyType=UIReturnKeyDone;
+        _searchTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _searchTextField.font = [UIFont systemFontOfSize:45*WidthScale];
-        _searchTextField.layer.masksToBounds = YES;
-        _searchTextField.layer.cornerRadius = 50*WidthScale;
-        _searchTextField.textAlignment = UITextAlignmentCenter;
+
+//        _searchTextField.layer.masksToBounds = YES;
+//        _searchTextField.layer.cornerRadius = 50*WidthScale;
+        _searchTextField.textAlignment = UITextAlignmentLeft;
         _searchTextField.rightView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 170*WidthScale, 150*HeightScale)];
         _searchTextField.rightView.backgroundColor=UIColorFromRGB(0x6fccdb);
         _searchTextField.rightViewMode=UITextFieldViewModeAlways;
