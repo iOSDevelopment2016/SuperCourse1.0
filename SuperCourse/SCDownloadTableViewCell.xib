@@ -101,7 +101,7 @@
                 <outlet property="videoName" destination="pvO-xW-Pfp" id="M13-lo-UrV"/>
                 <outlet property="videoSize" destination="I9I-jF-Cyn" id="dOo-Xt-JBG"/>
             </connections>
-            <point key="canvasLocation" x="1195.5" y="572"/>
+            <point key="canvasLocation" x="900.5" y="624"/>
         </tableViewCell>
     </objects>
     <resources>
