@@ -128,7 +128,7 @@
 }
 -(void)continuePlaying{
 
-    [self getStopTime];
+    [self getStopTimeWithCurrentTime:self.currentTime];
     self.oversty_time = self.currentTime;
     [self.slider removeFromSuperview];
     [self.videoManager stop];
@@ -351,7 +351,8 @@
     
     if (alertView.tag == 1) {
         if (buttonIndex == 0) {
-            [self getStopTime];
+            CGFloat time = 0;
+            [self getStopTimeWithCurrentTime:time];
             [self.navigationController popToRootViewControllerAnimated:YES];
         }
     }else if (alertView.tag == 2){
@@ -412,11 +413,11 @@
     self.slider.value = (NSTimeInterval)sender.superview.tag;
 }
 
--(void)getStopTime{
+-(void)getStopTimeWithCurrentTime:(CGFloat)time{
     //    ApplicationDelegate.userSession = UnLoginUserSession;
     
     if (![ApplicationDelegate.userSession isEqualToString:UnLoginUserSession]) {
-        self.oversty_time = self.currentTime;
+        self.oversty_time = time;
         
         NSMutableDictionary *methodParameter = [[NSMutableDictionary alloc]init];
         NSString *userID = ApplicationDelegate.userSession; // 学员内码
@@ -458,7 +459,7 @@
 
 -(void)backBtnClick{
     self.lessonId=nil;
-    [self getStopTime];
+    [self getStopTimeWithCurrentTime:self.currentTime];
     [self.videoManager stop];
     [self.navigationController popViewControllerAnimated:YES];
     [self.delegate changeToLearn];
@@ -536,7 +537,7 @@
     shouldPlaying = NO;
     
     
-    [self getStopTime];
+    [self getStopTimeWithCurrentTime:self.currentTime];
 }
 
 
@@ -853,7 +854,7 @@
             self.startBtnView.hidden = NO;
             [self transformAnimated];
             [self.videoManager pause];
-            [self getStopTime];
+            [self getStopTimeWithCurrentTime:self.currentTime];
             shouldPlaying = NO;
             //            [self.speedBtn setImage:[UIImage imageNamed:@"2X"] forState:UIControlStateNormal];
             [self.bottomView addSubview:self.playBtn];
