@@ -13,7 +13,7 @@
 - (void)awakeFromNib {
     // Initialization code
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(showTime:) name:@"sendTime" object:nil];
-    self.example2 = [[THCircularProgressView alloc] initWithFrame:CGRectMake(670*WidthScale, self.height/2-30*HeightScale, 60*HeightScale, 60*HeightScale)];
+    self.example2 = [[THCircularProgressView alloc] initWithFrame:CGRectMake(520, self.height/2-30*HeightScale, 60*HeightScale, 60*HeightScale)];
     self.example2.lineWidth = 8.0f;
     self.example2.progressColor = [UIColor greenColor];
     self.example2.centerLabel.font = [UIFont boldSystemFontOfSize:40];
@@ -21,7 +21,13 @@
     self.example2.percentage=ApplicationDelegate.pram;
     [self addSubview:self.example2];
     self.selectionStyle = UITableViewCellSelectionStyleNone;
-   
+    self.circle2=[[UIImageView alloc]init];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(play:)];
+    [self.circle2 addGestureRecognizer:tap];
+    self.circle3=[[UIImageView alloc]init];
+    UITapGestureRecognizer *tap2 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(delete:)];
+    [self.circle3 addGestureRecognizer:tap2];
+    
 
     // [self.examples addObject:self.example2];
     
@@ -29,7 +35,20 @@
     //[self.example2 setHidden:YES];
 }
 
-
+-(void)play:(UIImageView *)sender{
+    NSInteger tag = sender.tag;
+    NSInteger secIndex = tag / 1000;
+    NSInteger rowIndex = tag - secIndex * 1000;
+    //[self.delegate imageBtnDidClickWithSectionIndex:secIndex AndRowIndex:rowIndex];
+    [self.delegate playClick:secIndex AndRowIndex:rowIndex];
+}
+-(void)delete:(UIImageView *)sender{
+    NSInteger tag = sender.tag;
+    NSInteger secIndex = tag / 1000;
+    NSInteger rowIndex = tag - secIndex * 1000;
+    // [self.delegate imageBtnDidClickWithSectionIndex:secIndex AndRowIndex:rowIndex];
+    [self.delegate deleteClick:secIndex AndRowIndex:rowIndex];
+}
 
 -(void)showTime:(NSNotification *)time{
     self.example2.percentage = [time.userInfo[@"time"]floatValue];
@@ -106,4 +125,20 @@
     
 }
 
+//-(UIImageView *)circle2{
+//    if(!_circle2){
+//        _circle2=[[UIImageView alloc]init];
+//        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapGuesture)];
+//        [_circle2 addGestureRecognizer:tap];
+//    }
+//    return _circle2;
+//}
+//-(UIImageView *)circle2{
+//    if(!_circle2){
+//        _circle2=[[UIImageView alloc]init];
+//        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapGuesture)];
+//        [_circle2 addGestureRecognizer:tap];
+//    }
+//    return _circle2;
+//}
 @end
