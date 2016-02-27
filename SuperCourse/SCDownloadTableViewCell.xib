@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" image="完成" id="3DS-L4-fqB">
-                        <rect key="frame" x="469" y="37" width="16" height="16"/>
+                        <rect key="frame" x="430" y="37" width="16" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="？？？M" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="I9I-jF-Cyn">
@@ -101,7 +101,7 @@
                 <outlet property="videoName" destination="pvO-xW-Pfp" id="M13-lo-UrV"/>
                 <outlet property="videoSize" destination="I9I-jF-Cyn" id="dOo-Xt-JBG"/>
             </connections>
-            <point key="canvasLocation" x="900.5" y="624"/>
+            <point key="canvasLocation" x="752.5" y="655"/>
         </tableViewCell>
     </objects>
     <resources>

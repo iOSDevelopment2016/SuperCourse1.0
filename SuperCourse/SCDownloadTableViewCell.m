@@ -21,9 +21,11 @@
     self.example2.percentage=ApplicationDelegate.pram;
     [self addSubview:self.example2];
     self.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     self.circle2=[[UIImageView alloc]init];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(play:)];
     [self.circle2 addGestureRecognizer:tap];
+    
     self.circle3=[[UIImageView alloc]init];
     UITapGestureRecognizer *tap2 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(delete:)];
     [self.circle3 addGestureRecognizer:tap2];
