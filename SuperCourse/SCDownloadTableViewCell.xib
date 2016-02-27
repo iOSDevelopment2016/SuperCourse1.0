@@ -11,28 +11,28 @@
             <rect key="frame" x="0.0" y="0.0" width="987" height="90"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="987" height="89.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="987" height="90"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="251" image="删除" id="QaB-SB-Lqb">
-                        <rect key="frame" x="862" y="32" width="28" height="26"/>
+                        <rect key="frame" x="918" y="36" width="16" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" image="完成" id="3DS-L4-fqB">
-                        <rect key="frame" x="252" y="31" width="35" height="29"/>
+                        <rect key="frame" x="469" y="37" width="16" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="？？？M" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="I9I-jF-Cyn">
-                        <rect key="frame" x="557" y="27" width="175" height="36"/>
+                        <rect key="frame" x="741" y="27" width="83" height="36"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="23.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17.5"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="DPh-J1-Cur">
-                        <rect key="frame" x="901" y="21.5" width="69" height="47"/>
+                        <rect key="frame" x="934" y="20" width="49" height="47"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="23.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17.5"/>
                         <state key="normal" title="删除">
                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         </state>
@@ -41,16 +41,16 @@
                         </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="标题栏" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="pvO-xW-Pfp">
-                        <rect key="frame" x="15" y="10" width="197" height="70"/>
+                        <rect key="frame" x="34" y="10" width="340" height="70"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="20.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17.5"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="iWC-eJ-QKJ">
-                        <rect key="frame" x="396" y="23" width="136" height="43"/>
+                        <rect key="frame" x="590" y="23" width="136" height="43"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="23.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17.5"/>
                         <state key="normal" title="暂停下载">
                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         </state>
@@ -58,24 +58,17 @@
                             <action selector="pauseBtnClick:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="tAv-As-2r7"/>
                         </connections>
                     </button>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="当前进度：" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="b1H-Vk-1jD">
-                        <rect key="frame" x="219" y="16" width="124" height="57"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="23.5"/>
-                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="已完成" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="DR0-V8-0A3">
-                        <rect key="frame" x="290" y="20" width="98" height="50"/>
+                        <rect key="frame" x="495" y="20" width="71" height="50"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="23.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17.5"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="pBi-In-598">
-                        <rect key="frame" x="769" y="21" width="84" height="47"/>
+                        <rect key="frame" x="859" y="20" width="54" height="47"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="23.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17.5"/>
                         <state key="normal" title="播放">
                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         </state>
@@ -84,9 +77,16 @@
                         </connections>
                     </button>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="播放小" id="TEK-st-Xy3">
-                        <rect key="frame" x="736" y="31" width="25" height="26"/>
+                        <rect key="frame" x="843" y="36" width="16" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="当前进度：" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="b1H-Vk-1jD">
+                        <rect key="frame" x="417" y="16" width="98" height="57"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17.5"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
             </tableViewCellContentView>
             <connections>
@@ -101,7 +101,7 @@
                 <outlet property="videoName" destination="pvO-xW-Pfp" id="M13-lo-UrV"/>
                 <outlet property="videoSize" destination="I9I-jF-Cyn" id="dOo-Xt-JBG"/>
             </connections>
-            <point key="canvasLocation" x="440.5" y="339"/>
+            <point key="canvasLocation" x="1195.5" y="572"/>
         </tableViewCell>
     </objects>
     <resources>

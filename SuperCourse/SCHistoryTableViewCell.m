@@ -23,6 +23,8 @@
 
 - (void)awakeFromNib {
     // Initialization code
+    
+    self.historyBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
