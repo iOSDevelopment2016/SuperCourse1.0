@@ -19,6 +19,7 @@
     self.example2.centerLabel.font = [UIFont boldSystemFontOfSize:40];
     self.example2.centerLabelVisible = YES;
     self.example2.percentage=ApplicationDelegate.pram;
+    self.example2.progressColor=UIThemeColor;
     [self addSubview:self.example2];
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
