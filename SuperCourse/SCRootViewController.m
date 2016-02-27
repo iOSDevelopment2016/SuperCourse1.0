@@ -1168,7 +1168,9 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         //_searchTextField.clearButtonMode=UITextFieldViewModeWhileEditing;
         //_searchTextField.secureTextEntry=YES;
         _searchTextField.returnKeyType=UIReturnKeyDone;
+        _searchTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _searchTextField.font = [UIFont systemFontOfSize:45*WidthScale];
+
 //        _searchTextField.layer.masksToBounds = YES;
 //        _searchTextField.layer.cornerRadius = 50*WidthScale;
         _searchTextField.textAlignment = UITextAlignmentLeft;
