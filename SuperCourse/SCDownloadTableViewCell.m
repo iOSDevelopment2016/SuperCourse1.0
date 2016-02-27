@@ -12,6 +12,7 @@
 
 - (void)awakeFromNib {
     // Initialization code
+    
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(showTime:) name:@"sendTime" object:nil];
     self.example2 = [[THCircularProgressView alloc] initWithFrame:CGRectMake(520, self.height/2-30*HeightScale, 60*HeightScale, 60*HeightScale)];
     self.example2.lineWidth = 8.0f;

@@ -224,7 +224,7 @@
     
     // SCCourseGroup *temp = self.currentSource.sec_arr[section];
     
-     headerLabel1.text = @"视频";
+    headerLabel1.text = @"视频";
     
     
     [customView addSubview:headerLabel1];
@@ -240,7 +240,7 @@
     
     headerLabel2.font = [UIFont italicSystemFontOfSize:35*HeightScale];
     
-    headerLabel2.frame = CGRectMake(450, 10.0, 300.0, 44.0);
+    headerLabel2.frame = CGRectMake(self.view.width-540, 10.0, 300.0, 44.0);
     
     // SCCourseGroup *temp = self.currentSource.sec_arr[section];
     
@@ -260,7 +260,7 @@
     
     headerLabel3.font = [UIFont italicSystemFontOfSize:35*HeightScale];
     
-    headerLabel3.frame = CGRectMake(735, 10.0, 300.0, 44.0);
+    headerLabel3.frame = CGRectMake(self.view.width-270, 10.0, 300.0, 44.0);
     
     // SCCourseGroup *temp = self.currentSource.sec_arr[section];
     
@@ -280,7 +280,7 @@
     
     headerLabel4.font = [UIFont italicSystemFontOfSize:35*HeightScale];
     
-    headerLabel4.frame = CGRectMake(900, 10.0, 300.0, 44.0);
+    headerLabel4.frame = CGRectMake(self.view.width-100, 10.0, 300.0, 44.0);
     
     // SCCourseGroup *temp = self.currentSource.sec_arr[section];
     
