@@ -23,6 +23,9 @@
     [self addSubview:self.example2];
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
+//    self.leadingSpacingConstrants.constant = 0.02*UIScreenWidth;
+//    self.trailingSpacingConstrants.constant = 0.03*UIScreenWidth;
+    
     
 
     // [self.examples addObject:self.example2];

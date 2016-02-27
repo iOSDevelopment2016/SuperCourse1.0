@@ -40,4 +40,8 @@
 
 @property (nonatomic, strong) NSString *lessonID;
 
+
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *leadingSpacingConstrants;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *trailingSpacingConstrants;
+
 @end
