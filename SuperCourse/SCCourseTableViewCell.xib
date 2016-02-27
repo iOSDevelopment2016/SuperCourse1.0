@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="14F1605" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -12,7 +12,7 @@
             <rect key="frame" x="0.0" y="0.0" width="937" height="60"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="937" height="59"/>
+                <rect key="frame" x="0.0" y="0.0" width="937" height="60"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AGu-dy-GbD">
@@ -34,7 +34,7 @@
                         </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="no data" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PZ3-6O-1aN">
-                        <rect key="frame" x="731" y="12" width="79" height="36"/>
+                        <rect key="frame" x="757" y="12" width="79" height="36"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="36" id="tmz-SW-5xl"/>
                         </constraints>
@@ -96,7 +96,7 @@
                     <constraint firstAttribute="bottomMargin" secondItem="h4e-3m-cjY" secondAttribute="bottom" constant="13" id="k6I-HV-u9d"/>
                     <constraint firstAttribute="bottomMargin" secondItem="AGu-dy-GbD" secondAttribute="bottom" constant="7" id="mfg-nw-320"/>
                     <constraint firstAttribute="trailingMargin" secondItem="CaA-L6-GNf" secondAttribute="trailing" constant="29" id="sAK-cv-HR2"/>
-                    <constraint firstItem="CaA-L6-GNf" firstAttribute="leading" secondItem="PZ3-6O-1aN" secondAttribute="trailing" constant="52" id="xNF-Fc-wYN"/>
+                    <constraint firstItem="CaA-L6-GNf" firstAttribute="leading" secondItem="PZ3-6O-1aN" secondAttribute="trailing" constant="26" id="xNF-Fc-wYN"/>
                 </constraints>
                 <variation key="default">
                     <mask key="constraints">
