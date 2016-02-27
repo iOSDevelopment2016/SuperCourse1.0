@@ -62,7 +62,7 @@
     self.memoryClearBtn.frame=CGRectMake(0, 103+HeightScale*125, self.view.width, HeightScale*125);
     self.extendBtn.frame=CGRectMake(0, 150+HeightScale*250, self.view.width, HeightScale*125);
     self.exitBtn.frame=CGRectMake(self.view.width/2-350*WidthScale, 225+HeightScale*500, 700*WidthScale, 100*HeightScale);
-    self.sizeLabel.frame=CGRectMake(self.view.width-200*WidthScale, 152+HeightScale*250, 200*WidthScale, HeightScale*125);
+    self.sizeLabel.frame=CGRectMake(self.view.width-200*WidthScale, 103+HeightScale*125, 200*WidthScale, HeightScale*125);
 }
 -(void)changeBtn{
     if([ApplicationDelegate.userSession isEqualToString:UnLoginUserSession])
