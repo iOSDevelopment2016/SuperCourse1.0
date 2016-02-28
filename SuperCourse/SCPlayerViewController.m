@@ -352,6 +352,7 @@
     if (alertView.tag == 1) {
         if (buttonIndex == 0) {
             CGFloat time = 0;
+            [_slider removeFromSuperview];
             [self getStopTimeWithCurrentTime:time];
             [self.navigationController popToRootViewControllerAnimated:YES];
         }
@@ -483,7 +484,8 @@
         [self.rightView.tagList changeBtnLookingWithTime:elapsedTime];
         [self.nowPoint setTitle:self.nowPointString forState:UIControlStateNormal];
         
-        
+        self.slider.value = self.currentTime;
+
         
     }];
     if (!shouldPlaying) {
@@ -491,7 +493,9 @@
     }else{
         [self.videoManager resume];
     }
-    _slider = [[UISlider alloc]initWithFrame:CGRectMake(0 , self.startBtnView.height-60, self.startBtnView.width, 50)];
+    if (!_slider) {
+        _slider = [[UISlider alloc]initWithFrame:CGRectMake(0 , self.startBtnView.height-60, self.startBtnView.width, 50)];
+    }
     [_slider addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
     _slider.minimumValue = 0;
     _slider.maximumValue = [noti.object floatValue];
