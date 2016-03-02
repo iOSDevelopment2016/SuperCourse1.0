@@ -25,6 +25,9 @@
     BOOL isAnimating; // 正在动画
     BOOL isFirstView;
     BOOL shouldPlaying;
+    UIView *showView;
+    CGPoint leftTopPoint;
+
 }
 
 //@property (nonatomic ,strong) SCVIdeoInfo *currentVideoInfo;
@@ -71,8 +74,15 @@
 @property (nonatomic, strong) NSArray *letterArr;
 @property (nonatomic, assign) NSTimeInterval beginTime;
 @property (nonatomic, strong) UIButton *downloadBtn;
-@property (nonatomic, strong) SZYNoteSolidater          *db;
-
+@property (nonatomic, strong) SZYNoteSolidater  *db;
+@property (nonatomic, strong) UIView *hubView;
+@property (nonatomic, strong) UITapGestureRecognizer *tapToRemove;
+@property (nonatomic, strong) UIView *screenCutView;
+@property (nonatomic, strong) UIButton *cutBtn;
+@property (nonatomic, strong) UIPanGestureRecognizer *panToSetVoice;
+@property (nonatomic, strong) UIButton *sureToCut;
+@property (nonatomic, strong) UIButton *chooseViewAgain;
+@property (nonatomic, strong) UIView *isCutView;
 @end
 
 @implementation SCPlayerViewController
@@ -342,6 +352,7 @@
     [self.bottomView addSubview:self.rightViewBtn];
     [self.bottomView addSubview:self.lockBtn];
     [self.bottomView addSubview:self.timeLable];
+    [self.bottomView addSubview:self.cutBtn];
     
     
     
@@ -682,32 +693,7 @@
     }
     return exist;
 }
-//-(void)getCurrectOrder{
-//
-//    NSMutableArray *subTitleArr = [[NSMutableArray alloc]init];
-//    int shouldInsert;
-//    for (UIView *view in self.rightView.pointView.subviews) {
-//        [subTitleArr addObject:view];
-//    }
-//
-//    for (int i=0; i<subTitleArr.count-1; i++) {
-//        int m = (int)subTitleArr.count-1;
-//        UIView *changeView = subTitleArr[m];
-//        UIView *nowView = subTitleArr[i];
-//        if (changeView.tag<nowView.tag) {
-//            changeView.y = nowView.y - 100*HeightScale;
-//            shouldInsert = i;
-//            break;
-//        }
-//    }
-//    for (shouldInsert; shouldInsert<subTitleArr.count; shouldInsert++) {
-//        UIView *nowView = subTitleArr[shouldInsert];
-//        nowView.y = nowView.y+100*HeightScale;
-//    }
-//
-//
-//
-//}
+
 
 
 -(void)addPoint{
@@ -846,9 +832,21 @@
     }
 }
 
+-(void)tapToRemove:(UITapGestureRecognizer *)recognizer{
+
+    [self.hubView removeFromSuperview];
+    [self.videoManager resume];
+    [self.bottomView addSubview:self.pauseBtn];
+    [self.playBtn removeFromSuperview];
+    self.screenCutView.frame = CGRectMake(0, 0, 0, 0);
+    [self.screenCutView removeFromSuperview];
+    leftTopPoint = CGPointMake(0, 0);
+    [self.sureToCut removeFromSuperview];
+    [self.chooseViewAgain removeFromSuperview];
+}
 
 
-- (void)tapBtn:(UIPanGestureRecognizer *) recognizer{
+- (void)tapBtn:(UITapGestureRecognizer *) recognizer{
     
     if (!isAnimating) {
         BOOL _hidden;
@@ -860,7 +858,6 @@
             [self.videoManager pause];
             [self getStopTimeWithCurrentTime:self.currentTime];
             shouldPlaying = NO;
-            //            [self.speedBtn setImage:[UIImage imageNamed:@"2X"] forState:UIControlStateNormal];
             [self.bottomView addSubview:self.playBtn];
             [self.pauseBtn removeFromSuperview];
             
@@ -932,20 +929,10 @@
     
 }
 
-
-
--(void)panToTime:(UIPanGestureRecognizer*) recognizer{
-    
+-(void)setTime:(UIPanGestureRecognizer *)recognizer{
     CGPoint statePoint = [recognizer translationInView:self.container];
-    
-    
-    //    beginStatePoint = [recognizer locationInView:self.container];
-    //
-    //    CGFloat beginStateX = beginStatePoint.x;
-    //    CGFloat endStateX;
     CGFloat endStateY;
     CGPoint endStatePoint = [recognizer locationInView:self.container];
-    //    endStateX = endStatePoint.x;
     endStateY = endStatePoint.y;
     CGFloat moveDistance = statePoint.x;
     if (endStateY >= 0 && endStateY < self.container.height/3) {
@@ -961,8 +948,87 @@
         [self.videoManager moveToSecond:turnToSecond];
         self.slider.value = turnToSecond;
     }
+
 }
 
+-(void)setVoiceAndLight:(UIPanGestureRecognizer *)recognizer{
+    CGPoint beginPoint;
+    CGPoint point = [recognizer locationInView:self.hubView];
+    if (beginPoint.y < 1) {
+        beginPoint = point;
+    }
+    CGFloat halfScreenWidth =[UIScreen mainScreen].bounds.size.width/2;
+    CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
+    CGFloat panDistance = point.y-beginPoint.y;
+    if (beginPoint.x<halfScreenWidth) {
+        CGFloat voiceVolume = panDistance/screenHeight;
+        [self.videoManager setVoice:voiceVolume];
+    }else {
+        CGFloat light = panDistance/screenHeight;
+        [self setLight:light];
+    }
+}
+
+-(void)setLight:(CGFloat )light{
+    CGFloat brightness =  self.brightness;
+    [[UIScreen mainScreen] setBrightness:brightness+light];
+}
+
+-(void)panToTime:(UIPanGestureRecognizer*) recognizer{
+
+    CGPoint statePoint = [recognizer translationInView:self.container];
+    if (fabs(statePoint.x)  > fabs(statePoint.y)*2 ) {
+        [self setTime:recognizer];
+    }else if ((fabs(statePoint.y)  > fabs(statePoint.x)*2 )){
+        [self setVoiceAndLight:recognizer];
+    }
+}
+
+
+-(void)cutBtnClick{
+    UIImage *thumbImage=[self.videoManager.player thumbnailImageAtTime:self.currentTime timeOption:MPMovieTimeOptionNearestKeyFrame];
+    [_cutScreenImageArr addObject:thumbImage];
+    UIImageWriteToSavedPhotosAlbum(thumbImage,self, nil, nil);
+    if (showView == nil) {
+        CGFloat width = self.container.width/2;
+        CGFloat height = self.container.height/2;
+        showView = [[UIView alloc]initWithFrame:CGRectMake(([UIScreen mainScreen].bounds.size.width-width)/2, ([UIScreen mainScreen].bounds.size.height-height)/2, width, height)];
+        UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, width, height)   ];
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [btn setBackgroundColor:[UIColor clearColor]];
+        [btn addTarget:self action:@selector(closeView:) forControlEvents:UIControlEventTouchUpInside];
+        [btn setFrame:imageView.frame];
+        [showView addSubview:btn];
+        [imageView setImage:thumbImage];
+        [showView addSubview:imageView];
+        [self.container addSubview:showView];
+    }
+}
+
+-(void)closeView:(UIButton *)sender{
+
+    [sender.superview removeFromSuperview];
+    showView = nil;
+}
+
+-(void)panToCut:(UIPanGestureRecognizer *) recognizer{
+    CGPoint point = [recognizer locationInView:self.hubView];
+    if (leftTopPoint.y < 1) {
+        if (recognizer.state == UIGestureRecognizerStateBegan ) {
+            leftTopPoint = point;
+        }
+    }
+   
+    self.screenCutView.frame = CGRectMake(leftTopPoint.x, leftTopPoint.y, point.x-leftTopPoint.x, point.y-leftTopPoint.y);
+    if (recognizer.state == UIGestureRecognizerStateEnded) {
+        leftTopPoint = CGPointMake(0, 0);
+        _sureToCut.frame = CGRectMake(point.x-40, point.y, 40, 30);
+        _chooseViewAgain.frame = CGRectMake(point.x-80, point.y, 40, 30);
+        
+        [self.view addSubview:self.sureToCut];
+        [self.view addSubview:self.chooseViewAgain];
+    }
+}
 
 #pragma mark - getters
 
@@ -1410,6 +1476,34 @@
     }
     return _indicatorShowView;
 }
+
+
+
+-(UIButton *)cutBtn{
+
+    if (!_cutBtn) {
+        _cutBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _cutBtn.frame = CGRectMake(1395*WidthScale, 45*HeightScale, 120*WidthScale, 64*HeightScale);
+//        _cutBtn.imageView.image = [UIImage imageNamed:@"剪切"];
+        [_cutBtn setTitle:@"截屏" forState:UIControlStateNormal];
+        [_cutBtn setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
+        _cutBtn.titleLabel.font = [UIFont systemFontOfSize:55*WidthScale];
+        _cutBtn.backgroundColor = [UIColor clearColor];
+        [_cutBtn setTitleColor:UIThemeColor forState:UIControlStateNormal];
+//        _cutBtn.backgroundColor = UIThemeColor;
+        [_cutBtn addTarget:self action:@selector(cutBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _cutBtn;
+}
+
+-(UIPanGestureRecognizer *)panToSetVoice{
+
+    if (!_panToSetVoice) {
+        _panToSetVoice = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panToSetVoice:)];
+    }
+    return _panToSetVoice;
+}
+
 
 
 @end
