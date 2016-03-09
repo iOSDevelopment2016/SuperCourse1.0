@@ -594,7 +594,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         if(self.searchView){
             [self.searchView removeFromSuperview];
         }
-        [self.searchTextField setHidden:NO];
+        [self.backView setHidden:NO];
         self.searchTextField.text=nil;
         self.allCourseBtn.selected=YES;
         self.allCourseBtnImage.selected=YES;
@@ -643,7 +643,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
             if(self.searchView){
                 [self.searchView removeFromSuperview];
             }
-            [self.searchTextField setHidden:NO];
+            [self.backView setHidden:NO];
             self.searchTextField.text=nil;
             self.allCourseBtn.selected=YES;
             self.allCourseBtnImage.selected=YES;
@@ -691,7 +691,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
             if(self.searchView){
                 [self.searchView removeFromSuperview];
             }
-            [self.searchTextField setHidden:YES];
+            [self.backView setHidden:YES];
             self.searchTextField.text=nil;
             self.allCourseBtn.selected=NO;
             self.allCourseBtnImage.selected=NO;
@@ -741,7 +741,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         if(self.searchView){
             [self.searchView removeFromSuperview];
         }
-        [self.searchTextField setHidden:YES];
+        [self.backView setHidden:YES];
         self.searchTextField.text=nil;
         self.allCourseBtn.selected=NO;
         self.allCourseBtnImage.selected=NO;
@@ -791,7 +791,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         if(self.searchView){
             [self.searchView removeFromSuperview];
         }
-        [self.searchTextField setHidden:YES];
+        [self.backView setHidden:YES];
         self.searchTextField.text=nil;
         self.allCourseBtn.selected=NO;
         self.allCourseBtnImage.selected=NO;
@@ -839,7 +839,7 @@ typedef NS_ENUM(NSInteger,SCShowViewType) {
         if(self.searchView){
             [self.searchView removeFromSuperview];
         }
-        [self.searchTextField setHidden:YES];
+        [self.backView setHidden:YES];
         self.searchTextField.text=nil;
         self.allCourseBtn.selected=NO;
         self.allCourseBtnImage.selected=NO;
